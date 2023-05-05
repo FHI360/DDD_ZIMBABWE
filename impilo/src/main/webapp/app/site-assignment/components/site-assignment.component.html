@@ -1,0 +1,136 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-100 md:w-160 dark:bg-gray-900"
+            [mode]="drawerMode"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer>
+            <router-outlet></router-outlet>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex h-screen bg-gray-100 dark:bg-transparent border">
+
+            <!-- Main -->
+            <div class="flex-auto">
+
+                <!-- Header -->
+                <div
+                    class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between p-6 sm:py-12 md:px-8 border-b bg-card dark:bg-transparent">
+
+                    <!-- Title -->
+                    <div>
+                        <div
+                            class="text-4xl font-extrabold tracking-tight leading-none">{{'IMPILO.ASSIGNMENT.TITLE' | transloco}}</div>
+                    </div>
+                </div>
+
+                <!-- Main actions -->
+                <div class="flex flex-auto p-4">
+                    <div class="flex flex-col flex-auto w-full mx-auto">
+                        <!-- Filters -->
+                        <div
+                            class="flex flex-col sm:flex-row items-center justify-start w-full max-w-xs sm:max-w-none">
+                            <mat-form-field
+                                class="w-full sm:w-72"
+                                [subscriptSizing]="'dynamic'">
+                                <mat-select
+                                    (selectionChange)="categoryChanged($event.value)"
+                                    [value]="'all'">
+                                    <mat-option [value]="'all'">{{'IMPILO.ASSIGNMENT.ALL' | transloco}}</mat-option>
+                                    <ng-container *ngFor="let category of categories">
+                                        <mat-option [value]="category.state">{{category.name}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field
+                                class="w-full sm:w-72 mt-4 sm:mt-0 sm:ml-4"
+                                [subscriptSizing]="'dynamic'">
+                                <mat-icon
+                                    matPrefix
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                <input
+                                    matInput
+                                    [formControl]="searchInputControl"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'IMPILO.ASSIGNMENT.SEARCH' | transloco">
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Configuration list -->
+                        <div class="relative mt-5">
+                            <ng-container *ngIf="dataSource.data?.length; else noConfig">
+                                <table [dataSource]="dataSource" multiTemplateDataRows class="w-full" mat-table matSort>
+                                    <!-- Text Columns -->
+                                    <ng-container *ngFor="let column of columns; trackBy: trackByFn">
+                                        <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+                                            <th *matHeaderCellDef class="uppercase" mat-header-cell
+                                                mat-sort-header> {{ column.label | transloco }}</th>
+                                            <td *matCellDef="let row" [ngClass]="column.cssClasses"
+                                                mat-cell>{{ row[column.property] }}</td>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container matColumnDef="space">
+                                        <td *matCellDef="let patient" mat-cell colspan="6">
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="expandedDetail">
+                                        <td *matCellDef="let patient" mat-cell>
+                                            <ng-container *ngIf="patient === expandedElement">
+                                                <div class="element-detail w-full">
+                                                    <mat-form-field
+                                                        class="w-full"
+                                                        [subscriptSizing]="'dynamic'">
+                                                        <mat-label>{{'IMPILO.ASSIGNMENT.SITE' | transloco}}</mat-label>
+                                                        <mat-select
+                                                            [value]="expandedElement.site"
+                                                            [compareWith]="typeCompare"
+                                                            (selectionChange)="siteChanged(patient, $event.value)">
+                                                            <mat-option></mat-option>
+                                                            <ng-container *ngFor="let site of ofcadSites">
+                                                                <mat-option [value]="site">{{site.name}}</mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </ng-container>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="visibleColumns"></tr>
+                                    <tr mat-row *matRowDef="let element; columns: visibleColumns;"
+                                        class="element-row"
+                                        [class.expanded-row]="expandedElement === element"
+                                        (click)="expandedElement = expandedElement === element ? null : element">
+                                    </tr>
+                                    <tr mat-row *matRowDef="let row; columns: ['space','expandedDetail']"
+                                        class="detail-row bg-gray-100">
+                                    </tr>
+                                </table>
+                            </ng-container>
+                            <ng-template #noConfig>
+                                <div
+                                    class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                                    <mat-icon
+                                        class="icon-size-24"
+                                        [svgIcon]="'heroicons_outline:document-search'"></mat-icon>
+                                    <div class="mt-6 text-2xl font-semibold tracking-tight text-secondary">
+                                        {{'IMPILO.ASSIGNMENT.NO_DATA' | transloco}}
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <mat-paginator (page)="page($event)" [pageSizeOptions]="pageSizeOptions"
+                                           [pageSize]="pageSize"
+                                           class="sticky left-0 mt-10">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

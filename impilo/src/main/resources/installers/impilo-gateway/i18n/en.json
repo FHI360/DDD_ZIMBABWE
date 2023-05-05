@@ -1,0 +1,98 @@
+{
+    "IMPILO": {
+        "MENU": {
+            "PATIENTS": "Patients",
+            "STOCKS": "Stocks",
+            "STOCK_ISSUANCE": "Stocks issuance"
+        },
+        "TITLE": {
+            "STOCKS": "Stocks",
+            "PATIENTS": "Patients",
+            "STOCK": "Stock details",
+            "ADD_STOCK": "Add Stock details",
+            "STOCK_ISSUANCE_LIST": "Stock issuance list",
+            "STOCK_ISSUANCE": "Stock issuance details",
+            "ADD_STOCK_ISSUANCE": "Record stock issuance"
+
+        },
+        "STOCK": {
+            "LIST_PAGE": {
+                "TITLE": "Stock list",
+                "ADD": "Add stock",
+                "SEARCH": "Search...",
+                "DATE": "Date recorded",
+                "NO_DATA": "No stock data available",
+                "FACILITY": "Health facility",
+                "REGIMEN": "Drug regimen",
+                "BOTTLES": "Bottles",
+                "ISSUED": "Qty issued",
+                "BALANCE": "Balance",
+                "BATCH_NO": "Batch No",
+                "EXPIRATION_DATE": "Expiration date"
+            },
+            "DETAIL_PAGE": {
+                "EDIT": "Edit",
+                "BATCH_NO": "Batch No",
+                "EXPIRATION_DATE": "Expiration date",
+                "EXPIRATION_DATE_REQUIRED": "Expiration date is required",
+                "EXPIRATION_DATE_MIN": "Expiration date minimum is today",
+                "MANUFACTURE_DATE": "Manufacture date",
+                "MANUFACTURE_DATE_REQUIRED": "Manufacture date is required",
+                "MANUFACTURE_DATE_MAX": "ManUFacture date maximum is today",
+                "REGIMEN_REQUIRED": "Drug regimen is required",
+                "BOTTLES_REQUIRED": "Number of bottles is required",
+                "BOTTLES_MIN": "Minimum number of bottles is 1",
+                "BATCH_NO_REQUIRED": "Batch No is required",
+                "SERIAL_NUMBER": "Serial number",
+                "SERIAL_NUMBER_REQUIRED": "Serial number is required"
+            }
+        },
+        "STOCK_ISSUANCE": {
+            "LIST_PAGE": {
+                "TITLE": "Stock issuance list",
+                "ADD": "Issue stock",
+                "SEARCH": "Search...",
+                "DATE": "Date issued",
+                "NO_DATA": "No stock issue data available",
+                "FACILITY": "Health facility",
+                "SITE": "OFCAD Site",
+                "REGIMEN": "Drug regimen",
+                "ISSUED": "Bottles issued",
+                "BATCH_NO": "Batch No",
+                "EXPIRATION_DATE": "Expiration date"
+            },
+            "DETAIL_PAGE": {
+                "EDIT": "Edit",
+                "BALANCE": "Stock balance",
+                "BARCODE": "Barcode",
+                "EXPIRATION_DATE": "Expiration date",
+                "EXPIRATION_DATE_MIN": "Expiration date minimum is today",
+                "MANUFACTURE_DATE": "ManUFacture date",
+                "MANUFACTURE_DATE_MAX": "ManUFacture date maximum is today",
+                "ISSUED": "Bottles issued",
+                "ISSUED_REQUIRED": "Number of bottles is required",
+                "ISSUED_MIN": "Minimum number of bottles is 1",
+                "ISSUED_MAX": "A maximum of {{MAX}} of selected drug regimen can be issued",
+                "SITE": "OFCAD Site",
+                "SITE_REQUIRED": "OFCAD Site is required",
+                "STOCK": "Stock entry",
+                "STOCK_REQUIRED": "Stock entry is required"
+            }
+        },
+        "ASSIGNMENT": {
+            "GIVEN_NAME": "First name",
+            "FAMILY_NAME": "Surname",
+            "ASSIGNED_REGIMEN": "Assigned regimen",
+            "SEX": "Sex",
+            "HOSPITAL_NUMBER": "Hospital number",
+            "UNIQUE_ID": "Unique identifier",
+            "SITE": "OFCAD Site",
+            "ASSIGNED": "Assigned",
+            "UNASSIGNED": "Unassigned",
+            "ALL": "All patients",
+            "SEARCH": "Search...",
+            "NO_DATA": "No patient data available",
+            "TITLE": "Patient site assignment"
+        }
+    }
+}

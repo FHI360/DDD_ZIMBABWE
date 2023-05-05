@@ -1,0 +1,49 @@
+description: Gateway application to support connectivity between the Impilo mobile app and E.HR server at the facility. Also manages bidirectional sync between the two components and a stop gap for features not available yet on the E.HR server
+name: Impilo E.HR Gateway
+translations:
+  - lang: en
+    path: installers/impilo-gateway/i18n/en.json
+  - lang: es
+    path: installers/impilo-gateway/i18n/es.json
+  - lang: fr
+    path: installers/impilo-gateway/i18n/fr.json
+  - lang: pt
+    path: installers/impilo-gateway/i18n/pt.json
+  - lang: sw
+    path: installers/impilo-gateway/i18n/sw.json
+  - lang: ig
+    path: installers/impilo-gateway/i18n/ig.json
+  - lang: ha
+    path: installers/impilo-gateway/i18n/ha.json
+  - lang: yo
+    path: installers/impilo-gateway/i18n/yo.json
+menus:
+  - name: IMPILO.MENU.PATIENTS
+    type: link
+    route: patients
+    icon: wc
+  - name: IMPILO.MENU.STOCKS
+    type: link
+    route: stocks
+    icon: cases
+  - name: IMPILO.MENU.STOCK_ISSUANCE
+    type: link
+    route: stock-issuance
+    icon: library_books
+    position: 2
+webRemotes:
+  - remoteEntry: "/js/impilo-gateway/remoteEntry.js"
+    remoteName: _5e665722_af83_4c02_82c0_48e62d779674
+    modules:
+      - name: StockModule
+        ngModuleName: StockModule
+        routePath: stocks
+        title: IMPILO.TITLE.STOCKS
+      - name: StockIssuanceModule
+        ngModuleName: StockIssuanceModule
+        routePath: stock-issuance
+        title: IMPILO.TITLE.STOCK_ISSUANCE
+      - name: SiteAssignmentModule
+        ngModuleName: SiteAssignmentModule
+        routePath: patients
+        title: IMPILO.TITLE.PATIENTS

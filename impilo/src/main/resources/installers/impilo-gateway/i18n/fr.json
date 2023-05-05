@@ -1,0 +1,96 @@
+{
+  "IMPILO": {
+    "MENU": {
+      "PATIENTS": "Les patients",
+      "STOCKS": "Actions",
+      "STOCK_ISSUANCE": "Émission d'actions"
+    },
+    "TITLE": {
+      "STOCKS": "Actions",
+      "STOCK": "Détails des stocks",
+      "ADD_STOCK": "Ajouter des détails sur Stock",
+      "STOCK_ISSUANCE_LIST": "Liste des émissions d'actions",
+      "STOCK_ISSUANCE": "Détails de l'émission d'actions",
+      "ADD_STOCK_ISSUANCE": "Record d'émissions d'actions",
+      "PATIENTS": "Les patients"
+    },
+    "STOCK": {
+      "LIST_PAGE": {
+        "TITLE": "Liste des stocks",
+        "ADD": "Ajouter du stock",
+        "SEARCH": "Recherche...",
+        "DATE": "Date d'enregistrement",
+        "NO_DATA": "Aucune donnée de stock disponible",
+        "FACILITY": "Établissement de santé",
+        "REGIMEN": "Régime médicamenteux",
+        "BOTTLES": "Bouteilles",
+        "ISSUED": "Qté émise",
+        "BALANCE": "Équilibre",
+        "BATCH_NO": "N ° de lot",
+        "EXPIRATION_DATE": "Date d'expiration"
+      },
+      "DETAIL_PAGE": {
+        "EXPIRATION_DATE": "Date d'expiration",
+        "EXPIRATION_DATE_MIN": "La date d'expiration minimale est aujourd'hui",
+        "MANUFACTURE_DATE": "Date de fabrication",
+        "MANUFACTURE_DATE_MAX": "La date de fabrication maximale est aujourd'hui",
+        "REGIMEN_REQUIRED": "Le régime médicamenteux est requis",
+        "BOTTLES_REQUIRED": "Le nombre de bouteilles est requis",
+        "BOTTLES_MIN": "Le nombre minimum de bouteilles est de 1",
+        "BATCH_NO_REQUIRED": "Le numéro de lot est requis",
+        "SERIAL_NUMBER": "Numéro de série",
+        "SERIAL_NUMBER_REQUIRED": "Le numéro de série est requis",
+        "BATCH_NO": "N ° de lot",
+        "EXPIRATION_DATE_REQUIRED": "La date d'expiration est requise",
+        "MANUFACTURE_DATE_REQUIRED": "La date de fabrication est requise",
+        "EDIT": "Modifier"
+      }
+    },
+    "STOCK_ISSUANCE": {
+      "LIST_PAGE": {
+        "TITLE": "Liste des émissions d'actions",
+        "ADD": "Action d'émission",
+        "SEARCH": "Recherche...",
+        "DATE": "Date d'émission",
+        "NO_DATA": "Aucune donnée d'émission d'actions disponible",
+        "FACILITY": "Établissement de santé",
+        "SITE": "Site de l'OFCAD",
+        "REGIMEN": "Régime médicamenteux",
+        "ISSUED": "Bouteilles émises",
+        "BATCH_NO": "N ° de lot",
+        "EXPIRATION_DATE": "Date d'expiration"
+      },
+      "DETAIL_PAGE": {
+        "BARCODE": "code à barre",
+        "EXPIRATION_DATE": "Date d'expiration",
+        "EXPIRATION_DATE_MIN": "La date d'expiration minimale est aujourd'hui",
+        "MANUFACTURE_DATE": "Date de fabrication",
+        "MANUFACTURE_DATE_MAX": "La date de fabrication maximale est aujourd'hui",
+        "ISSUED": "Bouteilles émises",
+        "ISSUED_REQUIRED": "Le nombre de bouteilles est requis",
+        "ISSUED_MIN": "Le nombre minimum de bouteilles est de 1",
+        "ISSUED_MAX": "Un maximum de {{MAX}} du régime médicamenteux sélectionné peut être délivré",
+        "SITE": "Site de l'OFCAD",
+        "SITE_REQUIRED": "Le site OFCAD est requis",
+        "STOCK": "Entrée en stock",
+        "STOCK_REQUIRED": "L'entrée de stock est obligatoire",
+        "BALANCE": "Solde des stocks"
+      }
+    },
+    "ASSIGNMENT": {
+      "GIVEN_NAME": "Prénom",
+      "FAMILY_NAME": "Nom de famille",
+      "ASSIGNED_REGIMEN": "Régime assigné",
+      "SEX": "Sexe",
+      "HOSPITAL_NUMBER": "Numéro d'hôpital",
+      "UNIQUE_ID": "Identifiant unique",
+      "SITE": "Site de l'OFCAD",
+      "ASSIGNED": "Attribué",
+      "UNASSIGNED": "Non attribué",
+      "ALL": "Tous les patients",
+      "SEARCH": "Recherche...",
+      "NO_DATA": "Aucune donnée disponible sur les patients",
+      "TITLE": "Affectation du site patient"
+    }
+  }
+}

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2023072304-01" author="mattae">
+        <createTable tableName="patient">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="given_name" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="family_name" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sex" type="varchar(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="varchar(32)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="hospital_number" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unique_id" type="varchar(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="address" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="regimen" type="varchar(128)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_viral_load_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="next_clinic_visit" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="next_refill_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="next_viral_load_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="next_tpt_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="next_cervical_cancer_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="facility_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="patient" baseColumnNames="facility_id"
+                                 constraintName="fk_patient_facility_id" referencedTableName="organisation"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2023072304-02" author="mattae">
+        <createTable tableName="site_assignment">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="site_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patient_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="site_assignment" baseColumnNames="site_id"
+                                 constraintName="fk_site_assignment_site_id" referencedTableName="organisation"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="site_assignment" baseColumnNames="patient_id"
+                                 constraintName="fk_site_assignment_patient_id" referencedTableName="patient"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2023072304-03" author="mattae">
+        <createTable tableName="clinic_data">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="weight" type="numeric">
+                <constraints nullable="true"/>
+            </column>
+            <column name="temperature" type="numeric">
+                <constraints nullable="true"/>
+            </column>
+            <column name="systolic" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="diastolic" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="coughing" type="bool">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sweating" type="bool">
+                <constraints nullable="true"/>
+            </column>
+            <column name="swelling" type="bool">
+                <constraints nullable="true"/>
+            </column>
+            <column name="fever" type="bool">
+                <constraints nullable="true"/>
+            </column>
+            <column name="weight_loss" type="bool">
+                <constraints nullable="true"/>
+            </column>
+            <column name="tb_referred" type="bool">
+                <constraints nullable="true"/>
+            </column>
+            <column name="viral_load_due_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="patient_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="clinic_data" baseColumnNames="patient_id"
+                                 constraintName="fk_clinic_data_patient_id" referencedTableName="patient"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2023072304-04" author="mattae">
+        <createTable tableName="discontinuation">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patient_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="discontinuation" baseColumnNames="patient_id"
+                                 constraintName="fk_discontinuation_patient_id" referencedTableName="patient"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2023072304-05" author="mattae">
+        <createTable tableName="refill">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_next_refill" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="regimen" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qty_prescribed" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qty_dispensed" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="missed_dose" type="bool">
+                <constraints nullable="true"/>
+            </column>
+            <column name="adverse_issues" type="bool">
+                <constraints nullable="true"/>
+            </column>
+            <column name="patient_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="refill" baseColumnNames="patient_id"
+                                 constraintName="fk_refill_patient_id" referencedTableName="patient"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2023072304-06" author="mattae">
+        <createTable tableName="stock">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="regimen" type="varchar(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bottles" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="batch_no" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="serial_no" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manufacture_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="facility_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="stock" baseColumnNames="facility_id"
+                                 constraintName="fk_stock_facility_id" referencedTableName="organisation"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2023072304-07" author="mattae">
+        <createTable tableName="stock_issuance">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bottles" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="site_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stock_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="stock_issuance" baseColumnNames="stock_id"
+                                 constraintName="fk_stock_issuance_stock_id" referencedTableName="stock"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2023072304-08" author="mattae">
+        <addColumn tableName="stock_issuance">
+            <column name="acknowledge" type="bool"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

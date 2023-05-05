@@ -1,0 +1,96 @@
+{
+  "IMPILO": {
+    "MENU": {
+      "PATIENTS": "Wagonjwa",
+      "STOCKS": "Hisa",
+      "STOCK_ISSUANCE": "Utoaji wa hisa"
+    },
+    "TITLE": {
+      "STOCKS": "Hisa",
+      "STOCK": "Maelezo ya hisa",
+      "ADD_STOCK": "Ongeza maelezo ya hisa",
+      "STOCK_ISSUANCE_LIST": "Orodha ya utoaji wa hisa",
+      "STOCK_ISSUANCE": "Maelezo ya utoaji wa hisa",
+      "ADD_STOCK_ISSUANCE": "Rekodi utoaji wa hisa",
+      "PATIENTS": "Wagonjwa"
+    },
+    "STOCK": {
+      "LIST_PAGE": {
+        "TITLE": "Orodha ya hisa",
+        "ADD": "Ongeza hisa",
+        "SEARCH": "Tafuta...",
+        "DATE": "Tarehe iliyorekodiwa",
+        "NO_DATA": "Hakuna data ya hisa inayopatikana",
+        "FACILITY": "Kituo cha afya",
+        "REGIMEN": "Regimen ya dawa",
+        "BOTTLES": "Chupa",
+        "ISSUED": "Kiasi kimetolewa",
+        "BALANCE": "Mizani",
+        "BATCH_NO": "Kundi Na",
+        "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake"
+      },
+      "DETAIL_PAGE": {
+        "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
+        "EXPIRATION_DATE_MIN": "Tarehe ya mwisho wa matumizi ni kiwango cha chini zaidi cha leo",
+        "MANUFACTURE_DATE": "Tarehe ya utengenezaji",
+        "MANUFACTURE_DATE_MAX": "Tarehe ya juu zaidi ya ManUFacture ni leo",
+        "REGIMEN_REQUIRED": "Regimen ya dawa inahitajika",
+        "BOTTLES_REQUIRED": "Idadi ya chupa inahitajika",
+        "BOTTLES_MIN": "Idadi ya chini ya chupa ni 1",
+        "BATCH_NO_REQUIRED": "Nambari ya Kundi inahitajika",
+        "SERIAL_NUMBER": "Nambari ya serial",
+        "SERIAL_NUMBER_REQUIRED": "Nambari ya serial inahitajika",
+        "BATCH_NO": "Kundi Na",
+        "EXPIRATION_DATE_REQUIRED": "Tarehe ya mwisho wa matumizi inahitajika",
+        "MANUFACTURE_DATE_REQUIRED": "Tarehe ya utengenezaji inahitajika",
+        "EDIT": "Hariri"
+      }
+    },
+    "STOCK_ISSUANCE": {
+      "LIST_PAGE": {
+        "TITLE": "Orodha ya utoaji wa hisa",
+        "ADD": "Suala hisa",
+        "SEARCH": "Tafuta...",
+        "DATE": "Tarehe iliyotolewa",
+        "NO_DATA": "Hakuna data ya suala la hisa inayopatikana",
+        "FACILITY": "Kituo cha afya",
+        "SITE": "Tovuti ya OFCAD",
+        "REGIMEN": "Regimen ya dawa",
+        "ISSUED": "Chupa zilizotolewa",
+        "BATCH_NO": "Kundi Na",
+        "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake"
+      },
+      "DETAIL_PAGE": {
+        "BARCODE": "Msimbo pau",
+        "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
+        "EXPIRATION_DATE_MIN": "Tarehe ya mwisho wa matumizi ni kiwango cha chini zaidi cha leo",
+        "MANUFACTURE_DATE": "Tarehe ya tukio ManUFacture",
+        "MANUFACTURE_DATE_MAX": "Tarehe ya juu zaidi ya ManUFacture ni leo",
+        "ISSUED": "Chupa zilizotolewa",
+        "ISSUED_REQUIRED": "Idadi ya chupa inahitajika",
+        "ISSUED_MIN": "Idadi ya chini ya chupa ni 1",
+        "ISSUED_MAX": "Kiwango cha juu cha {{MAX}} cha dawa iliyochaguliwa inaweza kutolewa",
+        "SITE": "Tovuti ya OFCAD",
+        "SITE_REQUIRED": "Tovuti ya OFCAD inahitajika",
+        "STOCK": "Kuingia kwa hisa",
+        "STOCK_REQUIRED": "Ingizo la hisa linahitajika",
+        "BALANCE": "Salio la hisa"
+      }
+    },
+    "ASSIGNMENT": {
+      "GIVEN_NAME": "Jina la kwanza",
+      "FAMILY_NAME": "Jina la ukoo",
+      "ASSIGNED_REGIMEN": "Regimen iliyokabidhiwa",
+      "SEX": "Ngono",
+      "HOSPITAL_NUMBER": "Nambari ya hospitali",
+      "UNIQUE_ID": "Kitambulisho cha kipekee",
+      "SITE": "Tovuti ya OFCAD",
+      "ASSIGNED": "Imekabidhiwa",
+      "UNASSIGNED": "Haijakabidhiwa",
+      "ALL": "Wagonjwa wote",
+      "SEARCH": "Tafuta...",
+      "NO_DATA": "Hakuna data ya mgonjwa inayopatikana",
+      "TITLE": "Mgawo wa tovuti ya mgonjwa"
+    }
+  }
+}

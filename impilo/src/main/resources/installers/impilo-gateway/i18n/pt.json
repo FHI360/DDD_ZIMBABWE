@@ -1,0 +1,96 @@
+{
+  "IMPILO": {
+    "MENU": {
+      "PATIENTS": "Pacientes",
+      "STOCKS": "Ações",
+      "STOCK_ISSUANCE": "emissão de ações"
+    },
+    "TITLE": {
+      "STOCKS": "Ações",
+      "STOCK": "Detalhes do estoque",
+      "ADD_STOCK": "Adicionar detalhes do estoque",
+      "STOCK_ISSUANCE_LIST": "Lista de emissão de ações",
+      "STOCK_ISSUANCE": "Detalhes da emissão de ações",
+      "ADD_STOCK_ISSUANCE": "Emissão de ações recorde",
+      "PATIENTS": "Pacientes"
+    },
+    "STOCK": {
+      "LIST_PAGE": {
+        "TITLE": "Lista de ações",
+        "ADD": "Adicionar estoque",
+        "SEARCH": "Procurar...",
+        "DATE": "Data gravada",
+        "NO_DATA": "Nenhum dado de estoque disponível",
+        "FACILITY": "Estabelecimento de saúde",
+        "REGIMEN": "regime de drogas",
+        "BOTTLES": "Garrafas",
+        "ISSUED": "Quantidade emitida",
+        "BALANCE": "Equilíbrio",
+        "BATCH_NO": "Lote N º",
+        "EXPIRATION_DATE": "Data de validade"
+      },
+      "DETAIL_PAGE": {
+        "EXPIRATION_DATE": "Data de validade",
+        "EXPIRATION_DATE_MIN": "A data de validade mínima é hoje",
+        "MANUFACTURE_DATE": "Data de fabricação",
+        "MANUFACTURE_DATE_MAX": "A data máxima de fabricação é hoje",
+        "REGIMEN_REQUIRED": "Regime de medicamentos é necessário",
+        "BOTTLES_REQUIRED": "O número de garrafas é obrigatório",
+        "BOTTLES_MIN": "O número mínimo de garrafas é 1",
+        "BATCH_NO_REQUIRED": "O número do lote é obrigatório",
+        "SERIAL_NUMBER": "Número de série",
+        "SERIAL_NUMBER_REQUIRED": "O número de série é obrigatório",
+        "BATCH_NO": "Lote N º",
+        "EXPIRATION_DATE_REQUIRED": "A data de validade é obrigatória",
+        "MANUFACTURE_DATE_REQUIRED": "A data de fabricação é obrigatória",
+        "EDIT": "Editar"
+      }
+    },
+    "STOCK_ISSUANCE": {
+      "LIST_PAGE": {
+        "TITLE": "Lista de emissão de ações",
+        "ADD": "Emitir ações",
+        "SEARCH": "Procurar...",
+        "DATE": "Data de emissão",
+        "NO_DATA": "Não há dados de emissão de ações disponíveis",
+        "FACILITY": "Estabelecimento de saúde",
+        "SITE": "Local OFCAD",
+        "REGIMEN": "regime de drogas",
+        "ISSUED": "Garrafas emitidas",
+        "BATCH_NO": "Lote N º",
+        "EXPIRATION_DATE": "Data de validade"
+      },
+      "DETAIL_PAGE": {
+        "BARCODE": "código de barras",
+        "EXPIRATION_DATE": "Data de validade",
+        "EXPIRATION_DATE_MIN": "A data de validade mínima é hoje",
+        "MANUFACTURE_DATE": "Data de fabricação",
+        "MANUFACTURE_DATE_MAX": "A data máxima de fabricação é hoje",
+        "ISSUED": "Garrafas emitidas",
+        "ISSUED_REQUIRED": "O número de garrafas é obrigatório",
+        "ISSUED_MIN": "O número mínimo de garrafas é 1",
+        "ISSUED_MAX": "Um máximo de {{MAX}} do regime de drogas selecionado pode ser emitido",
+        "SITE": "Local OFCAD",
+        "SITE_REQUIRED": "O site do OFCAD é obrigatório",
+        "STOCK": "entrada de estoque",
+        "STOCK_REQUIRED": "Entrada de estoque é necessária",
+        "BALANCE": "saldo de estoque"
+      }
+    },
+    "ASSIGNMENT": {
+      "GIVEN_NAME": "Primeiro nome",
+      "FAMILY_NAME": "Sobrenome",
+      "ASSIGNED_REGIMEN": "regime atribuído",
+      "SEX": "Sexo",
+      "HOSPITAL_NUMBER": "número do hospital",
+      "UNIQUE_ID": "Identificador único",
+      "SITE": "Local OFCAD",
+      "ASSIGNED": "Atribuído",
+      "UNASSIGNED": "Não atribuído",
+      "ALL": "Todos os pacientes",
+      "SEARCH": "Procurar...",
+      "NO_DATA": "Nenhum dado do paciente disponível",
+      "TITLE": "Atribuição do local do paciente"
+    }
+  }
+}

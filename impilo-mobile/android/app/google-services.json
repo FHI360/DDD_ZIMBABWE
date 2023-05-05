@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "839507105879",
+    "project_id": "impilo-f190d",
+    "storage_bucket": "impilo-f190d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839507105879:android:c2996c32bb5139a1a5eb12",
+        "android_client_info": {
+          "package_name": "org.fhi360.ddd.impilo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839507105879-3sh0i3vvrs47eit1m4pea8h89dj386f1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.fhi360.ddd.impilo",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "839507105879-ipvi028hjb61q4kbfoaea97ej5lajors.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnroG9khprCmqMF9GQ7zhb2CZCfwYHjME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839507105879-ipvi028hjb61q4kbfoaea97ej5lajors.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "839507105879-118v4a6k4ipfhe44jgkeeh2u1gsad3ne.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.fhi360.ddd.impilo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

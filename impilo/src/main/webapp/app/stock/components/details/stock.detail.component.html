@@ -1,0 +1,250 @@
+<div class="flex flex-col flex-auto">
+
+    <!-- View mode -->
+    <ng-container *ngIf="!editMode">
+        <!-- Header -->
+        <div class="relative w-full px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
+            <!-- Close button -->
+            <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+                <a
+                    mat-icon-button
+                    [matTooltip]="'CORE.BUTTONS.CLOSE' | transloco"
+                    [routerLink]="[pathHasId ? '../..': '../']">
+                    <mat-icon
+                        class="text-gray"
+                        [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </a>
+            </div>
+        </div>
+
+        <div class="relative flex flex-col flex-auto items-center px-6 sm:px-12">
+            <div class="w-full max-w-3xl">
+                <!-- Actions -->
+                <div class="flex items-center ml-auto justify-end gap-x-1 mb-5">
+                    <div>
+                        <button
+                            mat-stroked-button
+                            (click)="toggleEditMode(true)">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                            <span class="ml-2">{{'IMPILO.STOCK.DETAIL_PAGE.EDIT' | transloco}}</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Stock -->
+                <div class="grid gap-4 grid-cols-3 gap-y-3">
+                    <div class="text-sm font-medium leading-none text-gray-400">
+                        {{'IMPILO.STOCK.LIST_PAGE.DATE' | transloco}}
+                    </div>
+                    <div class="font-semibold leading-none text-gray-800 col-span-2">
+                        {{formGroup.getRawValue()['date'] | dateTimeToFormat:'dd LLL yyyy' : langKey}}
+                    </div>
+                    <div class="text-sm font-medium leading-none text-gray-400">
+                        {{'IMPILO.STOCK.LIST_PAGE.REGIMEN' | transloco}}
+                    </div>
+                    <div class="font-semibold leading-none text-gray-800 col-span-2">
+                        {{formGroup.getRawValue()['regimen']}}
+                    </div>
+                    <div class="text-sm font-medium leading-none text-gray-400">
+                        {{'IMPILO.STOCK.LIST_PAGE.BOTTLES' | transloco}}
+                    </div>
+                    <div class="font-semibold leading-none text-gray-800 col-span-2">
+                        {{formGroup.getRawValue()['bottles']}}
+                    </div>
+                    <div class="text-sm font-medium leading-none text-gray-400">
+                        {{'IMPILO.STOCK.LIST_PAGE.BATCH_NO' | transloco}}
+                    </div>
+                    <div class="font-semibold leading-none text-gray-800 col-span-2">
+                        {{formGroup.getRawValue()['batchNo']}}
+                    </div>
+                    <ng-container *ngIf="formGroup.getRawValue()['serialNo']">
+                        <div class="text-sm font-medium leading-none text-gray-400">
+                            {{'IMPILO.STOCK.DETAIL_PAGE.SERIAL_NUMBER' | transloco}}
+                        </div>
+                        <div class="font-semibold leading-none text-gray-800 col-span-2">
+                            {{formGroup.getRawValue()['serialNo']}}
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="formGroup.getRawValue()['manufactureDate']">
+                        <div class="text-sm font-medium leading-none text-gray-400">
+                            {{'IMPILO.STOCK.DETAIL_PAGE.MANUFACTURE_DATE' | transloco}}
+                        </div>
+                        <div class="font-semibold leading-none text-gray-800 col-span-2">
+                            {{formGroup.getRawValue()['manufactureDate'] | dateTimeToFormat:'dd LLL yyyy'}}
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="formGroup.getRawValue()['expirationDate']">
+                        <div class="text-sm font-medium leading-none text-gray-400">
+                            {{'IMPILO.STOCK.DETAIL_PAGE.EXPIRATION_DATE' | transloco}}
+                        </div>
+                        <div class="font-semibold leading-none text-gray-800 col-span-2">
+                            {{formGroup.getRawValue()['expirationDate'] | dateTimeToFormat:'dd LLL yyyy'}}
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="editMode">
+        <!-- Header -->
+        <div class="relative w-full px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
+            <!-- Close button -->
+            <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+                <a
+                    mat-icon-button
+                    [matTooltip]="'Close'"
+                    [routerLink]="[pathHasId ? '../..': '../']">
+                    <mat-icon
+                        class="text-gray"
+                        [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </a>
+            </div>
+        </div>
+        <!-- Stock form -->
+        <div class="relative flex flex-col flex-auto items-center px-6 sm:px-12">
+            <div class="w-full max-w-3xl">
+                <fuse-alert
+                    *ngIf="showAlert"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    class="mb-4 mt-2">
+                    {{alert.message}}
+                </fuse-alert>
+                <form [formGroup]="formGroup">
+                    <div class="mt-8">
+                        <mat-form-field class="w-full"
+                                        [subscriptSizing]="'dynamic'">
+                            <mat-label> {{'IMPILO.STOCK.LIST_PAGE.REGIMEN' | transloco}}</mat-label>
+                            <mat-select [compareWith]="typeCompare"
+                                        required
+                                        [formControlName]="'regimen'">
+                                <mat-option></mat-option>
+                                <mat-option *ngFor="let reg of regimen" [value]="reg">{{reg}}</mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="formGroup.controls['regimen'].hasError('required')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.REGIMEN_REQUIRED' | transloco }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>{{'IMPILO.STOCK.LIST_PAGE.BOTTLES' | transloco}}</mat-label>
+                            <input
+                                matInput
+                                type="number"
+                                [min]="1"
+                                [formControlName]="'bottles'"
+                                [spellcheck]="false">
+                            <mat-error
+                                *ngIf="formGroup.controls['bottles'].hasError('required')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.BOTTLES_REQUIRED' | transloco }}
+                            </mat-error>
+                            <mat-error
+                                *ngIf="formGroup.controls['bottles'].hasError('min')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.BOTTLES_MIN' | transloco }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>{{'IMPILO.STOCK.DETAIL_PAGE.BATCH_NO' | transloco}}</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'batchNo'"
+                                [spellcheck]="false">
+                            <mat-error
+                                *ngIf="formGroup.controls['batchNo'].hasError('required')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.BATCH_NO_REQUIRED' | transloco }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>{{'IMPILO.STOCK.DETAIL_PAGE.SERIAL_NUMBER' | transloco}}</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'serialNo'"
+                                [spellcheck]="false">
+                            <mat-error
+                                *ngIf="formGroup.controls['serialNo'].hasError('required')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.SERIAL_NUMBER_REQUIRED' | transloco }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field class="w-full"
+                                        [subscriptSizing]="'dynamic'">
+                            <mat-label>{{'IMPILO.STOCK.DETAIL_PAGE.MANUFACTURE_DATE' | transloco }}</mat-label>
+                            <input matInput [matDatepicker]="date1"
+                                   formControlName="manufactureDate"
+                                   [max]="max">
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="date1">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #date1></mat-datepicker>
+                            <mat-error
+                                *ngIf="formGroup.get('manufactureDate').hasError('max')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.MANUFACTURE_DATE_MAX' | transloco }}
+                            </mat-error>
+                            <mat-error
+                                *ngIf="formGroup.get('manufactureDate').hasError('required')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.MANUFACTURE_DATE_REQUIRED' | transloco }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field class="w-full"
+                                        [subscriptSizing]="'dynamic'">
+                            <mat-label>{{'IMPILO.STOCK.DETAIL_PAGE.EXPIRATION_DATE' | transloco }}</mat-label>
+                            <input matInput [matDatepicker]="date2"
+                                   formControlName="expirationDate"
+                                   required
+                                   [min]="min">
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="date2">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #date2></mat-datepicker>
+                            <mat-error
+                                *ngIf="formGroup.get('expirationDate').hasError('min')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.EXPIRATION_DATE_MIN' | transloco }}
+                            </mat-error>
+                            <mat-error
+                                *ngIf="formGroup.get('expirationDate').hasError('required')">
+                                {{'IMPILO.STOCK.DETAIL_PAGE.EXPIRATION_DATE_REQUIRED' | transloco }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div
+                        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+                        <button
+                            class="ml-auto"
+                            mat-button
+                            (click)="toggleEditMode(false)">
+                            {{'CORE.BUTTONS.CANCEL' | transloco}}
+                        </button>
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="formGroup.invalid"
+                            (click)="save()">
+                            {{(formGroup.value['id'] ? 'CORE.BUTTONS.UPDATE' : 'CORE.BUTTONS.SAVE')| transloco}}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</div>

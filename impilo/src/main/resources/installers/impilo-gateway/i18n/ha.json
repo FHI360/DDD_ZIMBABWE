@@ -1,0 +1,96 @@
+{
+  "IMPILO": {
+    "MENU": {
+      "PATIENTS": "Marasa lafiya",
+      "STOCKS": "Hannun jari",
+      "STOCK_ISSUANCE": "Bayar da hannun jari"
+    },
+    "TITLE": {
+      "STOCKS": "Hannun jari",
+      "STOCK": "Bayanin hannun jari",
+      "ADD_STOCK": "Ƙara bayanan hannun jari",
+      "STOCK_ISSUANCE_LIST": "Jerin fitar da hannun jari",
+      "STOCK_ISSUANCE": "Cikakkun bayanai na bayarwa",
+      "ADD_STOCK_ISSUANCE": "Yi rikodin fitar da hannun jari",
+      "PATIENTS": "Marasa lafiya"
+    },
+    "STOCK": {
+      "LIST_PAGE": {
+        "TITLE": "Jerin hannun jari",
+        "ADD": "Ƙara jari",
+        "SEARCH": "Bincika...",
+        "DATE": "Kwanan wata da aka rubuta",
+        "NO_DATA": "Babu bayanan haja",
+        "FACILITY": "Wurin lafiya",
+        "REGIMEN": "Tsarin magani",
+        "BOTTLES": "kwalabe",
+        "ISSUED": "Qty ya bayar",
+        "BALANCE": "Ma'auni",
+        "BATCH_NO": "Batch No",
+        "EXPIRATION_DATE": "Ranar karewa"
+      },
+      "DETAIL_PAGE": {
+        "EXPIRATION_DATE": "Ranar karewa",
+        "EXPIRATION_DATE_MIN": "Mafi ƙarancin ranar karewa shine yau",
+        "MANUFACTURE_DATE": "Kwanan masana'anta",
+        "MANUFACTURE_DATE_MAX": "Mafi girman kwanan watan ManUFacture shine yau",
+        "REGIMEN_REQUIRED": "Ana buƙatar tsarin magani",
+        "BOTTLES_REQUIRED": "Ana buƙatar adadin kwalabe",
+        "BOTTLES_MIN": "Mafi ƙarancin adadin kwalabe shine 1",
+        "BATCH_NO_REQUIRED": "Batch No ana buƙatar",
+        "SERIAL_NUMBER": "Serial number",
+        "SERIAL_NUMBER_REQUIRED": "Ana buƙatar lambar serial",
+        "BATCH_NO": "Batch No",
+        "EXPIRATION_DATE_REQUIRED": "Ana buƙatar ranar karewa",
+        "MANUFACTURE_DATE_REQUIRED": "Ana buƙatar ranar samarwa",
+        "EDIT": "Gyara"
+      }
+    },
+    "STOCK_ISSUANCE": {
+      "LIST_PAGE": {
+        "TITLE": "Jerin fitar da hannun jari",
+        "ADD": "Bayar da jari",
+        "SEARCH": "Bincika...",
+        "DATE": "Kwanan wata da aka bayar",
+        "NO_DATA": "Babu bayanan fitowar haja",
+        "FACILITY": "Wurin lafiya",
+        "SITE": "OFCAD Site",
+        "REGIMEN": "Tsarin magani",
+        "ISSUED": "An fitar da kwalabe",
+        "BATCH_NO": "Batch No",
+        "EXPIRATION_DATE": "Ranar karewa"
+      },
+      "DETAIL_PAGE": {
+        "BARCODE": "Barcode",
+        "EXPIRATION_DATE": "Ranar karewa",
+        "EXPIRATION_DATE_MIN": "Mafi ƙarancin ranar karewa shine yau",
+        "MANUFACTURE_DATE": "Kwanan watan ManUFacture",
+        "MANUFACTURE_DATE_MAX": "Mafi girman kwanan watan ManUFacture shine yau",
+        "ISSUED": "An fitar da kwalabe",
+        "ISSUED_REQUIRED": "Ana buƙatar adadin kwalabe",
+        "ISSUED_MIN": "Mafi ƙarancin adadin kwalabe shine 1",
+        "ISSUED_MAX": "Za&#39;a iya bayar da iyakar {{MAX}} na tsarin magani da aka zaɓa",
+        "SITE": "OFCAD Site",
+        "SITE_REQUIRED": "Ana buƙatar Shafin OFCAD",
+        "STOCK": "Shigar hannun jari",
+        "STOCK_REQUIRED": "Ana buƙatar shigar da hannun jari",
+        "BALANCE": "Ma'auni na hannun jari"
+      }
+    },
+    "ASSIGNMENT": {
+      "GIVEN_NAME": "Sunan rana",
+      "FAMILY_NAME": "Sunan mahaifi",
+      "ASSIGNED_REGIMEN": "Tsarin tsari",
+      "SEX": "Jima'i",
+      "HOSPITAL_NUMBER": "Lambar asibiti",
+      "UNIQUE_ID": "Mai ganowa na musamman",
+      "SITE": "OFCAD Site",
+      "ASSIGNED": "An sanyawa",
+      "UNASSIGNED": "Ba a sanyawa ba",
+      "ALL": "Duk marasa lafiya",
+      "SEARCH": "Bincika...",
+      "NO_DATA": "Babu bayanan haƙuri da akwai",
+      "TITLE": "Aikin wurin mara lafiya"
+    }
+  }
+}

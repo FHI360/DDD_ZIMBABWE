@@ -1,0 +1,12 @@
+spring:
+  liquibase:
+    change-log: classpath:/installers/impilo-gateway/schema/schema.xml
+    enabled: true
+  flyway:
+    enabled: false
+  jpa:
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+

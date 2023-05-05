@@ -1,0 +1,96 @@
+{
+  "IMPILO": {
+    "MENU": {
+      "PATIENTS": "Ndị ọrịa",
+      "STOCKS": "Ebuka",
+      "STOCK_ISSUANCE": "Ntinye ego"
+    },
+    "TITLE": {
+      "STOCKS": "Ebuka",
+      "STOCK": "Nkọwa ngwaahịa",
+      "ADD_STOCK": "Tinye nkọwa ngwaahịa",
+      "STOCK_ISSUANCE_LIST": "Ndepụta ntinye ego",
+      "STOCK_ISSUANCE": "Nkọwa nke inye ngwaahịa",
+      "ADD_STOCK_ISSUANCE": "Dekọọ mmepụta ngwaahịa",
+      "PATIENTS": "Ndị ọrịa"
+    },
+    "STOCK": {
+      "LIST_PAGE": {
+        "TITLE": "Ndepụta ngwaahịa",
+        "ADD": "Tinye ngwaahịa",
+        "SEARCH": "Chọọ...",
+        "DATE": "Ụbọchị edere",
+        "NO_DATA": "Enweghị data ngwaahịa dị",
+        "FACILITY": "Ụlọ ọrụ ahụike",
+        "REGIMEN": "Usoro ọgwụ",
+        "BOTTLES": "Klas",
+        "ISSUED": "ewepụtara Qty",
+        "BALANCE": "Nhazi",
+        "BATCH_NO": "Ogbe Mba",
+        "EXPIRATION_DATE": "Ụbọchị mmebi"
+      },
+      "DETAIL_PAGE": {
+        "EXPIRATION_DATE": "Ụbọchị mmebi",
+        "EXPIRATION_DATE_MIN": "Opekempe ụbọchị njedebe bụ taa",
+        "MANUFACTURE_DATE": "Ụbọchị mmepụta",
+        "MANUFACTURE_DATE_MAX": "MaUFacture kacha ụbọchị bụ taa",
+        "REGIMEN_REQUIRED": "Achọrọ usoro ọgwụ",
+        "BOTTLES_REQUIRED": "A chọrọ ọnụọgụ karama",
+        "BOTTLES_MIN": "Ọnụ ọgụgụ kacha nta nke karama bụ 1",
+        "BATCH_NO_REQUIRED": "Achọrọ Batch Mba",
+        "SERIAL_NUMBER": "Nọmba usoro n'usoro",
+        "SERIAL_NUMBER_REQUIRED": "Achọrọ nọmba nsonazụ",
+        "BATCH_NO": "Ogbe Mba",
+        "EXPIRATION_DATE_REQUIRED": "Achọrọ ụbọchị nkwubi",
+        "MANUFACTURE_DATE_REQUIRED": "Achọrọ ụbọchị nrụpụta",
+        "EDIT": "Dezie"
+      }
+    },
+    "STOCK_ISSUANCE": {
+      "LIST_PAGE": {
+        "TITLE": "Ndepụta ntinye ego",
+        "ADD": "Wepụta ngwaahịa",
+        "SEARCH": "Chọọ...",
+        "DATE": "Ụbọchị ewepụtara",
+        "NO_DATA": "Enweghị data mbipụta ngwaahịa dị",
+        "FACILITY": "Ụlọ ọrụ ahụike",
+        "SITE": "saịtị OFCAD",
+        "REGIMEN": "Usoro ọgwụ",
+        "ISSUED": "Enyere karama",
+        "BATCH_NO": "Ogbe Mba",
+        "EXPIRATION_DATE": "Ụbọchị mmebi"
+      },
+      "DETAIL_PAGE": {
+        "BARCODE": "Barcode",
+        "EXPIRATION_DATE": "Ụbọchị mmebi",
+        "EXPIRATION_DATE_MIN": "Opekempe ụbọchị njedebe bụ taa",
+        "MANUFACTURE_DATE": "Ụbọchị MaNUFacture",
+        "MANUFACTURE_DATE_MAX": "MaUFacture kacha ụbọchị bụ taa",
+        "ISSUED": "Enyere karama",
+        "ISSUED_REQUIRED": "A chọrọ ọnụọgụ karama",
+        "ISSUED_MIN": "Ọnụ ọgụgụ kacha nta nke karama bụ 1",
+        "ISSUED_MAX": "Enwere ike ịnye oke {{MAX}} nke usoro ọgwụ ahọpụtara",
+        "SITE": "saịtị OFCAD",
+        "SITE_REQUIRED": "Saịtị OFCAD chọrọ",
+        "STOCK": "Ntinye ngwaahịa",
+        "STOCK_REQUIRED": "Achọrọ ntinye ngwaahịa",
+        "BALANCE": "Ntụle ngwaahịa"
+      }
+    },
+    "ASSIGNMENT": {
+      "GIVEN_NAME": "Aha mbụ",
+      "FAMILY_NAME": "Aha nna",
+      "ASSIGNED_REGIMEN": "Usoro ekenyere",
+      "SEX": "Mmekọahụ",
+      "HOSPITAL_NUMBER": "Nọmba ụlọ ọgwụ",
+      "UNIQUE_ID": "Ihe nchọpụta pụrụ iche",
+      "SITE": "saịtị OFCAD",
+      "ASSIGNED": "Enyere ya",
+      "UNASSIGNED": "Ekenyeghi ya",
+      "ALL": "Ndị ọrịa niile",
+      "SEARCH": "Chọọ...",
+      "NO_DATA": "Enweghị data onye ọrịa dị",
+      "TITLE": "Ọrụ saịtị onye ọrịa"
+    }
+  }
+}

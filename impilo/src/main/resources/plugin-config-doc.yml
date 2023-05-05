@@ -1,0 +1,48 @@
+description: # Optional description summary of the module
+menus: # List of menus; support 2 sub-levels (name, type, disabled?, authorities?, subs?, icon?, tooltip?)
+    - disabled: false
+      name: Administration # Name of menu label
+      type: dropDown # Type (link, dropDown, icon, separator, extLink)
+      authorities: # Optional list of Role authority /Permission name required to have menu available e.g ROLE_USER
+          - ROLE_ADMIN
+      subs: # sub-menus
+          - route: users # Link invoked when clicked
+            name: Users
+            icon: keyboard_tab # Optional icon (mat-icon /svg) displayed against the menu item
+            type: LINK
+webRemotes: # Optional Remote Module Federation Micro-frontends; this is the entry point for Module Federation;
+            # any component or module mentioned here should also be exposed in the exposed section of
+            # webpack/webpack.common.js
+    - remoteEntry: "/across/remoteEntry.js" # URL to load the entry (filename of the webpack ModuleFederationPlugin)
+      remoteName: "userMgt" # Entry name. This must match the name field of the webpack ModuleFederationPlugin.
+                            # This name has to be unique in the whole application, it's preferable to use uuid to guaranty uniqueness.
+                            # Name must start with letter or underscore, and contains only underscore, letters and numbers
+      components: # Optional list of Web Component or Angular Component exported by the micro-frontend; componentName and elementName do not go together
+                  # React, Vue and other web frameworks should export only Web Components; Angular can export Web Component or native Angular Components
+                  # (exposedName, elementName | componentName, position?, routePath?, uuid?, title?, breadcrumb?, authorities?)
+          - exposedName: Component # The exported name of the component; matches an 'exposes' key of the webpack ModuleFederationPlugin
+            routePath: component # Route path to activate the component
+            componentName: Component # Actual component Name. Only applicable for Angular Components
+            position: 10 # Optional position in routing order: Note any element that has a routePath may supply this attribute
+            uuid: 318d0123-a2af-462c-a6cc-58ce43b84531 # Optional, if you want the component to be dynamically loadable
+          - exposedName: another-omponent
+            routePath: another-component
+            elementName: AnotherComponent # Web Component /Custom Element, as will be exported by React or Vue, or even Angular
+            authorities: # Optional list of Role authority /Permission name required to access the path /component
+                - ROLE_DEC
+      modules: # Angular Modules exported by the micro-frontend
+          - name: UserModule # The exported name of the module; matches an 'exposes' key of the webpack ModuleFederationPlugin
+            ngModuleName: UserModule # The Angular module's (@NgModule) name
+            routePath: users # Route path to activate the module
+            title: A page title for the module
+            authorities: # Optional list of Role authority /Permission name required to access the path
+                - ROLE_DEC
+roles: # Optional Roles this module wants installed (name, authority, description?, permissions?)
+    - name: Finance Manager
+      authority: ROLE_FINANCE_MANAGER # authority must start with ROLE_Roles /Permission
+      description: This is a role required by a Finance Manager
+      permissions:
+        - Edit record
+permissions: # Optional list of permission(s) this module wants installed (name, description?)
+    - name: Edit record
+      description: Data Clerk

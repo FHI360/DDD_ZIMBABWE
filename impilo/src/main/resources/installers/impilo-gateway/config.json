@@ -1,0 +1,12 @@
+[
+    {
+        "category": "APP.TUTORIAL",
+        "data": [
+            {
+                "key": "APP.TITLE",
+                "value": "SNL",
+                "type": "string"
+            }
+        ]
+    }
+]
