@@ -3,7 +3,9 @@
     "MENU": {
       "PATIENTS": "Pacientes",
       "STOCKS": "Cepo",
-      "STOCK_ISSUANCE": "Emisión de acciones"
+      "STOCK_ISSUANCE": "Emisión de acciones",
+      "STOCK_REQUEST": "Solicitud de existencias",
+      "REPORTS": "Informe de indicadores OFCAD"
     },
     "TITLE": {
       "STOCKS": "Cepo",
@@ -12,7 +14,9 @@
       "STOCK_ISSUANCE_LIST": "Lista de emisión de acciones",
       "STOCK_ISSUANCE": "Detalles de emisión de acciones",
       "ADD_STOCK_ISSUANCE": "Récord de emisión de acciones",
-      "PATIENTS": "Pacientes"
+      "PATIENTS": "Pacientes",
+      "STOCK_REQUEST": "Solicitud de existencias",
+      "REPORTS": "Informe de indicadores OFCAD"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -22,7 +26,7 @@
         "DATE": "Fecha registrada",
         "NO_DATA": "No hay datos de existencias disponibles",
         "FACILITY": "Facilidad de salud",
-        "REGIMEN": "Régimen de medicamentos",
+        "REGIMEN": "Medicamento ARV",
         "BOTTLES": "Botellas",
         "ISSUED": "Cantidad emitida",
         "BALANCE": "Balance",
@@ -34,7 +38,7 @@
         "EXPIRATION_DATE_MIN": "La fecha de caducidad mínima es hoy",
         "MANUFACTURE_DATE": "Fecha de fabricacion",
         "MANUFACTURE_DATE_MAX": "La fecha máxima de fabricación es hoy",
-        "REGIMEN_REQUIRED": "Se requiere régimen de medicamentos",
+        "REGIMEN_REQUIRED": "Se requiere medicamento ARV",
         "BOTTLES_REQUIRED": "Se requiere el número de botellas",
         "BOTTLES_MIN": "El número mínimo de botellas es 1",
         "BATCH_NO_REQUIRED": "Se requiere el número de lote",
@@ -55,7 +59,7 @@
         "NO_DATA": "No hay datos de emisión de acciones disponibles",
         "FACILITY": "Facilidad de salud",
         "SITE": "Sitio OFCAD",
-        "REGIMEN": "Régimen de medicamentos",
+        "REGIMEN": "Medicamento ARV",
         "ISSUED": "Botellas emitidas",
         "BATCH_NO": "Lote N º",
         "EXPIRATION_DATE": "Fecha de caducidad"
@@ -69,18 +73,19 @@
         "ISSUED": "Botellas emitidas",
         "ISSUED_REQUIRED": "Se requiere el número de botellas",
         "ISSUED_MIN": "El número mínimo de botellas es 1",
-        "ISSUED_MAX": "Se puede emitir un máximo de {{MAX}} del régimen de medicamentos seleccionado",
+        "ISSUED_MAX": "Se puede emitir un máximo de {{MAX}} del medicamento ARV seleccionado",
         "SITE": "Sitio OFCAD",
         "SITE_REQUIRED": "Se requiere el sitio OFCAD",
         "STOCK": "Entrada de existencias",
         "STOCK_REQUIRED": "Se requiere la entrada de existencias",
-        "BALANCE": "Balance de acciones"
+        "BALANCE": "Balance de acciones",
+        "EDIT": "Editar"
       }
     },
     "ASSIGNMENT": {
       "GIVEN_NAME": "Nombre de pila",
       "FAMILY_NAME": "Apellido",
-      "ASSIGNED_REGIMEN": "Régimen asignado",
+      "ASSIGNED_REGIMEN": "Medicamento ARV asignado",
       "SEX": "Sexo",
       "HOSPITAL_NUMBER": "número de hospital",
       "UNIQUE_ID": "Identificador único",
@@ -91,6 +96,21 @@
       "SEARCH": "Buscar...",
       "NO_DATA": "No hay datos de pacientes disponibles",
       "TITLE": "Asignación del sitio del paciente"
+    },
+    "STOCK_REQUEST": {
+      "LIST_PAGE": {
+        "TITLE": "Lista de solicitudes de existencias",
+        "DATE": "Fecha solicitada",
+        "NO_DATA": "No hay datos de solicitud de stock disponibles",
+        "SITE": "Sitio OFCAD",
+        "REGIMEN": "Medicamento ARV",
+        "ISSUED": "Botellas solicitadas",
+        "SITES": "Sitios OFCAD",
+        "ALL": "Todos los sitios OFCAD",
+        "ARV_DRUG": "Medicamento ARV",
+        "BOTTLES": "Botellas",
+        "ISSUE": "Emitir acciones"
+      }
     }
   }
 }

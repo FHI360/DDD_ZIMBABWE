@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { PagedResult } from '@mattae/angular-shared';
 import { map } from 'rxjs';
 import { OrgUnit, Stock } from '../stock/stock.service';
+import { StockRequest } from '../stock-request/stock-request.service';
 
 export interface StockIssuance {
     id?: any,
@@ -74,6 +75,10 @@ export class StockIssuanceService {
                 return stock;
             }))
         )
+    }
+
+    getRequest(requestId: any) {
+        return this.http.get<StockRequest>(`/api/impilo/inventory/request/${requestId}`)
     }
 
     getAccount() {

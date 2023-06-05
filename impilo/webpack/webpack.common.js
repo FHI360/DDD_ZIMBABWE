@@ -15,6 +15,8 @@ module.exports = withModuleFederationPlugin({
         'StockModule': './src/main/webapp/app/stock/stock.module.ts',
         'StockIssuanceModule': './src/main/webapp/app/stock-issuance/stock-issuance.module.ts',
         'SiteAssignmentModule': './src/main/webapp/app/site-assignment/site-assignment.module.ts',
+        'StockRequestModule': './src/main/webapp/app/stock-request/stock.request.module.ts',
+        'ReportsModule': './src/main/webapp/app/reports/reports.module.ts',
     },
     shared: share({
         "@angular/core": {singleton: true, strictVersion: false},

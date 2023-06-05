@@ -21,5 +21,16 @@ export const APP_ROUTES: Routes = [
         path: 'stock-issuance',
         loadChildren: () => import('./stock-issuance/stock-issuance.module')
             .then(m => m.StockIssuanceModule)
+    },
+    {
+        path: 'stock-requests',
+        loadChildren: () => import('./stock-request/stock.request.module')
+            .then(m => m.StockRequestModule)
+    }
+    ,
+    {
+        path: 'reports',
+        loadChildren: () => import('./reports/reports.module')
+            .then(m => m.ReportsModule)
     }
 ];

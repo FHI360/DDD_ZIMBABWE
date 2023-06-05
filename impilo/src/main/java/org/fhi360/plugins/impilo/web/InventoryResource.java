@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/impilo/stock-issuance")
@@ -15,7 +16,7 @@ public class InventoryResource {
     private final InventoryService inventoryService;
 
     @GetMapping("/list/site/{code}")
-    public List<StockIssuance.View> acknowledge(@PathVariable String code) {
+    public List<StockIssuance.View> acknowledge(@PathVariable UUID code) {
         return inventoryService.list(code);
     }
 }

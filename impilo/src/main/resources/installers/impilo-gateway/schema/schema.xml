@@ -24,6 +24,12 @@
             <column name="phone_number" type="varchar(32)">
                 <constraints nullable="true"/>
             </column>
+            <column name="patient_id" type="varchar(64)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="person_id" type="varchar(64)">
+                <constraints nullable="true"/>
+            </column>
             <column name="hospital_number" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
@@ -37,6 +43,9 @@
                 <constraints nullable="true"/>
             </column>
             <column name="last_viral_load_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="next_appointment_date" type="date">
                 <constraints nullable="true"/>
             </column>
             <column name="next_clinic_visit" type="date">
@@ -258,6 +267,59 @@
         <addColumn tableName="stock_issuance">
             <column name="acknowledge" type="bool"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="2023072304-09" author="mattae">
+        <dropColumn tableName="stock_issuance" columnName="acknowledge"/>
+        <addColumn tableName="stock_issuance">
+            <column name="acknowledged" type="bool"/>
+            <column name="batch_issuance_id" type="varchar(64)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2023072304-10" author="mattae">
+        <addColumn tableName="stock_issuance">
+            <column name="acknowledge" type="bool"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2023072304-11" author="mattae">
+        <createTable tableName="stock_request">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bottles" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="arv_drug" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="request_id" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="site_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="stock_request" baseColumnNames="site_id"
+                                 constraintName="fk_stock_request_site_id" referencedTableName="organisation"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2023072304-12" author="mattae">
+        <addColumn tableName="stock_issuance">
+            <column name="request_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="stock_issuance" baseColumnNames="request_id"
+                                 constraintName="fk_stock_issuance_request_id" referencedTableName="stock_request"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
 </databaseChangeLog>

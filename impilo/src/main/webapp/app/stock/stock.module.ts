@@ -28,6 +28,7 @@ import { PagedResult, SharedModule } from '@mattae/angular-shared';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { catchError, EMPTY, Observable } from 'rxjs';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
     selector: 'stock-manager',
@@ -148,6 +149,7 @@ const ROUTES: Routes = [
         SharedModule,
         MatSelectModule,
         MatDatepickerModule,
+        MatSortModule
     ],
     declarations: [
         StockDetailsComponent,

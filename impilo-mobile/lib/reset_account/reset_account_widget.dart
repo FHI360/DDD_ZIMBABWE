@@ -222,7 +222,7 @@ class _ResetAccountWidgetState extends State<ResetAccountWidget> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       filled: true,
-                      fillColor: Color(0xFF747550),
+                      fillColor: Color(0xFFD0CDCD),
                       contentPadding: EdgeInsetsDirectional.fromSTEB(
                           24.0, 24.0, 20.0, 24.0),
                     ),

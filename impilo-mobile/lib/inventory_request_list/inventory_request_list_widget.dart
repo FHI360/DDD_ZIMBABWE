@@ -432,7 +432,7 @@ class _InventoryRequestListWidgetState
                                                             listViewInventoryRequestRow
                                                                 .regimen,
                                                             inventory[i]
-                                                                ['quantity'],
+                                                                ['bottles'],
                                                             inventory[i]
                                                                 ['batchNo'],
                                                             inventory[i]
@@ -440,7 +440,7 @@ class _InventoryRequestListWidgetState
                                                             FFAppState().code,
                                                             DateTime.parse(
                                                                 inventory[i][
-                                                                    'expiryDate']));
+                                                                    'expirationDate']));
                                                         _database.inventoryDao
                                                             .insertRecord(
                                                                 _inventory);

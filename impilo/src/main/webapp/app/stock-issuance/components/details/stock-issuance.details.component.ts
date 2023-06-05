@@ -43,21 +43,29 @@ export class StockIssuanceDetailsComponent implements OnInit {
             id: [],
             date: [{disabled: true, value: DateTime.now()}],
             bottles: [null, Validators.required],
-            site: [null, Validators.required],
-            stock: [null, Validators.required]
+            site: [{disabled: true, value: null}, Validators.required],
+            stock: [null, Validators.required],
+            request: [null, Validators.required]
         });
     }
 
     ngOnInit(): void {
         this._stockListComponent.matDrawer.open();
-        this.pathHasId = !!this._activatedRoute.snapshot.params['id'];
-        this._activatedRoute.data.subscribe(({issuance}) => {
-            console.log(issuance)
+        this.pathHasId = !!this._activatedRoute.snapshot.params['id'] ||
+            !!this._activatedRoute.snapshot.params['requestId'];
+        this._activatedRoute.data.subscribe(({issuance, request}) => {
             if (issuance) {
                 this.formGroup.patchValue(issuance);
             } else {
                 this.editMode = true;
                 this.site = {}
+                if (request) {
+                    issuance = {
+                        request: request,
+                        site: request.site
+                    };
+                    this.formGroup.patchValue(issuance);
+                }
             }
 
             this._changeDetectorRef.markForCheck();
@@ -78,7 +86,7 @@ export class StockIssuanceDetailsComponent implements OnInit {
     }
 
     stockSelected() {
-        this.selectedStock = this.stocks.find(stock => stock.id === this.formGroup.value['stock']['id']);
+        this.selectedStock = this.stocks?.find(stock => stock?.id === this.formGroup.value['stock']['id']);
         this.selectedStock.balance = this.selectedStock.bottles - (this.selectedStock.issued || 0);
     }
 

@@ -56,9 +56,15 @@ public class Patient {
 
     private LocalDate nextViralLoadDate;
 
+    private LocalDate nextAppointmentDate;
+
     private LocalDate nextCervicalCancerDate;
 
     private LocalDate nextTptDate;
+
+    private String personId;
+
+    private String patientId;
 
     @ManyToOne
     private Organisation facility;
@@ -83,7 +89,7 @@ public class Patient {
 
     @EntityView(Patient.class)
     public record View(@IdMapping UUID id, String givenName, String familyName, String sex,
-                       LocalDate dateOfBirth, String address,
+                       LocalDate dateOfBirth, String address, LocalDate nextAppointmentDate,
                        String phoneNumber, String hospitalNumber, String uniqueId, String regimen,
                        @MappingSubquery(LastRefillDateSubqueryProvider.class)
                        LocalDate lastRefillDate,

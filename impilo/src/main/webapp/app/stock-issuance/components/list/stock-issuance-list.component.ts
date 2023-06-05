@@ -57,7 +57,7 @@ export class StockIssuanceListComponent implements OnInit, OnDestroy {
         },
         {
             label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.ISSUED',
-            property: 'issued',
+            property: 'bottles',
             type: 'number',
             visible: true,
             cssClasses: ['font-medium']
@@ -76,7 +76,7 @@ export class StockIssuanceListComponent implements OnInit, OnDestroy {
             visible: true,
             cssClasses: ['font-medium']
         },
-        {label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.ACTIONS', property: 'actions', type: 'button', visible: true}
+        {label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.ACTIONS', property: 'actions', type: 'button', visible: false}
     ];
 
     get visibleColumns() {

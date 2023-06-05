@@ -46,7 +46,6 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       var _database = await database;
       var patient = await _database.patientDao.findById(widget.patientId!);
-      patient!.nextViralLoadDate = DateTime.now().subtract(Duration(days: 3));
       setState(() {
         _model.patient = patient;
       });
@@ -398,7 +397,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                 EdgeInsetsDirectional.fromSTEB(16, 0, 16, 12),
                             child: Container(
                               width: double.infinity,
-                              height: 160,
+                              height: 100,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).alternate,
                                 boxShadow: [
@@ -533,7 +532,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                           height: 20,
                                           decoration: BoxDecoration(),
                                           child: Text(
-                                            'Next VL Smp Coll.',
+                                            'Next Appointment',
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyText1
                                                 .override(
@@ -541,12 +540,6 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                                       FlutterFlowTheme.of(
                                                               context)
                                                           .bodyText1Family,
-                                                  color: DateTime.now().isAfter(
-                                                          (_model.patient
-                                                                  ?.nextViralLoadDate ??
-                                                              DateTime.now()))
-                                                      ? Color(0xFF8D2626)
-                                                      : Color(0xFF262D34),
                                                   fontWeight: FontWeight.w500,
                                                   useGoogleFonts: GoogleFonts
                                                           .asMap()
@@ -561,164 +554,16 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                           dateTimeFormat(
                                               'yMMMd',
                                               _model.patient
-                                                          ?.nextViralLoadDate ==
+                                                          ?.nextAppointmentDate ==
                                                       DateTime(1900)
                                                   ? null
                                                   : _model.patient
-                                                      ?.nextViralLoadDate),
+                                                      ?.nextAppointmentDate),
                                           style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1Family,
-                                                color: DateTime.now().isAfter(
-                                                        (_model.patient
-                                                                ?.nextViralLoadDate ??
-                                                            DateTime.now()))
-                                                    ? Color(0xFF8D2626)
-                                                    : Color(0xFF262D34),
-                                                fontWeight: FontWeight.w500,
-                                                useGoogleFonts: GoogleFonts
-                                                        .asMap()
-                                                    .containsKey(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyText1Family),
-                                              ),
+                                              .bodyText1,
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Container(
-                                          width: 120,
-                                          height: 20,
-                                          decoration: BoxDecoration(),
-                                          child: Text(
-                                            'Next TPT',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyText1
-                                                .override(
-                                                  fontFamily:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyText1Family,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: DateTime.now().isAfter(
-                                                          (_model.patient
-                                                                  ?.nextTptDate ??
-                                                              DateTime.now()))
-                                                      ? Color(0xFF8D2626)
-                                                      : Color(0xFF262D34),
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family),
-                                                ),
-                                          ),
-                                        ),
-                                        Text(
-                                          dateTimeFormat(
-                                              'yMMMd',
-                                              _model.patient?.nextTptDate ==
-                                                      DateTime(1900)
-                                                  ? null
-                                                  : _model
-                                                      .patient?.nextTptDate),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1Family,
-                                                color: DateTime.now().isAfter(
-                                                        (_model.patient
-                                                                ?.nextTptDate ??
-                                                            DateTime.now()))
-                                                    ? Color(0xFF8D2626)
-                                                    : Color(0xFF262D34),
-                                                fontWeight: FontWeight.w500,
-                                                useGoogleFonts: GoogleFonts
-                                                        .asMap()
-                                                    .containsKey(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyText1Family),
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    if (_model.patient?.sex == 'Female')
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Container(
-                                            width: 120,
-                                            height: 20,
-                                            decoration: BoxDecoration(),
-                                            child: Text(
-                                              'Next Cervical Scr.',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1Family,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: DateTime.now()
-                                                                .isAfter(_model
-                                                                    .patient!
-                                                                    .nextCervicalCancerDate)
-                                                            ? Color(0xFF8D2626)
-                                                            : Color(0xFF262D34),
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText1Family),
-                                                      ),
-                                            ),
-                                          ),
-                                          Text(
-                                            dateTimeFormat(
-                                                'yMMMd',
-                                                _model.patient
-                                                            ?.nextCervicalCancerDate ==
-                                                        DateTime(1900)
-                                                    ? null
-                                                    : _model.patient
-                                                        ?.nextCervicalCancerDate),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyText1
-                                                .override(
-                                                  fontFamily:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyText1Family,
-                                                  color: DateTime.now().isAfter(
-                                                          _model.patient!
-                                                              .nextCervicalCancerDate)
-                                                      ? Color(0xFF8D2626)
-                                                      : Color(0xFF262D34),
-                                                  fontWeight: FontWeight.w500,
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family),
-                                                ),
-                                          ),
-                                        ],
-                                      ),
                                   ],
                                 ),
                               ),
@@ -732,12 +577,8 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          'Refill history',
-                          style: FlutterFlowTheme.of(context).subtitle2,
-                        ),
                         if (!(_model.patient?.serviceDiscontinued ?? false))
                           FlutterFlowIconButton(
                             borderColor: Colors.transparent,
@@ -761,6 +602,19 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                               );
                             },
                           ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Refill history',
+                          style: FlutterFlowTheme.of(context).subtitle2,
+                        ),
                       ],
                     ),
                   ),

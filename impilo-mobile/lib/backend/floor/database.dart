@@ -20,7 +20,7 @@ import 'entities/refill.dart';
 part 'database.g.dart'; // the generated code will be there
 
 @TypeConverters([DateTimeConverter])
-@Database(version: 1, entities: [
+@Database(version: 2, entities: [
   ClinicData,
   Patient,
   Refill,
@@ -28,6 +28,8 @@ part 'database.g.dart'; // the generated code will be there
   InventoryRequest
 ], views: [
   AssignedRegimen,
+  BarcodeDispense,
+  BarcodeQuantity,
   InventoryQuantity,
   LastRefill,
   InventoryAvailability,

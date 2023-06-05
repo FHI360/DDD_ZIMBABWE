@@ -1,10 +1,10 @@
 [
     {
-        "category": "APP.TUTORIAL",
+        "category": "CORE.CONFIGURATION.SYSTEM_CONFIGURATIONS",
         "data": [
             {
-                "key": "APP.TITLE",
-                "value": "SNL",
+                "key": "APP_TITLE",
+                "value": "Impilo",
                 "type": "string"
             }
         ]

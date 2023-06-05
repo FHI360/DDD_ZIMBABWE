@@ -51,6 +51,19 @@ class RefillInfo {
       this.hospitalNo);
 }
 
+@DatabaseView(
+    '''SELECT SUM(quantityDispensed) AS quantity, regimen, barcode, siteCode FROM Refill
+      JOIN patient p ON p.ID = patientId GROUP BY regimen, barcode, siteCode''',
+    viewName: 'BarcodeDispense')
+class BarcodeDispense {
+  final int quantity;
+  final String siteCode;
+  final String regimen;
+  final String barcode;
+
+  BarcodeDispense(this.quantity, this.siteCode, this.regimen, this.barcode);
+}
+
 @dao
 abstract class RefillDao {
   @Query('SELECT * FROM Refill')
@@ -62,7 +75,7 @@ abstract class RefillDao {
   @Query('SELECT * FROM Refill where synced = false')
   Future<List<Refill>> findUnSynced();
 
-  @Query('SELECT * FROM Refill WHERE patientId = :patientId ORDER BY date DESC')
+  @Query('SELECT * FROM Refill WHERE patientId = :patientId')
   Future<List<Refill>> findByPatient(int patientId);
 
   @Query('SELECT * FROM Refill WHERE patientId = :patientId AND date = :date')
@@ -88,4 +101,11 @@ abstract class RefillDao {
         :start and :end ORDER BY givenName, familyName''')
   Future<List<RefillInfo>> listRefillInfo(
       String siteCode, DateTime start, DateTime end);
+
+  @Query('''
+    SELECT * FROM BarcodeDispense WHERE siteCode = :siteCode AND regimen = :regimen
+    AND barcode = :barcode
+  ''')
+  Future<BarcodeDispense?> barcodeQuantity(
+      String siteCode, String regimen, String barcode);
 }

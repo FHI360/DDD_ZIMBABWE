@@ -18,6 +18,8 @@ class FFAppState extends ChangeNotifier {
     secureStorage = FlutterSecureStorage();
     _code = await secureStorage.getString('ff_code') ?? _code;
     _name = await secureStorage.getString('ff_name') ?? _name;
+    _accessToken = await secureStorage.getString('ff_accessToken') ?? _accessToken;
+    _refreshToken = await secureStorage.getString('ff_refreshToken') ?? _refreshToken;
     _regimens = await secureStorage.getStringList('ff_regimens') ?? _regimens;
   }
 
@@ -37,6 +39,24 @@ class FFAppState extends ChangeNotifier {
 
   void deleteCode() {
     secureStorage.delete(key: 'ff_code');
+  }
+
+  String _accessToken = '';
+
+  String get accessToken => _accessToken;
+
+  set accessToken(String _value) {
+    _accessToken = _value;
+    secureStorage.setString('ff_accessToken', _value);
+  }
+
+  String _refreshToken = '';
+
+  String get refreshToken => _refreshToken;
+
+  set refreshToken(String _value) {
+    _refreshToken = _value;
+    secureStorage.setString('ff_refreshToken', _value);
   }
 
   String _name = '';

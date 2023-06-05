@@ -1,6 +1,8 @@
+import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:impilo/backend/floor/database.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
 import 'auth/auth_util.dart';
@@ -9,8 +11,22 @@ import 'backend/firebase/firebase_config.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
-final database =
-$FloorAppDatabase.databaseBuilder('impilodatabase.db').build();
+
+final migration1To2 = Migration(1, 2, (database) async {
+  await database.execute('''
+  ALTER TABLE Patient ADD COLUMN nextAppointmentDate INTEGER DEFAULT ${DateTime(1900)};
+  ''');
+
+  return Future(() => null);
+});
+
+final database = $FloorAppDatabase
+    .databaseBuilder('impilodatabase.db')
+    .addMigrations([migration1To2]).build();
+
+final _appStateNotifier = AppStateNotifier();
+final router = createRouter(_appStateNotifier);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initFirebase();
@@ -53,7 +69,7 @@ class _MyAppState extends State<MyApp> {
       ..listen((user) => _appStateNotifier.update(user));
     jwtTokenStream.listen((_) {});
     Future.delayed(
-      Duration(seconds: 1),
+      Duration(seconds: 2),
       () => _appStateNotifier.stopShowingSplashImage(),
     );
   }
@@ -76,21 +92,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Impilo',
-      localizationsDelegates: [
-        FFLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: _locale,
-      supportedLocales: const [Locale('en', '')],
-      theme: ThemeData(brightness: Brightness.light),
-      darkTheme: ThemeData(brightness: Brightness.dark),
-      themeMode: _themeMode,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
+    return OKToast(
+      child: MaterialApp.router(
+        title: 'Impilo',
+        localizationsDelegates: [
+          FFLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: _locale,
+        supportedLocales: const [
+          Locale('en'),
+        ],
+        theme: ThemeData(brightness: Brightness.light),
+        darkTheme: ThemeData(brightness: Brightness.light),
+        themeMode: _themeMode,
+        routeInformationParser: router.routeInformationParser,
+        routerDelegate: router.routerDelegate,
+      ),
     );
   }
 }

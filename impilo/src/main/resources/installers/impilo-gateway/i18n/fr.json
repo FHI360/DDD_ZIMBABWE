@@ -3,7 +3,9 @@
     "MENU": {
       "PATIENTS": "Les patients",
       "STOCKS": "Actions",
-      "STOCK_ISSUANCE": "Émission d'actions"
+      "STOCK_ISSUANCE": "Émission d'actions",
+      "STOCK_REQUEST": "Demande de stock",
+      "REPORTS": "Rapport sur les indicateurs de l'OFCAD"
     },
     "TITLE": {
       "STOCKS": "Actions",
@@ -12,7 +14,9 @@
       "STOCK_ISSUANCE_LIST": "Liste des émissions d'actions",
       "STOCK_ISSUANCE": "Détails de l'émission d'actions",
       "ADD_STOCK_ISSUANCE": "Record d'émissions d'actions",
-      "PATIENTS": "Les patients"
+      "PATIENTS": "Les patients",
+      "STOCK_REQUEST": "Demande de stocks",
+      "REPORTS": "Rapport sur les indicateurs de l'OFCAD"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -22,7 +26,7 @@
         "DATE": "Date d'enregistrement",
         "NO_DATA": "Aucune donnée de stock disponible",
         "FACILITY": "Établissement de santé",
-        "REGIMEN": "Régime médicamenteux",
+        "REGIMEN": "Médicament ARV",
         "BOTTLES": "Bouteilles",
         "ISSUED": "Qté émise",
         "BALANCE": "Équilibre",
@@ -34,7 +38,7 @@
         "EXPIRATION_DATE_MIN": "La date d'expiration minimale est aujourd'hui",
         "MANUFACTURE_DATE": "Date de fabrication",
         "MANUFACTURE_DATE_MAX": "La date de fabrication maximale est aujourd'hui",
-        "REGIMEN_REQUIRED": "Le régime médicamenteux est requis",
+        "REGIMEN_REQUIRED": "Le médicament ARV est requis",
         "BOTTLES_REQUIRED": "Le nombre de bouteilles est requis",
         "BOTTLES_MIN": "Le nombre minimum de bouteilles est de 1",
         "BATCH_NO_REQUIRED": "Le numéro de lot est requis",
@@ -55,7 +59,7 @@
         "NO_DATA": "Aucune donnée d'émission d'actions disponible",
         "FACILITY": "Établissement de santé",
         "SITE": "Site de l'OFCAD",
-        "REGIMEN": "Régime médicamenteux",
+        "REGIMEN": "Médicament ARV",
         "ISSUED": "Bouteilles émises",
         "BATCH_NO": "N ° de lot",
         "EXPIRATION_DATE": "Date d'expiration"
@@ -69,18 +73,19 @@
         "ISSUED": "Bouteilles émises",
         "ISSUED_REQUIRED": "Le nombre de bouteilles est requis",
         "ISSUED_MIN": "Le nombre minimum de bouteilles est de 1",
-        "ISSUED_MAX": "Un maximum de {{MAX}} du régime médicamenteux sélectionné peut être délivré",
+        "ISSUED_MAX": "Un maximum de {{MAX}} médicaments ARV sélectionnés peut être délivré",
         "SITE": "Site de l'OFCAD",
         "SITE_REQUIRED": "Le site OFCAD est requis",
         "STOCK": "Entrée en stock",
         "STOCK_REQUIRED": "L'entrée de stock est obligatoire",
-        "BALANCE": "Solde des stocks"
+        "BALANCE": "Solde des stocks",
+        "EDIT": "Modifier"
       }
     },
     "ASSIGNMENT": {
       "GIVEN_NAME": "Prénom",
       "FAMILY_NAME": "Nom de famille",
-      "ASSIGNED_REGIMEN": "Régime assigné",
+      "ASSIGNED_REGIMEN": "Médicament ARV attribué",
       "SEX": "Sexe",
       "HOSPITAL_NUMBER": "Numéro d'hôpital",
       "UNIQUE_ID": "Identifiant unique",
@@ -91,6 +96,21 @@
       "SEARCH": "Recherche...",
       "NO_DATA": "Aucune donnée disponible sur les patients",
       "TITLE": "Affectation du site patient"
+    },
+    "STOCK_REQUEST": {
+      "LIST_PAGE": {
+        "TITLE": "Liste des demandes de stock",
+        "DATE": "Date demandée",
+        "NO_DATA": "Aucune donnée de demande de stock disponible",
+        "SITE": "Site de l'OFCAD",
+        "REGIMEN": "Médicament ARV",
+        "ISSUED": "Bouteilles demandées",
+        "SITES": "Sites OFCAD",
+        "ALL": "Tous les sites OFCAD",
+        "ARV_DRUG": "Médicament ARV",
+        "BOTTLES": "Bouteilles",
+        "ISSUE": "Action d'émission"
+      }
     }
   }
 }

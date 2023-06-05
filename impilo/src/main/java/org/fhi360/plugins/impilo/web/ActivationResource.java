@@ -7,6 +7,8 @@ import org.fhi360.plugins.impilo.web.models.ActivationData;
 import org.fhi360.plugins.impilo.web.models.DiscontinuationData;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/impilo/activation")
 @RequiredArgsConstructor
@@ -14,7 +16,7 @@ public class ActivationResource {
     private final SiteActivationService activationService;
 
     @GetMapping("/activate/site/{code}")
-    public ActivationData activate(@PathVariable String code) {
+    public ActivationData activate(@PathVariable UUID code) {
         return activationService.activate(code);
     }
 

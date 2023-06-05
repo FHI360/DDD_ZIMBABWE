@@ -44,8 +44,6 @@ public class RandomDataService {
                 generateFacilities();
                 generateSite();
                 generatePatient();
-                //generateSiteAssignment();
-                //generateClinicData();
                 generateRefill();
 
                 return null;
@@ -66,7 +64,7 @@ public class RandomDataService {
     }
 
     private void generateSite() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             var org = evm.create(Organisation.CreateView.class);
             var party = evm.create(Party.PartyView.class);
             party.setType("OFCAD Site");
@@ -89,7 +87,7 @@ public class RandomDataService {
         List<String> regimens = List.of("ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
             "AZT(300mg)+3TC(150mg)+LPV/r(200/50mg)", "ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)",
             "AZT/3TC(300/150mg)+EFV(200mg)", "3TC/FTC(300/300mg)+EFV(600mg)");
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 3000; i++) {
             Patient patient = new Patient();
             patient.setGivenName(faker.name().firstName());
             patient.setFamilyName(faker.name().lastName());
@@ -107,6 +105,7 @@ public class RandomDataService {
             }
             patient.setNextViralLoadDate(faker.date().future(180, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
             patient.setNextTptDate(faker.date().future(180, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
+            patient.setNextAppointmentDate(faker.date().future(180, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
 
             patientRepository.save(patient);
         }

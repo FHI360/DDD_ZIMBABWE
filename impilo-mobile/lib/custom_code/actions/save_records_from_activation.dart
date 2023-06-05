@@ -71,7 +71,7 @@ Future saveRecordsFromActivation(dynamic data, String siteCode) async {
             r'''$.nextTptDate''',
           ).toString()) ??
           DateTime(1900);
-      _patient.nextViralLoadDate = DateTime.tryParse(getJsonField(
+      _patient.nextAppointmentDate = DateTime.tryParse(getJsonField(
             (patient ?? ''),
             r'''$.nextViralLoadDate''',
           ).toString()) ??
@@ -147,6 +147,11 @@ Future saveRecordsFromActivation(dynamic data, String siteCode) async {
                 (patient ?? ''),
                 r'''$.nextTptDate''',
               ).toString()) ??
+              DateTime(1900),
+          DateTime.tryParse(getJsonField(
+            (patient ?? ''),
+            r'''$.nextAppointDate''',
+          ).toString()) ??
               DateTime(1900),
           DateTime.tryParse(getJsonField(
                 (patient ?? ''),

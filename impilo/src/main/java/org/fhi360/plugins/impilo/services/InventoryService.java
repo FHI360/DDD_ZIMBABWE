@@ -9,6 +9,7 @@ import org.fhi360.plugins.impilo.domain.entities.StockIssuance;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,10 +18,10 @@ public class InventoryService {
     private final EntityManager em;
     private final CriteriaBuilderFactory cbf;
 
-    public List<StockIssuance.View> list(String siteCode) {
+    public List<StockIssuance.View> list(UUID siteId) {
         var settings = EntityViewSetting.create(StockIssuance.View.class);
         var cb = cbf.create(em, StockIssuance.class)
-            .where("site.party.identifiers.value").eq(siteCode);
+            .where("site.id").eq(siteId);
 
         return evm.applySetting(settings, cb).getResultList();
     }

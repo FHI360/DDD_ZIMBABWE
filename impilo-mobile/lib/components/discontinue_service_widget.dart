@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/patient.dart';
+import 'package:impilo/flutter_flow/internationalization.dart';
 import 'package:impilo/main.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +89,7 @@ class _DiscontinueServiceWidgetState extends State<DiscontinueServiceWidget> {
                       maxWidth: 700,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.grey,
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 12,
@@ -109,111 +110,90 @@ class _DiscontinueServiceWidgetState extends State<DiscontinueServiceWidget> {
                             children: [
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 16, 20, 0),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                    12.0, 12.0, 12.0, 0.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 60.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.9,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 2,
-                                          color: Color(0x33000000),
-                                          offset: Offset(0, 2),
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                        width: 2,
-                                      ),
-                                    ),
+                                  child: InkWell(
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(20, 0, 0, 0),
-                                                child: Text(
-                                                  'Date discontinued',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .subtitle1,
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                1.0, 0.0, 1.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        'Date discontinued',
+                                                        style: FlutterFlowTheme.of(
+                                                            context)
+                                                            .bodyText1,
+                                                      ),
+                                                      Text(
+                                                        dateTimeFormat(
+                                                          'yMMMd',
+                                                          _model.datePicked,
+                                                          locale: FFLocalizations.of(
+                                                              context)
+                                                              .languageCode,
+                                                        ),
+                                                        style: FlutterFlowTheme.of(
+                                                            context)
+                                                            .bodyText1,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(20, 4, 0, 0),
-                                                child: Text(
-                                                  dateTimeFormat('yMMMd',
-                                                      _model.datePicked),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .subtitle1,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 8, 0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              FlutterFlowIconButton(
-                                                borderColor: Colors.transparent,
-                                                borderRadius: 30,
-                                                buttonSize: 46,
-                                                icon: Icon(
-                                                  Icons.date_range_outlined,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryColor,
-                                                  size: 20,
-                                                ),
-                                                onPressed: () async {
-                                                  final _datePickedDate =
-                                                      await showDatePicker(
-                                                    context: context,
-                                                    initialDate:
-                                                        getCurrentTimestamp,
-                                                    firstDate: DateTime(1900),
-                                                    lastDate:
-                                                        getCurrentTimestamp,
-                                                  );
+                                                InkWell(
+                                                  onTap: () async {
+                                                    final _datePickedDate =
+                                                    await showDatePicker(
+                                                      context: context,
+                                                      initialDate:
+                                                      getCurrentTimestamp,
+                                                      firstDate: DateTime(1900),
+                                                      lastDate:
+                                                      getCurrentTimestamp,
+                                                    );
 
-                                                  if (_datePickedDate != null) {
-                                                    setState(() {
-                                                      _model.datePicked =
-                                                          DateTime(
-                                                        _datePickedDate.year,
-                                                        _datePickedDate.month,
-                                                        _datePickedDate.day,
-                                                      );
-                                                    });
-                                                  }
-                                                },
-                                              ),
-                                            ],
+                                                    if (_datePickedDate != null) {
+                                                      setState(() {
+                                                        _model.datePicked =
+                                                            DateTime(
+                                                              _datePickedDate.year,
+                                                              _datePickedDate.month,
+                                                              _datePickedDate.day,
+                                                            );
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Icon(
+                                                    Icons.date_range,
+                                                    color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                    size: 24.0,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -222,93 +202,139 @@ class _DiscontinueServiceWidgetState extends State<DiscontinueServiceWidget> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 16, 20, 0),
+                                padding: EdgeInsetsDirectional
+                                    .fromSTEB(
+                                    12.0, 12.0, 12.0, 0.0),
                                 child: Container(
                                   width: double.infinity,
-                                  height: 60,
+                                  height: 60.0,
                                   decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 2,
-                                        color: Color(0x33000000),
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                      width: 2,
-                                    ),
+                                    color: FlutterFlowTheme.of(
+                                        context)
+                                        .secondaryBackground,
+                                    borderRadius:
+                                    BorderRadius.circular(
+                                        8.0),
                                   ),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        5, 0, 0, 0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    10, 0, 0, 0),
-                                            child: Text(
-                                              'Reason for discontinuing',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .subtitle1,
-                                            )),
-                                        Expanded(
-                                          child: FlutterFlowDropDown<String>(
-                                            options: [
-                                              'Becomes pregnant',
-                                              'Develops comorbidity',
-                                              'Loss of Viral suppression',
-                                              'Decides to go back to the hospital',
-                                              'Becomes non-adherent',
-                                              'Missed VL Test',
-                                              'Missed TPT Test',
-                                              'Missed Cervical Cancer Screening'
-                                            ],
-                                            onChanged: (val) => setState(
-                                                () => _model.reasonValue = val),
-                                            width: double.infinity,
-                                            height: 50,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyText1
-                                                    .override(
-                                                      fontFamily:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                      useGoogleFonts: GoogleFonts
-                                                              .asMap()
-                                                          .containsKey(
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyText1Family),
+                                  child: Row(
+                                    mainAxisSize:
+                                    MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 100.0,
+                                          decoration:
+                                          BoxDecoration(
+                                            color: FlutterFlowTheme
+                                                .of(context)
+                                                .secondaryBackground,
+                                            borderRadius:
+                                            BorderRadius
+                                                .circular(
+                                                8.0),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize:
+                                            MainAxisSize
+                                                .max,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                  MainAxisSize
+                                                      .max,
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .center,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                          5.0,
+                                                          0.0,
+                                                          0.0,
+                                                          0.0),
+                                                      child:
+                                                      Text(
+                                                        'Reason for discontinuing',
+                                                        style: FlutterFlowTheme.of(context)
+                                                            .bodyText1
+                                                            .override(
+                                                          fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
+                                                          fontSize: 12.0,
+                                                          useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
+                                                        ),
+                                                      ),
                                                     ),
-                                            elevation: 2,
-                                            fillColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondaryBackground,
-                                            borderColor: Colors.transparent,
-                                            borderWidth: 0,
-                                            borderRadius: 0,
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    12, 4, 12, 4),
-                                            hidesUnderline: true,
+                                                    Expanded(
+                                                      child:
+                                                      Padding(
+                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                            10.0,
+                                                            0.0,
+                                                            10.0,
+                                                            0.0),
+                                                        child: FlutterFlowDropDown<
+                                                            String>(
+                                                          initialOption:
+                                                          null,
+                                                          options: [
+                                                            'Becomes pregnant',
+                                                            'Develops comorbidity',
+                                                            'Loss of Viral suppression',
+                                                            'Decides to go back to the hospital',
+                                                            'Becomes non-adherent',
+                                                            'Missed VL Test',
+                                                            'Missed TPT Test',
+                                                            'Missed Cervical Cancer Screening'
+                                                          ],
+                                                          onChanged: (val) => setState(
+                                                                  () => _model.reasonValue = val),
+                                                          width:
+                                                          double.infinity,
+                                                          height:
+                                                          50.0,
+                                                          textStyle: FlutterFlowTheme.of(context)
+                                                              .bodyText1
+                                                              .override(
+                                                            fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
+                                                            color: FlutterFlowTheme.of(context).primaryText,
+                                                            useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
+                                                          ),
+                                                          fillColor:
+                                                          FlutterFlowTheme.of(context).secondaryBackground,
+                                                          elevation:
+                                                          2.0,
+                                                          borderColor:
+                                                          Colors.transparent,
+                                                          borderWidth:
+                                                          0.0,
+                                                          borderRadius:
+                                                          0.0,
+                                                          margin: EdgeInsetsDirectional.fromSTEB(
+                                                              0.0,
+                                                              0.0,
+                                                              0.0,
+                                                              0.0),
+                                                          hidesUnderline:
+                                                          true,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

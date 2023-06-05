@@ -255,7 +255,7 @@ class _InventoryListWidgetState extends State<InventoryListWidget> {
                                                             .fromSTEB(0.0, 0.0,
                                                                 5.0, 0.0),
                                                     child: Text(
-                                                      'Quantity',
+                                                      'Quantity (Bottles)',
                                                       style:
                                                           FlutterFlowTheme.of(
                                                                   context)

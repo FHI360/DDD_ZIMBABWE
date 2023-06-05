@@ -18,6 +18,7 @@ class Patient {
   DateTime lastClinicVisit;
   DateTime lastRefillDate;
   DateTime nextTptDate;
+  DateTime nextAppointmentDate;
   DateTime nextViralLoadDate;
   DateTime nextCervicalCancerDate;
   DateTime nextVisitDate;
@@ -42,8 +43,9 @@ class Patient {
       this.lastClinicVisit,
       this.lastRefillDate,
       this.nextTptDate,
-      this.nextViralLoadDate,
+      this.nextAppointmentDate,
       this.nextCervicalCancerDate,
+      this.nextViralLoadDate,
       this.nextVisitDate,
       this.serviceDiscontinued,
       this.reasonDiscontinued,
@@ -66,6 +68,7 @@ class Patient {
       row['lastClinicVisit'],
       row['lastRefillDate'],
       row['nextTptDate'],
+      row['nextAppointmentDate'],
       row['nextViralLoadDate'],
       row['nextCervicalCancerDate'],
       row['nextVisitDate'],
@@ -93,8 +96,8 @@ class Patient {
             lastRefillDate != null ? lastRefillDate.toIso8601String() : null,
         'nextTptDate':
             nextTptDate != null ? nextTptDate.toIso8601String() : null,
-        'nextViralLoadDate': nextViralLoadDate != null
-            ? nextViralLoadDate.toIso8601String()
+        'nextViralLoadDate': nextAppointmentDate != null
+            ? nextAppointmentDate.toIso8601String()
             : null,
         'nextCervicalCancerDate': nextCervicalCancerDate != null
             ? nextCervicalCancerDate.toIso8601String()

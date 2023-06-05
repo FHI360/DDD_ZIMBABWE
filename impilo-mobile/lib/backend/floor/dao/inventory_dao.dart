@@ -22,6 +22,19 @@ class InventoryAvailability {
   InventoryAvailability(this.isAvailable, this.siteCode);
 }
 
+@DatabaseView(
+    '''SELECT SUM(quantity) AS quantity, regimen, barcode, siteCode FROM Inventory
+      GROUP BY regimen, barcode, siteCode''',
+    viewName: 'BarcodeQuantity')
+class BarcodeQuantity {
+  final int quantity;
+  final String siteCode;
+  final String regimen;
+  final String barcode;
+
+  BarcodeQuantity(this.quantity, this.siteCode, this.regimen, this.barcode);
+}
+
 @dao
 abstract class InventoryDao {
   @Query(
@@ -48,6 +61,12 @@ abstract class InventoryDao {
 
   @Query('SELECT * FROM InventoryAvailability WHERE siteCode = :siteCode')
   Future<InventoryAvailability?> checkAvailability(String siteCode);
+
+  @Query('''
+    SELECT * FROM BarcodeQuantity WHERE siteCode = :siteCode AND regimen = :regimen
+    AND barcode = :barcode
+  ''')
+  Future<BarcodeQuantity?> barcodeQuantity(String siteCode, String regimen, String barcode);
 
   @Query(
       '''SELECT * FROM Inventory WHERE siteCode = :siteCode and regimen = :regimen 

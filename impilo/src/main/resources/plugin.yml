@@ -26,11 +26,20 @@ menus:
     type: link
     route: stocks
     icon: cases
+  - name: IMPILO.MENU.STOCK_REQUEST
+    type: link
+    route: stock-requests
+    icon: cases
   - name: IMPILO.MENU.STOCK_ISSUANCE
     type: link
     route: stock-issuance
     icon: library_books
     position: 2
+  - name: IMPILO.MENU.REPORTS
+    type: link
+    route: reports
+    icon: cases
+    position: 3
 webRemotes:
   - remoteEntry: "/js/impilo-gateway/remoteEntry.js"
     remoteName: _5e665722_af83_4c02_82c0_48e62d779674
@@ -47,3 +56,11 @@ webRemotes:
         ngModuleName: SiteAssignmentModule
         routePath: patients
         title: IMPILO.TITLE.PATIENTS
+      - name: StockRequestModule
+        ngModuleName: StockRequestModule
+        routePath: stock-requests
+        title: IMPILO.TITLE.STOCK_REQUEST
+      - name: ReportsModule
+        ngModuleName: ReportsModule
+        routePath: reports
+        title: IMPILO.TITLE.REPORTS

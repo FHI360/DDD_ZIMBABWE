@@ -3,7 +3,9 @@
     "MENU": {
       "PATIENTS": "Wagonjwa",
       "STOCKS": "Hisa",
-      "STOCK_ISSUANCE": "Utoaji wa hisa"
+      "STOCK_ISSUANCE": "Utoaji wa hisa",
+      "STOCK_REQUEST": "Ombi la hisa",
+      "REPORTS": "Ripoti ya Viashiria vya OFCAD"
     },
     "TITLE": {
       "STOCKS": "Hisa",
@@ -12,7 +14,9 @@
       "STOCK_ISSUANCE_LIST": "Orodha ya utoaji wa hisa",
       "STOCK_ISSUANCE": "Maelezo ya utoaji wa hisa",
       "ADD_STOCK_ISSUANCE": "Rekodi utoaji wa hisa",
-      "PATIENTS": "Wagonjwa"
+      "PATIENTS": "Wagonjwa",
+      "STOCK_REQUEST": "Ombi la hisa",
+      "REPORTS": "Ripoti ya Viashiria vya OFCAD"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -22,7 +26,7 @@
         "DATE": "Tarehe iliyorekodiwa",
         "NO_DATA": "Hakuna data ya hisa inayopatikana",
         "FACILITY": "Kituo cha afya",
-        "REGIMEN": "Regimen ya dawa",
+        "REGIMEN": "Dawa ya ARV",
         "BOTTLES": "Chupa",
         "ISSUED": "Kiasi kimetolewa",
         "BALANCE": "Mizani",
@@ -34,7 +38,7 @@
         "EXPIRATION_DATE_MIN": "Tarehe ya mwisho wa matumizi ni kiwango cha chini zaidi cha leo",
         "MANUFACTURE_DATE": "Tarehe ya utengenezaji",
         "MANUFACTURE_DATE_MAX": "Tarehe ya juu zaidi ya ManUFacture ni leo",
-        "REGIMEN_REQUIRED": "Regimen ya dawa inahitajika",
+        "REGIMEN_REQUIRED": "Dawa ya ARV inahitajika",
         "BOTTLES_REQUIRED": "Idadi ya chupa inahitajika",
         "BOTTLES_MIN": "Idadi ya chini ya chupa ni 1",
         "BATCH_NO_REQUIRED": "Nambari ya Kundi inahitajika",
@@ -55,7 +59,7 @@
         "NO_DATA": "Hakuna data ya suala la hisa inayopatikana",
         "FACILITY": "Kituo cha afya",
         "SITE": "Tovuti ya OFCAD",
-        "REGIMEN": "Regimen ya dawa",
+        "REGIMEN": "Dawa ya ARV",
         "ISSUED": "Chupa zilizotolewa",
         "BATCH_NO": "Kundi Na",
         "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake"
@@ -69,18 +73,19 @@
         "ISSUED": "Chupa zilizotolewa",
         "ISSUED_REQUIRED": "Idadi ya chupa inahitajika",
         "ISSUED_MIN": "Idadi ya chini ya chupa ni 1",
-        "ISSUED_MAX": "Kiwango cha juu cha {{MAX}} cha dawa iliyochaguliwa inaweza kutolewa",
+        "ISSUED_MAX": "Kiwango cha juu cha {{MAX}} cha dawa iliyochaguliwa ya ARV inaweza kutolewa",
         "SITE": "Tovuti ya OFCAD",
         "SITE_REQUIRED": "Tovuti ya OFCAD inahitajika",
         "STOCK": "Kuingia kwa hisa",
         "STOCK_REQUIRED": "Ingizo la hisa linahitajika",
-        "BALANCE": "Salio la hisa"
+        "BALANCE": "Salio la hisa",
+        "EDIT": "Hariri"
       }
     },
     "ASSIGNMENT": {
       "GIVEN_NAME": "Jina la kwanza",
       "FAMILY_NAME": "Jina la ukoo",
-      "ASSIGNED_REGIMEN": "Regimen iliyokabidhiwa",
+      "ASSIGNED_REGIMEN": "Dawa ya ARV Iliyokabidhiwa",
       "SEX": "Ngono",
       "HOSPITAL_NUMBER": "Nambari ya hospitali",
       "UNIQUE_ID": "Kitambulisho cha kipekee",
@@ -91,6 +96,21 @@
       "SEARCH": "Tafuta...",
       "NO_DATA": "Hakuna data ya mgonjwa inayopatikana",
       "TITLE": "Mgawo wa tovuti ya mgonjwa"
+    },
+    "STOCK_REQUEST": {
+      "LIST_PAGE": {
+        "TITLE": "Orodha ya ombi la hisa",
+        "DATE": "Tarehe iliyoombwa",
+        "NO_DATA": "Hakuna data ya ombi la hisa inayopatikana",
+        "SITE": "Tovuti ya OFCAD",
+        "REGIMEN": "Dawa ya ARV",
+        "ISSUED": "Chupa zimeombwa",
+        "SITES": "Tovuti za OFCAD",
+        "ALL": "Tovuti zote za OFCAD",
+        "ARV_DRUG": "Dawa ya ARV",
+        "BOTTLES": "Chupa",
+        "ISSUE": "Suala hisa"
+      }
     }
   }
 }

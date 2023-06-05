@@ -74,6 +74,7 @@ class _PatientListWidgetState extends State<PatientListWidget> {
             size: 30.0,
           ),
           onPressed: () async {
+            print('Pressed');
             context.goNamed('siteHome');
           },
         ),
@@ -306,7 +307,7 @@ class _PatientListWidgetState extends State<PatientListWidget> {
                                                   ),
                                                   if (listViewPatientRow
                                                           .lastRefillDate !=
-                                                      null)
+                                                      DateTime(1900))
                                                     Text(
                                                       dateTimeFormat(
                                                           'yMMMd',
@@ -479,7 +480,7 @@ class _PatientListWidgetState extends State<PatientListWidget> {
                                                   ),
                                                   if (patientListItem
                                                           .lastRefillDate !=
-                                                      null)
+                                                      DateTime(1900))
                                                     Text(
                                                       dateTimeFormat(
                                                           'yMMMd',
@@ -501,9 +502,9 @@ class _PatientListWidgetState extends State<PatientListWidget> {
                                           context.pushNamed(
                                             'patientProfile',
                                             queryParams: {
-                                              'patient': serializeParam(
-                                                patientListItem,
-                                                ParamType.SupabaseRow,
+                                              'patientId': serializeParam(
+                                                patientListItem.id,
+                                                ParamType.int,
                                               ),
                                             }.withoutNulls,
                                           );

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:impilo/backend/http/auth_api_provider.dart';
+import 'package:impilo/backend/http/site-activation.dart';
+import 'package:impilo/custom_code/actions/save_records_from_activation.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-import '/auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -156,7 +158,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       borderRadius: BorderRadius.circular(3.0),
                                     ),
                                     filled: true,
-                                    fillColor: Color(0xFF747550),
+                                    fillColor: Color(0xFFD0CDCD),
                                     contentPadding:
                                         EdgeInsetsDirectional.fromSTEB(
                                             16.0, 24.0, 0.0, 24.0),
@@ -219,7 +221,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     borderRadius: BorderRadius.circular(3.0),
                                   ),
                                   filled: true,
-                                  fillColor: Color(0xFF747550),
+                                  fillColor: Color(0xFFD0CDCD),
                                   contentPadding:
                                       EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 24.0, 24.0),
@@ -256,7 +258,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () {
-                                print('Button-ForgotPassword pressed ...');
+                                context.goNamed('resetAccount');
                               },
                               text: 'Forgot Password?',
                               options: FFButtonOptions(
@@ -267,8 +269,18 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 iconPadding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 0.0),
                                 color: Color(0x00FFFFFF),
-                                textStyle:
-                                    FlutterFlowTheme.of(context).bodyText2,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: FlutterFlowTheme.of(context)
+                                          .subtitle2Family,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      useGoogleFonts: GoogleFonts.asMap()
+                                          .containsKey(
+                                              FlutterFlowTheme.of(context)
+                                                  .subtitle2Family),
+                                    ),
                                 elevation: 0.0,
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
@@ -279,22 +291,49 @@ class _LoginWidgetState extends State<LoginWidget> {
                             FFButtonWidget(
                               onPressed: () async {
                                 GoRouter.of(context).prepareAuthEvent();
-
-                                final user = await signInWithEmail(
-                                  context,
-                                  _model.emailAddressController.text,
-                                  _model.passwordController.text,
-                                );
-                                if (user == null) {
+                                var response = await AuthAPIProvider()
+                                    .authenticate(
+                                        username:
+                                            _model.emailAddressController.text,
+                                        password:
+                                            _model.passwordController.text);
+                                if (response['accessToken'] == null) {
                                   return;
                                 }
 
-                                if (FFAppState().code == null ||
-                                    FFAppState().code == '') {
-                                  context.goNamedAuth('activateSite', mounted);
-                                } else {
-                                  context.goNamedAuth('siteHome', mounted);
+                                FFAppState().refreshToken =
+                                    response['refreshToken'];
+                                FFAppState().accessToken =
+                                    response['accessToken'];
+
+                                await AuthAPIProvider().processProfile();
+
+                                response =
+                                    await SiteActivationApi().activate('');
+                                if (response['site'] != null) {
+                                  FFAppState().name = response['site'];
+                                  //Loop and create records
+                                  List<dynamic> patients = response['patients'];
+                                  saveRecordsFromActivation(
+                                      patients, FFAppState().code);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Site successfully updated',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: Duration(milliseconds: 3000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .customColor1,
+                                    ),
+                                  );
                                 }
+
+                                context.goNamedAuth('siteHome', mounted);
                               },
                               text: 'Login',
                               options: FFButtonOptions(
@@ -318,52 +357,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   .subtitle1Family),
                                     ),
                                 elevation: 3.0,
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 24.0, 0.0, 24.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Don\'t have an account?',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                            FFButtonWidget(
-                              onPressed: () async {
-                                context.pushNamed('signup');
-                              },
-                              text: 'Create Account',
-                              options: FFButtonOptions(
-                                width: 150.0,
-                                height: 30.0,
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 0.0),
-                                iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 0.0),
-                                color: Color(0x00FFFFFF),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .subtitle2Family,
-                                      color: FlutterFlowTheme.of(context)
-                                          .tertiaryColor,
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey(
-                                              FlutterFlowTheme.of(context)
-                                                  .subtitle2Family),
-                                    ),
-                                elevation: 0.0,
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1.0,

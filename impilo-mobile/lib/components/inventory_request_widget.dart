@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/inventory_request.dart';
 import 'package:impilo/main.dart';
 import 'package:logging/logging.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -83,7 +84,7 @@ class _InventoryRequestWidgetState extends State<InventoryRequestWidget> {
                       maxWidth: 700.0,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.grey,
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 12.0,
@@ -107,209 +108,309 @@ class _InventoryRequestWidgetState extends State<InventoryRequestWidget> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Text(
-                                    'Inventory resquest',
+                                    'Stock request',
                                     style: FlutterFlowTheme.of(context).title2,
                                   ),
                                 ],
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 16.0, 20.0, 0.0),
+                                    12.0, 12.0, 12.0, 0.0),
                                 child: Container(
                                   width: double.infinity,
                                   height: 60.0,
                                   decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 2.0,
-                                        color: Color(0x33000000),
-                                        offset: Offset(0.0, 2.0),
-                                      )
-                                    ],
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                      width: 2.0,
-                                    ),
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        5.0, 0.0, 0.0, 0.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  5.0, 0.0, 0.0, 0.0),
-                                          child: Text(
-                                            'Regimen',
-                                            style: FlutterFlowTheme.of(context)
-                                                .subtitle1
-                                                .override(
-                                                  fontFamily: 'Roboto',
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .subtitle1Family),
-                                                ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 100.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
                                           ),
-                                        ),
-                                        Expanded(
-                                          child: FlutterFlowDropDown<String>(
-                                            options:
-                                                FFAppState().regimens.toList(),
-                                            onChanged: (val) => setState(() =>
-                                                _model.regimenValue = val),
-                                            width: double.infinity,
-                                            height: 50.0,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyText1
-                                                    .override(
-                                                      fontFamily: 'Roboto',
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                      useGoogleFonts: GoogleFonts
-                                                              .asMap()
-                                                          .containsKey(
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  5.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: Text(
+                                                        'ARV Drug',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1
+                                                                .override(
+                                                                  fontFamily: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1Family,
+                                                                  fontSize:
+                                                                      12.0,
+                                                                  useGoogleFonts: GoogleFonts
+                                                                          .asMap()
+                                                                      .containsKey(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyText1Family),
+                                                                ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    10.0,
+                                                                    0.0,
+                                                                    10.0,
+                                                                    0.0),
+                                                        child:
+                                                            FlutterFlowDropDown<
+                                                                String>(
+                                                          initialOption: null,
+                                                          options: FFAppState()
+                                                              .regimens
+                                                              .toList(),
+                                                          onChanged: (val) =>
+                                                              setState(() =>
+                                                                  _model.regimenValue =
+                                                                      val),
+                                                          width:
+                                                              double.infinity,
+                                                          height: 50.0,
+                                                          textStyle:
                                                               FlutterFlowTheme.of(
                                                                       context)
-                                                                  .bodyText1Family),
+                                                                  .bodyText1
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyText1Family,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText,
+                                                                    useGoogleFonts: GoogleFonts
+                                                                            .asMap()
+                                                                        .containsKey(
+                                                                            FlutterFlowTheme.of(context).bodyText1Family),
+                                                                  ),
+                                                          fillColor: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryBackground,
+                                                          elevation: 2.0,
+                                                          borderColor: Colors
+                                                              .transparent,
+                                                          borderWidth: 0.0,
+                                                          borderRadius: 0.0,
+                                                          margin:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      0.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          hidesUnderline: true,
+                                                        ),
+                                                      ),
                                                     ),
-                                            elevation: 2.0,
-                                            borderColor: Colors.transparent,
-                                            borderWidth: 0.0,
-                                            borderRadius: 0.0,
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    12.0, 4.0, 12.0, 4.0),
-                                            hidesUnderline: true,
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 16.0, 20.0, 0.0),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 0.0,
-                                  shape: RoundedRectangleBorder(
+                                    12.0, 12.0, 12.0, 0.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 60.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.9,
-                                    height: 60.0,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 2.0,
-                                          color: Color(0x33000000),
-                                          offset: Offset(0.0, 2.0),
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          5.0, 0.0, 0.0, 0.0),
-                                      child: TextFormField(
-                                        controller: _model.textController,
-                                        autofocus: true,
-                                        obscureText: false,
-                                        decoration: InputDecoration(
-                                          labelText: 'Quantity',
-                                          hintStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .subtitle1
-                                                  .override(
-                                                    fontFamily: 'Roboto',
-                                                    useGoogleFonts: GoogleFonts
-                                                            .asMap()
-                                                        .containsKey(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(5.0, 0.0, 0.0, 0.0),
+                                              child: Text(
+                                                'Quantity (Bottles)',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyText1Family,
+                                                          fontSize: 12.0,
+                                                          useGoogleFonts: GoogleFonts
+                                                                  .asMap()
+                                                              .containsKey(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1Family),
+                                                        ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                  width: double.infinity,
+                                                  height: 110.0,
+                                                  decoration: BoxDecoration(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground,
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(5.0, 0.0,
+                                                                0.0, 5.0),
+                                                    child: TextFormField(
+                                                      controller:
+                                                          _model.textController,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      autofocus: true,
+                                                      obscureText: false,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintStyle:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .subtitle1Family),
-                                                  ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0x00000000),
-                                              width: 1.0,
-                                            ),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(4.0),
-                                              topRight: Radius.circular(4.0),
-                                            ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0x00000000),
-                                              width: 1.0,
-                                            ),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(4.0),
-                                              topRight: Radius.circular(4.0),
-                                            ),
-                                          ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0x00000000),
-                                              width: 1.0,
-                                            ),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(4.0),
-                                              topRight: Radius.circular(4.0),
-                                            ),
-                                          ),
-                                          focusedErrorBorder:
-                                              OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0x00000000),
-                                              width: 1.0,
-                                            ),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(4.0),
-                                              topRight: Radius.circular(4.0),
-                                            ),
-                                          ),
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Roboto',
-                                              useGoogleFonts:
-                                                  GoogleFonts.asMap()
-                                                      .containsKey(
+                                                                .bodyText2,
+                                                        enabledBorder:
+                                                            UnderlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Color(
+                                                                0x00000000),
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                          ),
+                                                        ),
+                                                        focusedBorder:
+                                                            UnderlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Color(
+                                                                0x00000000),
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                          ),
+                                                        ),
+                                                        errorBorder:
+                                                            UnderlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Color(
+                                                                0x00000000),
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                          ),
+                                                        ),
+                                                        focusedErrorBorder:
+                                                            UnderlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Color(
+                                                                0x00000000),
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      style:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .bodyText1Family),
+                                                              .bodyText1,
+                                                      validator: _model
+                                                          .textControllerValidator
+                                                          .asValidator(context),
+                                                    ),
+                                                  )),
                                             ),
-                                        keyboardType: TextInputType.number,
-                                        validator: _model
-                                            .textControllerValidator
-                                            .asValidator(context),
+                                          ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -382,8 +483,8 @@ class _InventoryRequestWidgetState extends State<InventoryRequestWidget> {
                                       ),
                                     ),
                                     FFButtonWidget(
-                                      onPressed: (_model.textController.text ==
-                                                      null ||
+                                      onPressed: (_model.textController.text
+                                                      .isEmpty ||
                                                   _model.textController.text ==
                                                       '') ||
                                               (_model.regimenValue == null ||
@@ -403,23 +504,27 @@ class _InventoryRequestWidgetState extends State<InventoryRequestWidget> {
                                                     .toIso8601String()
                                                     .substring(0, 10),
                                                 uniqueId: uniqueId,
-                                                itemsJson: [
-                                                  {
-                                                    'regimen':
-                                                        _model.regimenValue,
-                                                    'quantity': int.parse(_model
-                                                        .textController.text)
-                                                  }
-                                                ],
+                                                itemsJson: {
+                                                  'arvDrug':
+                                                      _model.regimenValue,
+                                                  'bottles': int.parse(_model
+                                                      .textController.text)
+                                                },
                                               );
                                               _shouldSetState = true;
-                                              if (!(_model.response != null)) {
-                                                setState(() {
-                                                  _model.error =
-                                                      'Could not complete request';
-                                                });
-                                                if (_shouldSetState)
-                                                  setState(() {});
+                                              if (!(_model.response != null ||
+                                                  _model.response!.jsonBody)) {
+                                                showToast(
+                                                  '''An error has occurred while trying to transmit request''',
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  position:
+                                                      ToastPosition.bottom,
+                                                  backgroundColor: Colors.red,
+                                                  radius: 3.0,
+                                                  textStyle:
+                                                      TextStyle(fontSize: 15.0),
+                                                );
                                                 return;
                                               }
                                               var _request = InventoryRequest(

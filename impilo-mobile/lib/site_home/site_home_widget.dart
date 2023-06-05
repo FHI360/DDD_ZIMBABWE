@@ -366,7 +366,7 @@ class _SiteHomeWidgetState extends State<SiteHomeWidget> {
                                                                                 Padding(
                                                                                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                                                                                   child: Text(
-                                                                                    'Quantity',
+                                                                                    'Quantity (Bottles)',
                                                                                     style: FlutterFlowTheme.of(context).bodyText1,
                                                                                   ),
                                                                                 ),
@@ -594,7 +594,7 @@ class _SiteHomeWidgetState extends State<SiteHomeWidget> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    'Re-Visit',
+                                                    'Patient Visit',
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .title2,

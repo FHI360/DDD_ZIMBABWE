@@ -3,7 +3,9 @@
     "MENU": {
       "PATIENTS": "Marasa lafiya",
       "STOCKS": "Hannun jari",
-      "STOCK_ISSUANCE": "Bayar da hannun jari"
+      "STOCK_ISSUANCE": "Bayar da hannun jari",
+      "STOCK_REQUEST": "Neman hannun jari",
+      "REPORTS": "Rahoton Manuniya na OFCAD"
     },
     "TITLE": {
       "STOCKS": "Hannun jari",
@@ -12,7 +14,9 @@
       "STOCK_ISSUANCE_LIST": "Jerin fitar da hannun jari",
       "STOCK_ISSUANCE": "Cikakkun bayanai na bayarwa",
       "ADD_STOCK_ISSUANCE": "Yi rikodin fitar da hannun jari",
-      "PATIENTS": "Marasa lafiya"
+      "PATIENTS": "Marasa lafiya",
+      "STOCK_REQUEST": "Neman hannun jari",
+      "REPORTS": "Rahoton Manuniya na OFCAD"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -22,7 +26,7 @@
         "DATE": "Kwanan wata da aka rubuta",
         "NO_DATA": "Babu bayanan haja",
         "FACILITY": "Wurin lafiya",
-        "REGIMEN": "Tsarin magani",
+        "REGIMEN": "Magungunan ARV",
         "BOTTLES": "kwalabe",
         "ISSUED": "Qty ya bayar",
         "BALANCE": "Ma'auni",
@@ -34,7 +38,7 @@
         "EXPIRATION_DATE_MIN": "Mafi ƙarancin ranar karewa shine yau",
         "MANUFACTURE_DATE": "Kwanan masana'anta",
         "MANUFACTURE_DATE_MAX": "Mafi girman kwanan watan ManUFacture shine yau",
-        "REGIMEN_REQUIRED": "Ana buƙatar tsarin magani",
+        "REGIMEN_REQUIRED": "Ana buƙatar maganin ARV",
         "BOTTLES_REQUIRED": "Ana buƙatar adadin kwalabe",
         "BOTTLES_MIN": "Mafi ƙarancin adadin kwalabe shine 1",
         "BATCH_NO_REQUIRED": "Batch No ana buƙatar",
@@ -55,7 +59,7 @@
         "NO_DATA": "Babu bayanan fitowar haja",
         "FACILITY": "Wurin lafiya",
         "SITE": "OFCAD Site",
-        "REGIMEN": "Tsarin magani",
+        "REGIMEN": "Magungunan ARV",
         "ISSUED": "An fitar da kwalabe",
         "BATCH_NO": "Batch No",
         "EXPIRATION_DATE": "Ranar karewa"
@@ -69,18 +73,19 @@
         "ISSUED": "An fitar da kwalabe",
         "ISSUED_REQUIRED": "Ana buƙatar adadin kwalabe",
         "ISSUED_MIN": "Mafi ƙarancin adadin kwalabe shine 1",
-        "ISSUED_MAX": "Za&#39;a iya bayar da iyakar {{MAX}} na tsarin magani da aka zaɓa",
+        "ISSUED_MAX": "Matsakaicin {{MAX}} na zaɓaɓɓen maganin ARV za a iya bayar",
         "SITE": "OFCAD Site",
         "SITE_REQUIRED": "Ana buƙatar Shafin OFCAD",
         "STOCK": "Shigar hannun jari",
         "STOCK_REQUIRED": "Ana buƙatar shigar da hannun jari",
-        "BALANCE": "Ma'auni na hannun jari"
+        "BALANCE": "Ma'auni na hannun jari",
+        "EDIT": "Gyara"
       }
     },
     "ASSIGNMENT": {
       "GIVEN_NAME": "Sunan rana",
       "FAMILY_NAME": "Sunan mahaifi",
-      "ASSIGNED_REGIMEN": "Tsarin tsari",
+      "ASSIGNED_REGIMEN": "Magungunan ARV da aka sanya",
       "SEX": "Jima'i",
       "HOSPITAL_NUMBER": "Lambar asibiti",
       "UNIQUE_ID": "Mai ganowa na musamman",
@@ -91,6 +96,21 @@
       "SEARCH": "Bincika...",
       "NO_DATA": "Babu bayanan haƙuri da akwai",
       "TITLE": "Aikin wurin mara lafiya"
+    },
+    "STOCK_REQUEST": {
+      "LIST_PAGE": {
+        "TITLE": "Jerin Neman hannun jari",
+        "DATE": "Ranar da aka nema",
+        "NO_DATA": "Babu bayanan buƙatun hannun jari",
+        "SITE": "OFCAD Site",
+        "REGIMEN": "Magungunan ARV",
+        "ISSUED": "An nemi kwalabe",
+        "SITES": "Shafukan OFCAD",
+        "ALL": "Duk Shafukan OFCAD",
+        "ARV_DRUG": "Magungunan ARV",
+        "BOTTLES": "kwalabe",
+        "ISSUE": "Bayar da jari"
+      }
     }
   }
 }

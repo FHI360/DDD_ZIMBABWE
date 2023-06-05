@@ -28,8 +28,13 @@ public class StockIssuance {
 
     private Boolean acknowledged;
 
+    private String batchIssuanceId;
+
     @ManyToOne
     private Organisation site;
+
+    @ManyToOne
+    private StockRequest request;
 
     @EntityView(StockIssuance.class)
     @CreatableEntityView
@@ -57,6 +62,11 @@ public class StockIssuance {
         Organisation.IdView getSite();
 
         void setSite(Organisation.IdView site);
+
+        @NotNull
+        StockRequest.IdView getRequest();
+
+        void setRequest(StockRequest.IdView request);
     }
 
     @EntityView(StockIssuance.class)

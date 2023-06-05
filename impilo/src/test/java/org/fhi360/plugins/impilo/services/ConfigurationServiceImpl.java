@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class ConfigurationServiceImpl implements ConfigurationService {
     @Override
-    public List<Configuration.View> list(String category, String key) {
+    public List<Configuration.CreateView> list(String category, String key) {
         return null;
     }
 

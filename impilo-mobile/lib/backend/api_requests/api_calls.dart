@@ -7,7 +7,9 @@ import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
 
-const BASE_URL = 'http://196.43.115.18';
+const _kPrivateApiFunctionName = 'ffPrivateApiCall';
+
+final log = Logger('ExampleLogger');
 
 class SiteActivationCall {
   static Future<ApiCallResponse> call({
@@ -15,7 +17,7 @@ class SiteActivationCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'Site Activation',
-      apiUrl: '$BASE_URL/api/impilo/activation/activate/site/$code',
+      apiUrl: 'http://192.168.1.220:8080/api/impilo/activation/activate/site/$code',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -43,11 +45,10 @@ class InventoryFulfillmentCall {
     String code = '',
     String uniqueId = '',
   }) {
-    code = code.toUpperCase();
     return ApiManager.instance.makeApiCall(
       callName: 'Inventory Fulfillment',
       apiUrl:
-          '$BASE_URL/api/impilo/inventory/fulfillment/site/$code/unique-id/$uniqueId',
+          'http://192.168.1.220:8080/api/impilo/inventory/fulfillment/site/$code/unique-id/$uniqueId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -74,7 +75,7 @@ class DiscontinueServiceCall {
     return ApiManager.instance.makeApiCall(
       callName: 'Service Discontinuation Request',
       apiUrl:
-          '$BASE_URL/api/impilo/activation/discontinue-services/client/$uniqueId/site/$siteCode',
+          'http://192.168.1.220:8080/api/impilo/activation/discontinue-services/client/$uniqueId/site/$siteCode',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -97,10 +98,11 @@ class InventoryRequestCall {
   }) {
     final items = _serializeJson(itemsJson);
     final body = items;
+    print('Request inventory: $items, $siteCode, $uniqueId, $date');
     return ApiManager.instance.makeApiCall(
       callName: 'Inventory Request',
       apiUrl:
-          '$BASE_URL/api/impilo/inventory/request/site/$siteCode/date/$date/unique-id/$uniqueId',
+          'http://192.168.1.220:8080/api/impilo/inventory/request/site/$siteCode/date/$date/unique-id/$uniqueId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -122,7 +124,7 @@ class AcknowledgeInventoryCall {
     return ApiManager.instance.makeApiCall(
       callName: 'Inventory Acknowledge',
       apiUrl:
-      '$BASE_URL/api/impilo/inventory/acknowledge/site/$siteCode/unique-id/$uniqueId',
+      'http://192.168.1.220:8080/api/impilo/inventory/acknowledge/site/$siteCode/unique-id/$uniqueId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},

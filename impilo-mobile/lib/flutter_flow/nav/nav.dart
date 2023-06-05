@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:impilo/app_state.dart';
-import 'package:impilo/backend/floor/entities/patient.dart';
 import 'package:impilo/components/pdf_preview.dart';
 import 'package:impilo/report_list/report_list.dart';
+import 'package:logging/logging.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../auth/firebase_user_provider.dart';
@@ -16,8 +15,6 @@ import 'serialization_util.dart';
 export 'package:go_router/go_router.dart';
 
 export 'serialization_util.dart';
-import 'package:logging/logging.dart';
-
 
 final log = Logger('ExampleLogger');
 const kTransitionInfoKey = '__transition_info__';
@@ -35,11 +32,9 @@ class AppStateNotifier extends ChangeNotifier {
   /// Otherwise, this will trigger a refresh and interrupt the action(s).
   bool notifyOnAuthChange = true;
 
-  bool get loading => user == null || showSplashImage;
+  bool get loading => false; //showSplashImage;
 
-  bool get loggedIn => user?.loggedIn ?? false;
-
-  bool get initiallyLoggedIn => initialUser?.loggedIn ?? false;
+  bool get loggedIn => FFAppState().code != '' ?? false;
 
   bool get shouldRedirect => loggedIn && _redirectLocation != null;
 
@@ -58,7 +53,6 @@ class AppStateNotifier extends ChangeNotifier {
   void update(ImpiloFirebaseUser newUser) {
     initialUser ??= newUser;
     user = newUser;
-    log.info("Site code", FFAppState().code);
     // Refresh the app on auth change unless explicitly marked otherwise.
     if (notifyOnAuthChange) {
       notifyListeners();
@@ -69,6 +63,7 @@ class AppStateNotifier extends ChangeNotifier {
   }
 
   void stopShowingSplashImage() {
+    print('Stop flash');
     showSplashImage = false;
     notifyListeners();
   }
@@ -78,26 +73,15 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, _) => appStateNotifier.loggedIn
-          ? FFAppState().code == null || FFAppState().code == ''
-              ? ActivateSiteWidget()
-              : SiteHomeWidget()
-          : LoginWidget(),
+      errorBuilder: (context, _) =>
+          appStateNotifier.loggedIn ? SiteHomeWidget() : LoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? FFAppState().code == null || FFAppState().code == ''
-                  ? ActivateSiteWidget()
-                  : SiteHomeWidget()
-                  : LoginWidget(),
+              appStateNotifier.loggedIn ? SiteHomeWidget() : LoginWidget(),
           routes: [
-            FFRoute(
-              name: 'signup',
-              path: 'signup',
-              builder: (context, params) => SignupWidget(),
-            ),
             FFRoute(
               name: 'login',
               path: 'login',
@@ -142,16 +126,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'patientProfile',
               path: 'patient-profile',
               builder: (context, params) => PatientProfileWidget(
-                patientId: params.getParam(
-                    'patientId', ParamType.int),
+                patientId: params.getParam('patientId', ParamType.int),
               ),
             ),
             FFRoute(
               name: 'refill',
               path: 'refill',
               builder: (context, params) => RefillWidget(
-                patientId: params.getParam(
-                    'patientId', ParamType.int),
+                patientId: params.getParam('patientId', ParamType.int),
               ),
             ),
             FFRoute(
@@ -357,6 +339,7 @@ class FFRoute {
           return null;
         },
         pageBuilder: (context, state) {
+          print('Loading: ${appStateNotifier.loading}');
           final ffParams = FFParameters(state, asyncParams);
           final page = ffParams.hasFutures
               ? FutureBuilder(

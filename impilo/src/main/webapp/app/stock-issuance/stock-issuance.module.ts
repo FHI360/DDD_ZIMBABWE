@@ -5,9 +5,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import {
     ActivatedRouteSnapshot,
     Router,
-    RouterLink, RouterModule,
+    RouterLink,
+    RouterModule,
     RouterOutlet,
-    RouterStateSnapshot, Routes,
+    RouterStateSnapshot,
+    Routes,
     UrlTree
 } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,14 +24,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StockIssuance, StockIssuanceService } from './stock-issuance.service';
 import { StockIssuanceDetailsComponent } from './components/details/stock-issuance.details.component';
 import { catchError, EMPTY, Observable } from 'rxjs';
-import { Stock, StockService } from '../stock/stock.service';
 import { PagedResult, SharedModule } from '@mattae/angular-shared';
-import { StockDetailsComponent } from '../stock/components/details/stock.details.component';
-import { StockListComponent } from '../stock/components/list/stock-list.component';
-import { StockManagerComponent } from '../stock/stock.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { StockRequest } from '../stock-request/stock-request.service';
 
 @Component({
     selector: 'issuance-manager',
@@ -46,6 +45,18 @@ const resolveIssuance = (route: ActivatedRouteSnapshot, state: RouterStateSnapsh
     return inject(StockIssuanceService).getById(id).pipe(
         catchError((err) => {
             router.navigateByUrl('/stock-issuance');
+            return EMPTY;
+        })
+    );
+}
+
+const resolveRequest = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<StockRequest> => {
+    const id = route.params['requestId'] ? route.params['requestId'] : null;
+    const router = inject(Router);
+    // @ts-ignore
+    return inject(StockIssuanceService).getRequest(id).pipe(
+        catchError((err) => {
+            router.navigateByUrl('/stock-requests');
             return EMPTY;
         })
     );
@@ -117,10 +128,13 @@ const ROUTES: Routes = [
                         canDeactivate: [canDeactivateStockIssuanceDetails]
                     },
                     {
-                        path: 'details',
+                        path: 'request/:requestId',
                         component: StockIssuanceDetailsComponent,
                         data: {
                             title: 'IMPILO.TITLE.ADD_STOCK_ISSUANCE'
+                        },
+                        resolve: {
+                            request: resolveRequest
                         },
                         canDeactivate: [canDeactivateStockIssuanceDetails]
                     }

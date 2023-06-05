@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -136,7 +135,7 @@ class _ActivateSiteWidgetState extends State<ActivateSiteWidget> {
                                   borderRadius: BorderRadius.circular(3.0),
                                 ),
                                 filled: true,
-                                fillColor: Color(0xFF747550),
+                                fillColor: Color(0xFFFFFFFF),
                                 contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 0.0, 24.0),
                               ),
@@ -158,8 +157,7 @@ class _ActivateSiteWidgetState extends State<ActivateSiteWidget> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         FFButtonWidget(
-                          onPressed: _model.codeController.text == null ||
-                                  _model.codeController.text == ''
+                          onPressed: _model.codeController.text == ''
                               ? null
                               : () async {
                                   var _shouldSetState = false;

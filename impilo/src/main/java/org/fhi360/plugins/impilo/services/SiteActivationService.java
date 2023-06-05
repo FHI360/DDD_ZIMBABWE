@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +29,10 @@ public class SiteActivationService {
     private final EntityManager em;
     private final CriteriaBuilderFactory cbf;
 
-    public ActivationData activate(String code) {
+    public ActivationData activate(UUID orgId) {
         var settings = EntityViewSetting.create(Organisation.ShortView.class);
         var cb = cbf.create(em, Organisation.class)
-            .where("party.identifiers.value").eq(code);
+            .where("id").eq(orgId);
         var organisations = evm.applySetting(settings, cb).getResultList();
         if (organisations.isEmpty()) {
             return new ActivationData();

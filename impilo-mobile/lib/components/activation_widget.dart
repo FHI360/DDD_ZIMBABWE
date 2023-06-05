@@ -115,9 +115,9 @@ class _ActivationWidgetState extends State<ActivationWidget> {
                     children: [
                       FFButtonWidget(
                         onPressed: () async {
-                          Navigator.pop(context);
+                          context.pushNamed('siteHome');
                         },
-                        text: 'Cancel',
+                        text: 'Close',
                         options: FFButtonOptions(
                           height: 40.0,
                           padding: EdgeInsetsDirectional.fromSTEB(
