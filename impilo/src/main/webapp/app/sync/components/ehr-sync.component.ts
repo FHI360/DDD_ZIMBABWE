@@ -56,10 +56,15 @@ export class EhrSyncComponent implements OnInit {
         const details = this.formGroup.value;
         this.syncing = true;
         this.syncService.sync(details.username, details.password).pipe(
-            map(_ => {
+            map(res => {
                 this.showAlert = true;
-                this.alert.message = this.translocoService.translate('IMPILO.SYNC.SUCCESS');
-                this.alert.type = 'success';
+                if (res) {
+                    this.alert.message = this.translocoService.translate('IMPILO.SYNC.SUCCESS');
+                    this.alert.type = 'success';
+                } else {
+                    this.alert.message = this.translocoService.translate('IMPILO.SYNC.ERROR');
+                    this.alert.type = 'error';
+                }
             }),
             catchError((err) => {
                 this.showAlert = true;

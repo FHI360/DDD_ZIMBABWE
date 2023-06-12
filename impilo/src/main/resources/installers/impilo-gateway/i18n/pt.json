@@ -98,7 +98,8 @@
       "SEARCH": "Procurar...",
       "NO_DATA": "Nenhum dado do paciente disponível",
       "TITLE": "Atribuição do local do paciente",
-      "facilityName": "Instalação"
+      "facilityName": "Instalação",
+      "FACILITY": "Instalação"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -117,7 +118,7 @@
     },
     "SYNC": {
       "SUCCESS": "Dados sincronizados com sucesso de e para o E.HR Server",
-      "ERROR": "Erro ao sincronizar dados com o E.HR Server",
+      "ERROR": "Erro ao sincronizar dados entre o desktop Impilo e o E.HR Server",
       "AUTHORIZATION_ERROR": "Não foi possível autenticar com o E.HR Server",
       "SYNCHRONIZE": "Sincronizar dados",
       "SYNCHRONIZATION": "Sincronizar dados"

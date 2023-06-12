@@ -98,7 +98,8 @@
       "SEARCH": "Chọọ...",
       "NO_DATA": "Enweghị data onye ọrịa dị",
       "TITLE": "Ọrụ saịtị onye ọrịa",
-      "facilityName": "Ihe owuwu"
+      "facilityName": "Ihe owuwu",
+      "FACILITY": "Ihe owuwu"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -117,7 +118,7 @@
     },
     "SYNC": {
       "SUCCESS": "Mekọrịtara data nke ọma na yana site na sava E.HR",
-      "ERROR": "Enwere mperi ijikọ data na sava E.HR",
+      "ERROR": "Njehie mekọrịta data n'etiti desktọpụ Impilo na sava E.HR",
       "AUTHORIZATION_ERROR": "Enweghị ike iji sava E.HR nyochaa ya",
       "SYNCHRONIZE": "Mekọrịta data",
       "SYNCHRONIZATION": "Mekọrịta data"

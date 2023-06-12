@@ -98,7 +98,8 @@
       "SEARCH": "Tafuta...",
       "NO_DATA": "Hakuna data ya mgonjwa inayopatikana",
       "TITLE": "Mgawo wa tovuti ya mgonjwa",
-      "facilityName": "Kituo"
+      "facilityName": "Kituo",
+      "FACILITY": "Kituo"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -117,7 +118,7 @@
     },
     "SYNC": {
       "SUCCESS": "Data imesawazishwa kwa mafanikio kwenda na kutoka kwa Seva ya E.HR",
-      "ERROR": "Hitilafu katika kusawazisha data kwenye Seva ya E.HR",
+      "ERROR": "Hitilafu katika kusawazisha data kati ya kompyuta ya mezani ya Impilo na Seva ya E.HR",
       "AUTHORIZATION_ERROR": "Haikuweza kuthibitisha na Seva ya E.HR",
       "SYNCHRONIZE": "Sawazisha data",
       "SYNCHRONIZATION": "Sawazisha data"

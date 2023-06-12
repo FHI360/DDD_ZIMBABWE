@@ -98,7 +98,8 @@
       "SEARCH": "Buscar...",
       "NO_DATA": "No hay datos de pacientes disponibles",
       "TITLE": "Asignación del sitio del paciente",
-      "facilityName": "Instalación"
+      "facilityName": "Instalación",
+      "FACILITY": "Instalación"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -117,7 +118,7 @@
     },
     "SYNC": {
       "SUCCESS": "Datos sincronizados con éxito hacia y desde el servidor E.HR",
-      "ERROR": "Error al sincronizar datos con el servidor E.HR",
+      "ERROR": "Error al sincronizar datos entre el escritorio Impilo y el servidor E.HR",
       "AUTHORIZATION_ERROR": "No se pudo autenticar con el servidor E.HR",
       "SYNCHRONIZE": "Sincronizar datos",
       "SYNCHRONIZATION": "Sincronizar datos"

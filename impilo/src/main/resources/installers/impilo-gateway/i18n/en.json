@@ -115,7 +115,7 @@
         },
         "SYNC": {
             "SUCCESS": "Data synced successfully to and from the E.HR Server",
-            "ERROR": "Error syncing data to the E.HR Server",
+            "ERROR": "Error syncing data between Impilo desktop the E.HR Server",
             "AUTHORIZATION_ERROR": "Couldn't authenticate with the E.HR Server",
             "SYNCHRONIZE": "Synchronize data",
             "SYNCHRONIZATION": "Synchronize data"

@@ -98,7 +98,8 @@
       "SEARCH": "Wa...",
       "NO_DATA": "Ko si data alaisan ti o wa",
       "TITLE": "Iṣẹ iyansilẹ ojula alaisan",
-      "facilityName": "Ohun elo"
+      "facilityName": "Ohun elo",
+      "FACILITY": "Ohun elo"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -117,7 +118,7 @@
     },
     "SYNC": {
       "SUCCESS": "Data muṣiṣẹpọ ni aṣeyọri si ati lati ọdọ olupin E.HR",
-      "ERROR": "Aṣiṣe mimuuṣiṣẹpọ data si olupin E.HR",
+      "ERROR": "Aṣiṣe mimuuṣiṣẹpọ data laarin tabili Impilo olupin E.HR",
       "AUTHORIZATION_ERROR": "Ko le ṣe idaniloju pẹlu olupin E.HR",
       "SYNCHRONIZE": "Mu data ṣiṣẹpọ",
       "SYNCHRONIZATION": "Mu data ṣiṣẹpọ"

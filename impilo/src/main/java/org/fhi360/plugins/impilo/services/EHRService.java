@@ -2,7 +2,7 @@ package org.fhi360.plugins.impilo.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.jbella.snl.core.api.services.TransactionHandler;
+import io.github.jbella.snl.core.api.services.ConfigurationService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
@@ -29,10 +29,9 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class EHRService {
-    private final static String BASE_URL = "http://197.221.242.150:10408";
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;
-    private final TransactionHandler transactionHandler;
+    private final ConfigurationService configurationService;
     private final PatientRepository patientRepository;
     private final PrescriptionRepository prescriptionRepository;
     private final RefillRepository refillRepository;
@@ -40,21 +39,25 @@ public class EHRService {
 
     @Transactional
     public boolean sync(String username, String password) throws URISyntaxException, IOException, InterruptedException {
-        String token = getAuthorizationToken(username, password);
-        processPatients(token);
-        saveTransactions(token);
+        Optional<String> url = configurationService.getValueAsStringForKey("IMPILO.SYNCHRONIZATION", "EHR_SERVER_URL");
+        if (url.isEmpty()) {
+            return false;
+        }
+        String token = "Bearer " + getAuthorizationToken(username, password, url.get());
+        processPatients(token, url.get());
+        saveTransactions(token, url.get());
         return true;
     }
 
-    public void processPatients(String token) throws URISyntaxException, IOException, InterruptedException {
-        List<Map<String, Object>> patients = retrievePatients(token);
-        List<Map<String, Object>> persons = retrievePersons(token);
-        List<Map<String, Object>> phones = retrievePhones(token);
-        List<Map<String, Object>> prescriptions = retrievePrescriptions(token);
+    public void processPatients(String token, String url) throws URISyntaxException, IOException, InterruptedException {
+        List<Map<String, Object>> patients = retrievePatients(token, url);
+        List<Map<String, Object>> persons = retrievePersons(token, url);
+        List<Map<String, Object>> phones = retrievePhones(token, url);
+        List<Map<String, Object>> prescriptions = retrievePrescriptions(token, url);
 
         patients.forEach(p -> {
-            Patient patient = patientRepository.findByPatientId(String.valueOf(p.get("id"))).orElse(new Patient());
-            patient.setPatientId(String.valueOf(p.get("id")));
+            Patient patient = patientRepository.findByPatientId(String.valueOf(p.get("patientId"))).orElse(new Patient());
+            patient.setPatientId(String.valueOf(p.get("patientId")));
             patient.setPersonId(String.valueOf(p.get("personId")));
             patient.setHospitalNumber(String.valueOf(p.get("hospitalNumber")));
             patient.setFacilityId(String.valueOf(p.get("facilityId")));
@@ -66,7 +69,7 @@ public class EHRService {
                     patient.setGivenName(String.valueOf(person.get("givenName")));
                     patient.setFamilyName(String.valueOf(person.get("familyName")));
                     patient.setSex(StringUtils.capitalize(StringUtils.lowerCase(String.valueOf(person.get("sex")))));
-                    patient.setDateOfBirth((LocalDate) person.get("givenName"));
+                    patient.setDateOfBirth((LocalDate) person.get("dateOfBirth"));
                     patient.setAddress(String.valueOf(person.get("address")));
 
                     phones.stream()
@@ -94,7 +97,7 @@ public class EHRService {
         });
     }
 
-    public void saveTransactions(String token) throws URISyntaxException, IOException, InterruptedException {
+    public void saveTransactions(String token, String url) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> dispenseDtoList = new ArrayList<>();
         List<Map<String, Object>> vitals = new ArrayList<>();
 
@@ -133,7 +136,7 @@ public class EHRService {
 
         var request = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
-            .uri(new URI(BASE_URL + "/api/data-sync/patient"))
+            .uri(new URI(url + "/api/data-sync/patient"))
             .header("Authorization", token)
             .header("Content-Type", "application/json")
             .build();
@@ -144,21 +147,24 @@ public class EHRService {
         }
     }
 
-    private List<Map<String, Object>> retrievePatients(String token) throws URISyntaxException, IOException, InterruptedException {
+    private List<Map<String, Object>> retrievePatients(String token, String url) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> patients = new ArrayList<>();
         int page = 0;
         boolean lastPage = false;
-        while (!lastPage) {
+        boolean ok = true;
+        while (!lastPage && ok) {
             var request = HttpRequest.newBuilder()
                 .GET()
-                .uri(new URI(BASE_URL + "/api/bulk/patient?size=50&sort=id&page=" + page))
+                .uri(new URI(url + "/api/bulk/patient?size=50&sort=id&page=" + page))
                 .header("Authorization", token)
                 .header("Content-Type", "application/json")
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            ok = response.statusCode() >= 200 && response.statusCode() < 300;
             JsonNode body = objectMapper.readTree(response.body());
-            if (body.at("content").isArray()) {
-                for (JsonNode record : body.at("content")) {
+            lastPage = body.at("/totalElements").asInt() == 0;
+            if (body.at("/content").isArray()) {
+                for (JsonNode record : body.at("/content")) {
                     String patientId = record.at("/id").asText();
                     String hospitalNumber = record.at("/hospitalNumber").asText();
                     String facilityId = record.at("/facility/id").asText();
@@ -182,19 +188,22 @@ public class EHRService {
         return patients;
     }
 
-    private List<Map<String, Object>> retrievePersons(String token) throws URISyntaxException, IOException, InterruptedException {
+    private List<Map<String, Object>> retrievePersons(String token, String url) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> persons = new ArrayList<>();
         int page = 0;
         boolean lastPage = false;
-        while (!lastPage) {
+        boolean ok = true;
+        while (!lastPage && ok) {
             var request = HttpRequest.newBuilder()
                 .GET()
-                .uri(new URI(BASE_URL + "/api/bulk/person?size=50&sort=id&page=" + page))
+                .uri(new URI(url + "/api/bulk/person?size=50&sort=id&page=" + page))
                 .header("Authorization", token)
                 .header("Content-Type", "application/json")
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             JsonNode body = objectMapper.readTree(response.body());
+            lastPage = body.at("/totalElements").asInt() == 0;
+            ok = response.statusCode() >= 200 && response.statusCode() < 300;
             if (body.at("/content").isArray()) {
                 for (JsonNode record : body.at("/content")) {
                     String id = record.at("/id").asText();
@@ -225,21 +234,24 @@ public class EHRService {
         return persons;
     }
 
-    private List<Map<String, Object>> retrievePhones(String token) throws URISyntaxException, IOException, InterruptedException {
+    private List<Map<String, Object>> retrievePhones(String token, String url) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> phones = new ArrayList<>();
         int page = 0;
         boolean lastPage = false;
-        while (!lastPage) {
+        boolean ok = true;
+        while (!lastPage && ok) {
             var request = HttpRequest.newBuilder()
                 .GET()
-                .uri(new URI(BASE_URL + "/api/bulk/person/phone?size=50&sort=id&page=" + page))
+                .uri(new URI(url + "/api/bulk/person/phone?size=50&sort=id&page=" + page))
                 .header("Authorization", token)
                 .header("Content-Type", "application/json")
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             JsonNode body = objectMapper.readTree(response.body());
-            if (body.at("content").isArray()) {
-                for (JsonNode record : body.at("content")) {
+            ok = response.statusCode() >= 200 && response.statusCode() < 300;
+            lastPage = body.at("/totalElements").asInt() == 0;
+            if (body.at("/content").isArray()) {
+                for (JsonNode record : body.at("/content")) {
                     String number = record.at("/number").asText();
                     String personId = record.at("/personId").asText();
                     lastPage = body.at("/last").asBoolean();
@@ -257,19 +269,22 @@ public class EHRService {
         return phones;
     }
 
-    private List<Map<String, Object>> retrievePrescriptions(String token) throws URISyntaxException, IOException, InterruptedException {
+    private List<Map<String, Object>> retrievePrescriptions(String token, String url) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> prescriptions = new ArrayList<>();
         int page = 0;
         boolean lastPage = false;
-        while (!lastPage) {
+        boolean ok = true;
+        while (!lastPage && ok) {
             var request = HttpRequest.newBuilder()
                 .GET()
-                .uri(new URI(BASE_URL + "/api/bulk/person/prescription?size=50&sort=id&page=" + page))
+                .uri(new URI(url + "/api/bulk/person/prescription?size=50&sort=id&page=" + page))
                 .header("Authorization", token)
                 .header("Content-Type", "application/json")
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            ok = response.statusCode() >= 200 && response.statusCode() < 300;
             JsonNode body = objectMapper.readTree(response.body());
+            lastPage = body.at("/totalElements").asInt() == 0;
             if (body.at("/content").isArray()) {
                 for (JsonNode record : body.at("/content")) {
                     String id = record.at("/prescriptionId").asText();
@@ -297,14 +312,14 @@ public class EHRService {
         return prescriptions;
     }
 
-    private String getAuthorizationToken(String username, String password) {
+    private String getAuthorizationToken(String username, String password, String url) {
         try {
             Map<String, String> requestBody = new HashMap<>();
             requestBody.put("username", username);
             requestBody.put("password", password);
             var request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
-                .uri(new URI(BASE_URL + "/api/authenticate"))
+                .uri(new URI(url + "/api/authenticate"))
                 .header("Authorization", "")
                 .header("Content-Type", "application/json")
                 .build();

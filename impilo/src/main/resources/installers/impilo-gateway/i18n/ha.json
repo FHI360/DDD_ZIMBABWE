@@ -98,7 +98,8 @@
       "SEARCH": "Bincika...",
       "NO_DATA": "Babu bayanan haƙuri da akwai",
       "TITLE": "Aikin wurin mara lafiya",
-      "facilityName": "Kayan aiki"
+      "facilityName": "Kayan aiki",
+      "FACILITY": "Kayan aiki"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -117,7 +118,7 @@
     },
     "SYNC": {
       "SUCCESS": "Bayanan da aka daidaita cikin nasara zuwa kuma daga Sabar E.HR",
-      "ERROR": "Kuskuren daidaita bayanai zuwa uwar garken E.HR",
+      "ERROR": "Kuskuren daidaita bayanai tsakanin tebur na Impilo sabar E.HR",
       "AUTHORIZATION_ERROR": "An kasa tantancewa tare da Sabar E.HR",
       "SYNCHRONIZE": "Aiki tare bayanai",
       "SYNCHRONIZATION": "Aiki tare bayanai"

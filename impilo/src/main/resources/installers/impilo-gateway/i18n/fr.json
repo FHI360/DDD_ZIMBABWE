@@ -98,7 +98,8 @@
       "SEARCH": "Recherche...",
       "NO_DATA": "Aucune donnée disponible sur les patients",
       "TITLE": "Affectation du site patient",
-      "facilityName": "Facilité"
+      "facilityName": "Facilité",
+      "FACILITY": "Facilité"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -117,7 +118,7 @@
     },
     "SYNC": {
       "SUCCESS": "Synchronisation réussie des données vers et depuis le serveur E.HR",
-      "ERROR": "Erreur lors de la synchronisation des données avec le serveur E.HR",
+      "ERROR": "Erreur de synchronisation des données entre le bureau Impilo et le serveur E.HR",
       "AUTHORIZATION_ERROR": "Impossible de s'authentifier auprès du serveur E.HR",
       "SYNCHRONIZE": "Synchroniser les données",
       "SYNCHRONIZATION": "Synchroniser les données"
