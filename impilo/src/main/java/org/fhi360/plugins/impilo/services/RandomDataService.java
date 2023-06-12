@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -97,42 +98,12 @@ public class RandomDataService {
             patient.setPhoneNumber(faker.phoneNumber().cellPhone());
             patient.setAddress(faker.address().fullAddress());
             patient.setRegimen(regimens.get(rand.nextInt(regimens.size())));
-            patient.setLastViralLoadDate(faker.date().past(90, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
-            if (patient.getSex().equals("Female")) {
-                patient.setNextCervicalCancerDate(faker.date().future(90, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
-            }
-            patient.setNextViralLoadDate(faker.date().future(180, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
-            patient.setNextTptDate(faker.date().future(180, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
+            patient.setFacilityName(faker.medical().hospitalName());
+            patient.setFacilityId(UUID.randomUUID().toString());
             patient.setNextAppointmentDate(faker.date().future(180, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
 
             patientRepository.save(patient);
         }
-    }
-
-    private void generateClinicData() {
-        patientRepository.findAll()
-            .forEach(patient -> {
-                for (int i = 0; i < rand.nextInt(1, 3); i++) {
-                    ClinicData clinicData = new ClinicData();
-                    clinicData.setPatient(patient);
-                    clinicData.setDate(faker.date().past(90, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
-                    clinicData.setDiastolic(rand.nextInt(60, 120));
-                    clinicData.setSystolic(rand.nextInt(60, 160));
-                    clinicData.setWeight(rand.nextFloat(40, 180));
-                    clinicData.setTemperature(rand.nextFloat(20, 43));
-                    clinicData.setFever(rand.nextBoolean());
-                    clinicData.setCoughing(rand.nextBoolean());
-                    clinicData.setSweating(rand.nextBoolean());
-                    clinicData.setSwelling(rand.nextBoolean());
-                    clinicData.setTbReferred(rand.nextBoolean());
-                        /*clinicData.setViralLoadDueDate(
-                                faker.date().future(504, TimeUnit.DAYS,
-                                                Date.from(clinicData.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant()))
-                                        .toLocalDateTime().toLocalDate());*/
-
-                    clinicDataRepository.save(clinicData);
-                }
-            });
     }
 
     private void generateRefill() {
@@ -153,6 +124,8 @@ public class RandomDataService {
                     refill.setAdverseIssues(rand.nextBoolean());
                     refill.setMissedDose(rand.nextBoolean());
                     refill.setQtyPrescribed(duration);
+                    refill.setSynced(true);
+                    refill.setFromServer(true);
                     refill.setQtyDispensed(refill.getQtyPrescribed());
                     refill.setDateNextRefill(refill.getDate().plusDays(refill.getQtyDispensed()));
 

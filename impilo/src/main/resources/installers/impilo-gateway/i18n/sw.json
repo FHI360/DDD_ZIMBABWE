@@ -5,7 +5,8 @@
       "STOCKS": "Hisa",
       "STOCK_ISSUANCE": "Utoaji wa hisa",
       "STOCK_REQUEST": "Ombi la hisa",
-      "REPORTS": "Ripoti ya Viashiria vya OFCAD"
+      "REPORTS": "Ripoti ya Viashiria vya OFCAD",
+      "SYNC": "Usawazishaji wa E.HR"
     },
     "TITLE": {
       "STOCKS": "Hisa",
@@ -16,7 +17,8 @@
       "ADD_STOCK_ISSUANCE": "Rekodi utoaji wa hisa",
       "PATIENTS": "Wagonjwa",
       "STOCK_REQUEST": "Ombi la hisa",
-      "REPORTS": "Ripoti ya Viashiria vya OFCAD"
+      "REPORTS": "Ripoti ya Viashiria vya OFCAD",
+      "SYNC": "Usawazishaji wa E.HR"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -95,7 +97,8 @@
       "ALL": "Wagonjwa wote",
       "SEARCH": "Tafuta...",
       "NO_DATA": "Hakuna data ya mgonjwa inayopatikana",
-      "TITLE": "Mgawo wa tovuti ya mgonjwa"
+      "TITLE": "Mgawo wa tovuti ya mgonjwa",
+      "facilityName": "Kituo"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -111,6 +114,13 @@
         "BOTTLES": "Chupa",
         "ISSUE": "Suala hisa"
       }
+    },
+    "SYNC": {
+      "SUCCESS": "Data imesawazishwa kwa mafanikio kwenda na kutoka kwa Seva ya E.HR",
+      "ERROR": "Hitilafu katika kusawazisha data kwenye Seva ya E.HR",
+      "AUTHORIZATION_ERROR": "Haikuweza kuthibitisha na Seva ya E.HR",
+      "SYNCHRONIZE": "Sawazisha data",
+      "SYNCHRONIZATION": "Sawazisha data"
     }
   }
 }

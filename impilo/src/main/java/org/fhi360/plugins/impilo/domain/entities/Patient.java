@@ -42,19 +42,7 @@ public class Patient {
 
     private String regimen;
 
-    private LocalDate lastViralLoadDate;
-
-    private LocalDate nextClinicVisit;
-
-    private LocalDate nextRefillDate;
-
-    private LocalDate nextViralLoadDate;
-
     private LocalDate nextAppointmentDate;
-
-    private LocalDate nextCervicalCancerDate;
-
-    private LocalDate nextTptDate;
 
     private String personId;
 
@@ -76,7 +64,7 @@ public class Patient {
         LocalDate dateOfBirth, String address,
         String phoneNumber, String hospitalNumber, String regimen,
         @MappingSubquery(PatientSiteSubqueryProvider.class)
-        String site
+        String site, String facilityName
     ) {
     }
 
@@ -89,8 +77,7 @@ public class Patient {
                        @MappingSubquery(LastClinicDateSubqueryProvider.class)
                        LocalDate lastClinicVisit,
                        @MappingSubquery(DateOfNextRefillSubqueryProvider.class)
-                       LocalDate nextRefillDate, LocalDate nextCervicalCancerDate,
-                       LocalDate nextTptDate, LocalDate nextViralLoadDate,
+                       LocalDate nextRefillDate,
                        @Mapping("Refill[patient.id IN VIEW(id)]")
                        List<RefillView> refills) {
         @EntityView(Refill.class)

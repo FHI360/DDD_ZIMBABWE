@@ -1,5 +1,6 @@
 description: Gateway application to support connectivity between the Impilo mobile app and E.HR server at the facility. Also manages bidirectional sync between the two components and a stop gap for features not available yet on the E.HR server
 name: Impilo E.HR Gateway
+configurationsPath: installers/impilo-gateway/config.json
 translations:
   - lang: en
     path: installers/impilo-gateway/i18n/en.json
@@ -38,8 +39,13 @@ menus:
   - name: IMPILO.MENU.REPORTS
     type: link
     route: reports
-    icon: cases
+    icon: report
     position: 3
+  - name: IMPILO.MENU.SYNC
+    type: link
+    route: sync
+    icon: sync
+    position: 4
 webRemotes:
   - remoteEntry: "/js/impilo-gateway/remoteEntry.js"
     remoteName: _5e665722_af83_4c02_82c0_48e62d779674
@@ -64,3 +70,6 @@ webRemotes:
         ngModuleName: ReportsModule
         routePath: reports
         title: IMPILO.TITLE.REPORTS
+      - name: EhrSyncRoutes
+        routePath: sync
+        title: IMPILO.TITLE.SYNC

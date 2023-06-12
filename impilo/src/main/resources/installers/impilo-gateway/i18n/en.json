@@ -5,7 +5,8 @@
             "STOCKS": "Stocks",
             "STOCK_ISSUANCE": "Stocks issuance",
             "STOCK_REQUEST": "Stocks request",
-            "REPORTS": "OFCAD Indicators Report"
+            "REPORTS": "OFCAD Indicators Report",
+            "SYNC": "E.HR Synchronization"
         },
         "TITLE": {
             "STOCKS": "Stocks",
@@ -16,7 +17,8 @@
             "STOCK_ISSUANCE": "Stock issuance details",
             "ADD_STOCK_ISSUANCE": "Record stock issuance",
             "STOCK_REQUEST": "Stocks request",
-            "REPORTS": "OFCAD Indicators Report"
+            "REPORTS": "OFCAD Indicators Report",
+            "SYNC": "E.HR Synchronization"
         },
         "STOCK": {
             "LIST_PAGE": {
@@ -88,7 +90,7 @@
             "ASSIGNED_REGIMEN": "Assigned ARV Drug",
             "SEX": "Sex",
             "HOSPITAL_NUMBER": "Hospital number",
-            "facilityName": "Facility",
+            "FACILITY": "Facility",
             "SITE": "OFCAD Site",
             "ASSIGNED": "Assigned",
             "UNASSIGNED": "Unassigned",
@@ -110,6 +112,13 @@
                 "BOTTLES": "Bottles",
                 "ISSUE": "Issue stock"
             }
+        },
+        "SYNC": {
+            "SUCCESS": "Data synced successfully to and from the E.HR Server",
+            "ERROR": "Error syncing data to the E.HR Server",
+            "AUTHORIZATION_ERROR": "Couldn't authenticate with the E.HR Server",
+            "SYNCHRONIZE": "Synchronize data",
+            "SYNCHRONIZATION": "Synchronize data"
         }
     }
 }

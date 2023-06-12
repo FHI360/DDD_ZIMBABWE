@@ -26,11 +26,14 @@ export const APP_ROUTES: Routes = [
         path: 'stock-requests',
         loadChildren: () => import('./stock-request/stock.request.module')
             .then(m => m.StockRequestModule)
-    }
-    ,
+    },
     {
         path: 'reports',
         loadChildren: () => import('./reports/reports.module')
             .then(m => m.ReportsModule)
+    },
+    {
+        path: 'sync',
+        loadChildren: () => import('./sync/sync.routes')
     }
 ];

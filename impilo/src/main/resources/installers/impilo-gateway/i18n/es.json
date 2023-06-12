@@ -5,7 +5,8 @@
       "STOCKS": "Cepo",
       "STOCK_ISSUANCE": "Emisión de acciones",
       "STOCK_REQUEST": "Solicitud de existencias",
-      "REPORTS": "Informe de indicadores OFCAD"
+      "REPORTS": "Informe de indicadores OFCAD",
+      "SYNC": "Sincronización E.HR"
     },
     "TITLE": {
       "STOCKS": "Cepo",
@@ -16,7 +17,8 @@
       "ADD_STOCK_ISSUANCE": "Récord de emisión de acciones",
       "PATIENTS": "Pacientes",
       "STOCK_REQUEST": "Solicitud de existencias",
-      "REPORTS": "Informe de indicadores OFCAD"
+      "REPORTS": "Informe de indicadores OFCAD",
+      "SYNC": "Sincronización E.HR"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -95,7 +97,8 @@
       "ALL": "Todos los pacientes",
       "SEARCH": "Buscar...",
       "NO_DATA": "No hay datos de pacientes disponibles",
-      "TITLE": "Asignación del sitio del paciente"
+      "TITLE": "Asignación del sitio del paciente",
+      "facilityName": "Instalación"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -111,6 +114,13 @@
         "BOTTLES": "Botellas",
         "ISSUE": "Emitir acciones"
       }
+    },
+    "SYNC": {
+      "SUCCESS": "Datos sincronizados con éxito hacia y desde el servidor E.HR",
+      "ERROR": "Error al sincronizar datos con el servidor E.HR",
+      "AUTHORIZATION_ERROR": "No se pudo autenticar con el servidor E.HR",
+      "SYNCHRONIZE": "Sincronizar datos",
+      "SYNCHRONIZATION": "Sincronizar datos"
     }
   }
 }

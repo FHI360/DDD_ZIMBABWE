@@ -2,6 +2,7 @@ package org.fhi360.plugins.impilo.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.jbella.snl.core.api.services.TransactionHandler;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
@@ -10,6 +11,7 @@ import org.fhi360.plugins.impilo.domain.repositories.ClinicDataRepository;
 import org.fhi360.plugins.impilo.domain.repositories.PatientRepository;
 import org.fhi360.plugins.impilo.domain.repositories.PrescriptionRepository;
 import org.fhi360.plugins.impilo.domain.repositories.RefillRepository;
+import org.fhi360.plugins.impilo.web.errors.AuthenticationError;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,16 +32,25 @@ public class EHRService {
     private final static String BASE_URL = "http://197.221.242.150:10408";
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;
+    private final TransactionHandler transactionHandler;
     private final PatientRepository patientRepository;
     private final PrescriptionRepository prescriptionRepository;
     private final RefillRepository refillRepository;
     private final ClinicDataRepository clinicDataRepository;
 
-    public void processPatients() throws URISyntaxException, IOException, InterruptedException {
-        List<Map<String, Object>> patients = retrievePatients();
-        List<Map<String, Object>> persons = retrievePersons();
-        List<Map<String, Object>> phones = retrievePhones();
-        List<Map<String, Object>> prescriptions = retrievePrescriptions();
+    @Transactional
+    public boolean sync(String username, String password) throws URISyntaxException, IOException, InterruptedException {
+        String token = getAuthorizationToken(username, password);
+        processPatients(token);
+        saveTransactions(token);
+        return true;
+    }
+
+    public void processPatients(String token) throws URISyntaxException, IOException, InterruptedException {
+        List<Map<String, Object>> patients = retrievePatients(token);
+        List<Map<String, Object>> persons = retrievePersons(token);
+        List<Map<String, Object>> phones = retrievePhones(token);
+        List<Map<String, Object>> prescriptions = retrievePrescriptions(token);
 
         patients.forEach(p -> {
             Patient patient = patientRepository.findByPatientId(String.valueOf(p.get("id"))).orElse(new Patient());
@@ -83,8 +94,7 @@ public class EHRService {
         });
     }
 
-    @Transactional
-    public void saveTransactions() throws URISyntaxException, IOException, InterruptedException {
+    public void saveTransactions(String token) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> dispenseDtoList = new ArrayList<>();
         List<Map<String, Object>> vitals = new ArrayList<>();
 
@@ -124,20 +134,18 @@ public class EHRService {
         var request = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
             .uri(new URI(BASE_URL + "/api/data-sync/patient"))
-            .header("Authorization", "")
+            .header("Authorization", token)
             .header("Content-Type", "application/json")
             .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        JsonNode body = objectMapper.readTree(response.body());
         if (response.statusCode() >= 200 && response.statusCode() < 300) {
             refillRepository.updateSyncStatus();
             clinicDataRepository.updateSyncStatus();
         }
     }
 
-    private List<Map<String, Object>> retrievePatients() throws URISyntaxException, IOException, InterruptedException {
+    private List<Map<String, Object>> retrievePatients(String token) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> patients = new ArrayList<>();
-        var token = "";
         int page = 0;
         boolean lastPage = false;
         while (!lastPage) {
@@ -174,9 +182,8 @@ public class EHRService {
         return patients;
     }
 
-    private List<Map<String, Object>> retrievePersons() throws URISyntaxException, IOException, InterruptedException {
+    private List<Map<String, Object>> retrievePersons(String token) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> persons = new ArrayList<>();
-        var token = "";
         int page = 0;
         boolean lastPage = false;
         while (!lastPage) {
@@ -218,9 +225,8 @@ public class EHRService {
         return persons;
     }
 
-    private List<Map<String, Object>> retrievePhones() throws URISyntaxException, IOException, InterruptedException {
+    private List<Map<String, Object>> retrievePhones(String token) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> phones = new ArrayList<>();
-        var token = "";
         int page = 0;
         boolean lastPage = false;
         while (!lastPage) {
@@ -251,9 +257,8 @@ public class EHRService {
         return phones;
     }
 
-    private List<Map<String, Object>> retrievePrescriptions() throws URISyntaxException, IOException, InterruptedException {
+    private List<Map<String, Object>> retrievePrescriptions(String token) throws URISyntaxException, IOException, InterruptedException {
         List<Map<String, Object>> prescriptions = new ArrayList<>();
-        var token = "";
         int page = 0;
         boolean lastPage = false;
         while (!lastPage) {
@@ -290,5 +295,28 @@ public class EHRService {
         }
 
         return prescriptions;
+    }
+
+    private String getAuthorizationToken(String username, String password) {
+        try {
+            Map<String, String> requestBody = new HashMap<>();
+            requestBody.put("username", username);
+            requestBody.put("password", password);
+            var request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
+                .uri(new URI(BASE_URL + "/api/authenticate"))
+                .header("Authorization", "")
+                .header("Content-Type", "application/json")
+                .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            JsonNode body = objectMapper.readTree(response.body());
+            if (response.statusCode() == 200) {
+                return body.at("/id_token").asText();
+            }
+        } catch (Exception ignored) {
+
+        }
+
+        throw new AuthenticationError();
     }
 }

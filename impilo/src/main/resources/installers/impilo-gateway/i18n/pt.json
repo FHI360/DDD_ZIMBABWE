@@ -5,7 +5,8 @@
       "STOCKS": "Ações",
       "STOCK_ISSUANCE": "emissão de ações",
       "STOCK_REQUEST": "Solicitação de ações",
-      "REPORTS": "Relatório de Indicadores do OFCAD"
+      "REPORTS": "Relatório de Indicadores do OFCAD",
+      "SYNC": "Sincronização E.HR"
     },
     "TITLE": {
       "STOCKS": "Ações",
@@ -16,7 +17,8 @@
       "ADD_STOCK_ISSUANCE": "Emissão de ações recorde",
       "PATIENTS": "Pacientes",
       "STOCK_REQUEST": "Solicitação de ações",
-      "REPORTS": "Relatório de Indicadores do OFCAD"
+      "REPORTS": "Relatório de Indicadores do OFCAD",
+      "SYNC": "Sincronização E.HR"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -95,7 +97,8 @@
       "ALL": "Todos os pacientes",
       "SEARCH": "Procurar...",
       "NO_DATA": "Nenhum dado do paciente disponível",
-      "TITLE": "Atribuição do local do paciente"
+      "TITLE": "Atribuição do local do paciente",
+      "facilityName": "Instalação"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -111,6 +114,13 @@
         "BOTTLES": "Garrafas",
         "ISSUE": "Emitir ações"
       }
+    },
+    "SYNC": {
+      "SUCCESS": "Dados sincronizados com sucesso de e para o E.HR Server",
+      "ERROR": "Erro ao sincronizar dados com o E.HR Server",
+      "AUTHORIZATION_ERROR": "Não foi possível autenticar com o E.HR Server",
+      "SYNCHRONIZE": "Sincronizar dados",
+      "SYNCHRONIZATION": "Sincronizar dados"
     }
   }
 }

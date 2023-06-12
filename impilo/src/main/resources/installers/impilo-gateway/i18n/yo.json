@@ -5,7 +5,8 @@
       "STOCKS": "Ọjà",
       "STOCK_ISSUANCE": "Ipinfunni awọn ọja",
       "STOCK_REQUEST": "Akojopo ìbéèrè",
-      "REPORTS": "OFCAD Ifi Iroyin"
+      "REPORTS": "OFCAD Ifi Iroyin",
+      "SYNC": "E.HR Amuṣiṣẹpọ"
     },
     "TITLE": {
       "STOCKS": "Ọjà",
@@ -16,7 +17,8 @@
       "ADD_STOCK_ISSUANCE": "Igbasilẹ ipinfunni iṣura",
       "PATIENTS": "Awọn alaisan",
       "STOCK_REQUEST": "Akojopo ìbéèrè",
-      "REPORTS": "OFCAD Ifi Iroyin"
+      "REPORTS": "OFCAD Ifi Iroyin",
+      "SYNC": "E.HR Amuṣiṣẹpọ"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -95,7 +97,8 @@
       "ALL": "Gbogbo awọn alaisan",
       "SEARCH": "Wa...",
       "NO_DATA": "Ko si data alaisan ti o wa",
-      "TITLE": "Iṣẹ iyansilẹ ojula alaisan"
+      "TITLE": "Iṣẹ iyansilẹ ojula alaisan",
+      "facilityName": "Ohun elo"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -111,6 +114,13 @@
         "BOTTLES": "Awọn igo",
         "ISSUE": "Ọja iṣura"
       }
+    },
+    "SYNC": {
+      "SUCCESS": "Data muṣiṣẹpọ ni aṣeyọri si ati lati ọdọ olupin E.HR",
+      "ERROR": "Aṣiṣe mimuuṣiṣẹpọ data si olupin E.HR",
+      "AUTHORIZATION_ERROR": "Ko le ṣe idaniloju pẹlu olupin E.HR",
+      "SYNCHRONIZE": "Mu data ṣiṣẹpọ",
+      "SYNCHRONIZATION": "Mu data ṣiṣẹpọ"
     }
   }
 }

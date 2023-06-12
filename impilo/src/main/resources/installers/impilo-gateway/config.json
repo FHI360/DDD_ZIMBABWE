@@ -1,6 +1,7 @@
 [
     {
         "category": "CORE.CONFIGURATION.SYSTEM_CONFIGURATIONS",
+        "order": 2,
         "data": [
             {
                 "key": "APP_TITLE",

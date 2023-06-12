@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -219,7 +220,10 @@
                             <Plugin-Version>${project.version}</Plugin-Version>
                             <Plugin-Provider>Matthew Edor&lt;&lt;medor@fhi360.org&gt;&gt;</Plugin-Provider>
                             <Plugin-Dependencies>angular-frontend</Plugin-Dependencies>
-                            <Plugin-Description>Gateway application to support connectivity between the Impilo mobile app and E.HR server at the facility. Also manages bidirectional sync between the two components and a stop gap for features not available yet on the E.HR server</Plugin-Description>
+                            <Plugin-Description>Gateway application to support connectivity between the Impilo mobile
+                                app and E.HR server at the facility. Also manages bidirectional sync between the two
+                                components and a stop gap for features not available yet on the E.HR server
+                            </Plugin-Description>
                             <Plugin-Class>org.fhi360.plugins.impilo.ImpiloGatewayPlugin</Plugin-Class>
                         </manifestEntries>
                     </archive>
@@ -273,6 +277,7 @@
                         </goals>
                         <configuration>
                             <artifactSet>
+                                <!--These are only included for random data generation; won't be included for production deployment-->
                                 <includes>
                                     <include>net.datafaker:datafaker</include>
                                     <include>com.github.javafaker:javafaker</include>

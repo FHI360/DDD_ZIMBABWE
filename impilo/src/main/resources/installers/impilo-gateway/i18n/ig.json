@@ -5,7 +5,8 @@
       "STOCKS": "Ebuka",
       "STOCK_ISSUANCE": "Ntinye ego",
       "STOCK_REQUEST": "Arịrịọ ebuka",
-      "REPORTS": "Akụkọ ihe ngosi OFCAD"
+      "REPORTS": "Akụkọ ihe ngosi OFCAD",
+      "SYNC": "Mmekọrịta E.HR"
     },
     "TITLE": {
       "STOCKS": "Ebuka",
@@ -16,7 +17,8 @@
       "ADD_STOCK_ISSUANCE": "Dekọọ mmepụta ngwaahịa",
       "PATIENTS": "Ndị ọrịa",
       "STOCK_REQUEST": "Arịrịọ ebuka",
-      "REPORTS": "Akụkọ ihe ngosi OFCAD"
+      "REPORTS": "Akụkọ ihe ngosi OFCAD",
+      "SYNC": "Mmekọrịta E.HR"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -95,7 +97,8 @@
       "ALL": "Ndị ọrịa niile",
       "SEARCH": "Chọọ...",
       "NO_DATA": "Enweghị data onye ọrịa dị",
-      "TITLE": "Ọrụ saịtị onye ọrịa"
+      "TITLE": "Ọrụ saịtị onye ọrịa",
+      "facilityName": "Ihe owuwu"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -111,6 +114,13 @@
         "BOTTLES": "Klas",
         "ISSUE": "Wepụta ngwaahịa"
       }
+    },
+    "SYNC": {
+      "SUCCESS": "Mekọrịtara data nke ọma na yana site na sava E.HR",
+      "ERROR": "Enwere mperi ijikọ data na sava E.HR",
+      "AUTHORIZATION_ERROR": "Enweghị ike iji sava E.HR nyochaa ya",
+      "SYNCHRONIZE": "Mekọrịta data",
+      "SYNCHRONIZATION": "Mekọrịta data"
     }
   }
 }

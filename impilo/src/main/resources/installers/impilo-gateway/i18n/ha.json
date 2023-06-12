@@ -5,7 +5,8 @@
       "STOCKS": "Hannun jari",
       "STOCK_ISSUANCE": "Bayar da hannun jari",
       "STOCK_REQUEST": "Neman hannun jari",
-      "REPORTS": "Rahoton Manuniya na OFCAD"
+      "REPORTS": "Rahoton Manuniya na OFCAD",
+      "SYNC": "E.HR Aiki tare"
     },
     "TITLE": {
       "STOCKS": "Hannun jari",
@@ -16,7 +17,8 @@
       "ADD_STOCK_ISSUANCE": "Yi rikodin fitar da hannun jari",
       "PATIENTS": "Marasa lafiya",
       "STOCK_REQUEST": "Neman hannun jari",
-      "REPORTS": "Rahoton Manuniya na OFCAD"
+      "REPORTS": "Rahoton Manuniya na OFCAD",
+      "SYNC": "E.HR Aiki tare"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -95,7 +97,8 @@
       "ALL": "Duk marasa lafiya",
       "SEARCH": "Bincika...",
       "NO_DATA": "Babu bayanan haƙuri da akwai",
-      "TITLE": "Aikin wurin mara lafiya"
+      "TITLE": "Aikin wurin mara lafiya",
+      "facilityName": "Kayan aiki"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -111,6 +114,13 @@
         "BOTTLES": "kwalabe",
         "ISSUE": "Bayar da jari"
       }
+    },
+    "SYNC": {
+      "SUCCESS": "Bayanan da aka daidaita cikin nasara zuwa kuma daga Sabar E.HR",
+      "ERROR": "Kuskuren daidaita bayanai zuwa uwar garken E.HR",
+      "AUTHORIZATION_ERROR": "An kasa tantancewa tare da Sabar E.HR",
+      "SYNCHRONIZE": "Aiki tare bayanai",
+      "SYNCHRONIZATION": "Aiki tare bayanai"
     }
   }
 }
