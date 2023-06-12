@@ -14,7 +14,7 @@ export interface Patient {
     phoneNumber?: string;
     address?: string;
     hospitalNumber?: string;
-    uniqueId?: string;
+    facilityName?: string;
     regimen?: string;
     site?: string,
     facility?: string

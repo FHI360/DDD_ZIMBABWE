@@ -54,7 +54,7 @@ public class EHRService {
                 .findFirst().ifPresent(person -> {
                     patient.setGivenName(String.valueOf(person.get("givenName")));
                     patient.setFamilyName(String.valueOf(person.get("familyName")));
-                    patient.setSex(String.valueOf(person.get("sex")));
+                    patient.setSex(StringUtils.capitalize(StringUtils.lowerCase(String.valueOf(person.get("sex")))));
                     patient.setDateOfBirth((LocalDate) person.get("givenName"));
                     patient.setAddress(String.valueOf(person.get("address")));
 

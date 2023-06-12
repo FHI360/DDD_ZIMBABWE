@@ -88,7 +88,7 @@
             "ASSIGNED_REGIMEN": "Assigned ARV Drug",
             "SEX": "Sex",
             "HOSPITAL_NUMBER": "Hospital number",
-            "UNIQUE_ID": "Unique identifier",
+            "facilityName": "Facility",
             "SITE": "OFCAD Site",
             "ASSIGNED": "Assigned",
             "UNASSIGNED": "Unassigned",

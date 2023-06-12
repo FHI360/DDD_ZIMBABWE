@@ -37,6 +37,13 @@ export class SiteAssignmentComponent implements OnInit, OnDestroy {
 
     columns: any[] = [
         {
+            label: 'IMPILO.ASSIGNMENT.FACILITY',
+            property: 'facilityName',
+            type: 'text',
+            visible: true,
+            cssClasses: ['font-medium']
+        },
+        {
             label: 'IMPILO.ASSIGNMENT.GIVEN_NAME',
             property: 'givenName',
             type: 'text',
@@ -67,13 +74,6 @@ export class SiteAssignmentComponent implements OnInit, OnDestroy {
         {
             label: 'IMPILO.ASSIGNMENT.HOSPITAL_NUMBER',
             property: 'hospitalNumber',
-            type: 'text',
-            visible: true,
-            cssClasses: ['font-medium']
-        },
-        {
-            label: 'IMPILO.ASSIGNMENT.UNIQUE_ID',
-            property: 'uniqueId',
             type: 'text',
             visible: true,
             cssClasses: ['font-medium']
