@@ -33,44 +33,22 @@
             <column name="hospital_number" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
-            <column name="unique_id" type="varchar(64)">
-                <constraints nullable="false" unique="true"/>
-            </column>
             <column name="address" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>
             <column name="regimen" type="varchar(128)">
                 <constraints nullable="true"/>
             </column>
-            <column name="last_viral_load_date" type="date">
-                <constraints nullable="true"/>
-            </column>
             <column name="next_appointment_date" type="date">
                 <constraints nullable="true"/>
             </column>
-            <column name="next_clinic_visit" type="date">
-                <constraints nullable="true"/>
+            <column name="facility_id" type="varchar(64)">
+                <constraints nullable="false"/>
             </column>
-            <column name="next_refill_date" type="date">
-                <constraints nullable="true"/>
-            </column>
-            <column name="next_viral_load_date" type="date">
-                <constraints nullable="true"/>
-            </column>
-            <column name="next_tpt_date" type="date">
-                <constraints nullable="true"/>
-            </column>
-            <column name="next_cervical_cancer_date" type="date">
-                <constraints nullable="true"/>
-            </column>
-            <column name="facility_id" type="UUID">
+            <column name="facility_name" type="varchar(128)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
-        <addForeignKeyConstraint baseTableName="patient" baseColumnNames="facility_id"
-                                 constraintName="fk_patient_facility_id" referencedTableName="organisation"
-                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="2023072304-02" author="mattae">
@@ -133,8 +111,8 @@
             <column name="tb_referred" type="bool">
                 <constraints nullable="true"/>
             </column>
-            <column name="viral_load_due_date" type="date">
-                <constraints nullable="true"/>
+            <column name="synced" type="bool" defaultValueComputed="false">
+                <constraints nullable="false"/>
             </column>
             <column name="patient_id" type="UUID">
                 <constraints nullable="false"/>
@@ -192,6 +170,9 @@
             </column>
             <column name="adverse_issues" type="bool">
                 <constraints nullable="true"/>
+            </column>
+            <column name="synced" type="bool" defaultValueComputed="false">
+                <constraints nullable="false"/>
             </column>
             <column name="patient_id" type="UUID">
                 <constraints nullable="false"/>
@@ -319,6 +300,36 @@
 
         <addForeignKeyConstraint baseTableName="stock_issuance" baseColumnNames="request_id"
                                  constraintName="fk_stock_issuance_request_id" referencedTableName="stock_request"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="202306062304-01" author="mattae">
+        <createTable tableName="prescription">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="prescription_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prescription_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="medicine_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="frequency_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patient_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="prescription" baseColumnNames="patient_id"
+                                 constraintName="fk_prescription_patient_id" referencedTableName="patient"
                                  referencedColumnNames="id"/>
     </changeSet>
 

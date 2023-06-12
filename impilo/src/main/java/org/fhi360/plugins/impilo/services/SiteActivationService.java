@@ -55,12 +55,12 @@ public class SiteActivationService {
     }
 
     @Transactional
-    public boolean discontinueClient(String siteCode, String uniqueId, LocalDate date, String reason) {
+    public boolean discontinueClient(String siteCode, String patientId, LocalDate date, String reason) {
         var cb = cbf.create(em, SiteAssignment.class);
         //@formatter:off
         cb.from(SiteAssignment.class)
                 .where("site.party.identifiers.value").eq(siteCode)
-                .where("patient.uniqueId").eq(uniqueId);
+                .where("patient.patientId").eq(patientId);
         //@formatter:on
         try {
             var assignment = cb.getSingleResult();

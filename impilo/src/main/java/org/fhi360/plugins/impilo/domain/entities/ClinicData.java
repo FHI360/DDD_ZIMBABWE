@@ -46,7 +46,7 @@ public class ClinicData {
 
     private Boolean tbReferred;
 
-    private LocalDate viralLoadDueDate;
+    private Boolean synced;
 
     @ManyToOne
     private Patient patient;
@@ -101,10 +101,6 @@ public class ClinicData {
         Boolean getTbReferred();
 
         void setTbReferred(Boolean tbReferred);
-
-        LocalDate getViralLoadDueDate();
-
-        void setViralLoadDueDate(LocalDate date);
 
         Patient.IdView getPatient();
         void setPatient(Patient.IdView patient);

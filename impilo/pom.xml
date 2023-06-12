@@ -9,7 +9,7 @@
     </parent>
     <groupId>org.fhi360.plugins</groupId>
     <artifactId>impilo</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.0</version>
     <name>Impilo Gateway Plugin</name>
     <properties>
         <node.version>v16.17.0</node.version>

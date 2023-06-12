@@ -4,14 +4,11 @@ import com.blazebit.persistence.view.EntityView;
 import com.blazebit.persistence.view.IdMapping;
 import com.blazebit.persistence.view.Mapping;
 import com.blazebit.persistence.view.MappingSubquery;
-import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.fhi360.plugins.impilo.domain.providers.DateOfNextRefillSubqueryProvider;
 import org.fhi360.plugins.impilo.domain.providers.LastClinicDateSubqueryProvider;
 import org.fhi360.plugins.impilo.domain.providers.LastRefillDateSubqueryProvider;
@@ -24,7 +21,6 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@ToString
 public class Patient {
     @Id
     @UUIDV7
@@ -43,8 +39,6 @@ public class Patient {
     private String address;
 
     private String hospitalNumber;
-
-    private String uniqueId;
 
     private String regimen;
 
@@ -66,8 +60,9 @@ public class Patient {
 
     private String patientId;
 
-    @ManyToOne
-    private Organisation facility;
+    private String facilityId;
+
+    private String facilityName;
 
     @EntityView(Patient.class)
     public interface IdView {
@@ -79,9 +74,7 @@ public class Patient {
     public record ListView(
         @IdMapping UUID id, String givenName, String familyName, String sex,
         LocalDate dateOfBirth, String address,
-        String phoneNumber, String hospitalNumber, String uniqueId, String regimen,
-        @Mapping("facility.name")
-        String facility,
+        String phoneNumber, String hospitalNumber, String regimen,
         @MappingSubquery(PatientSiteSubqueryProvider.class)
         String site
     ) {
@@ -90,20 +83,19 @@ public class Patient {
     @EntityView(Patient.class)
     public record View(@IdMapping UUID id, String givenName, String familyName, String sex,
                        LocalDate dateOfBirth, String address, LocalDate nextAppointmentDate,
-                       String phoneNumber, String hospitalNumber, String uniqueId, String regimen,
+                       String phoneNumber, String hospitalNumber, String regimen,
                        @MappingSubquery(LastRefillDateSubqueryProvider.class)
                        LocalDate lastRefillDate,
                        @MappingSubquery(LastClinicDateSubqueryProvider.class)
                        LocalDate lastClinicVisit,
                        @MappingSubquery(DateOfNextRefillSubqueryProvider.class)
                        LocalDate nextRefillDate, LocalDate nextCervicalCancerDate,
-                       @Mapping("facility.name")
-                       String facility, LocalDate nextTptDate, LocalDate nextViralLoadDate,
+                       LocalDate nextTptDate, LocalDate nextViralLoadDate,
                        @Mapping("Refill[patient.id IN VIEW(id)]")
                        List<RefillView> refills) {
         @EntityView(Refill.class)
         public record RefillView(LocalDate date, LocalDate dateNextRefill, String regimen, Integer qtyDispensed,
-                                 Integer qtyPrescribed) {
+                                 Integer qtyPrescribed, Boolean fromServer) {
 
         }
     }

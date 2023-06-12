@@ -1,9 +1,6 @@
 package org.fhi360.plugins.impilo.domain.entities;
 
-import com.blazebit.persistence.view.CreatableEntityView;
-import com.blazebit.persistence.view.EntityView;
-import com.blazebit.persistence.view.IdMapping;
-import com.blazebit.persistence.view.UpdatableEntityView;
+import com.blazebit.persistence.view.*;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -39,6 +36,10 @@ public class Refill {
     private Boolean missedDose;
 
     private Boolean adverseIssues;
+
+    private Boolean fromServer;
+
+    private Boolean synced;
 
     @ManyToOne
     private Patient patient;
@@ -83,9 +84,23 @@ public class Refill {
 
         void setAdverseIssues(Boolean adverseIssues);
 
+        Boolean getSynced();
+
+        void setSynced(Boolean synced);
+
+        Boolean getFromServer();
+
+        void setFromServer(Boolean fromServer);
+
         Patient.IdView getPatient();
 
         void setPatient(Patient.IdView patient);
+
+        @PostCreate
+        default void postCreate() {
+            setSynced(false);
+            setFromServer(false);
+        }
     }
 
     @EntityView(Refill.class)

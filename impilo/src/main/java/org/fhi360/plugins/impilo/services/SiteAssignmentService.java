@@ -4,7 +4,6 @@ import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.JoinType;
 import com.blazebit.persistence.view.EntityViewManager;
 import com.blazebit.persistence.view.EntityViewSetting;
-import com.mattae.snl.plugins.security.extensions.AuthenticationServiceExtension;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.services.errors.BadRequestException;
 import io.github.jbella.snl.core.api.services.util.PagedResult;
@@ -14,11 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.entities.SiteAssignment;
 import org.fhi360.plugins.impilo.domain.repositories.SiteAssignmentRepository;
-import org.pf4j.PluginManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -28,7 +25,6 @@ public class SiteAssignmentService {
     private final EntityViewManager evm;
     private final EntityManager em;
     private final CriteriaBuilderFactory cbf;
-    private final PluginManager pluginManager;
     private final SiteAssignmentRepository siteAssignmentRepository;
 
     public PagedResult<Patient.ListView> list(String keyword, Boolean assigned, int start, int size) {
@@ -42,7 +38,6 @@ public class SiteAssignmentService {
                 .where("givenName").like(false).value(keyword).noEscape()
                 .where("familyName").like(false).value(keyword).noEscape()
                 .where("hospitalNumber").like(false).value(keyword).noEscape()
-                .where("uniqueId").like(false).value(keyword).noEscape()
             .endOr();
             //@formatter:on
         }
@@ -61,12 +56,6 @@ public class SiteAssignmentService {
                 .end()
                 .where("b.id").isNull();
                 //@formatter:on
-            }
-        }
-        var hierarchy = pluginManager.getExtensions(AuthenticationServiceExtension.class).stream().map(AuthenticationServiceExtension::getOrganisationHierarchy).findFirst().orElse(new ArrayList<>());
-        if (!hierarchy.isEmpty()) {
-            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("Facility")) {
-                cb.where("facility.id").eq(hierarchy.get(0).getId());
             }
         }
 

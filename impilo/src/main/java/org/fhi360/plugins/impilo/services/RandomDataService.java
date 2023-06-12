@@ -94,12 +94,10 @@ public class RandomDataService {
             patient.setSex(faker.gender().binaryTypes());
             patient.setDateOfBirth(faker.date().birthday().toLocalDateTime().toLocalDate());
             patient.setHospitalNumber(faker.idNumber().peselNumber());
-            patient.setUniqueId(faker.idNumber().invalidSvSeSsn());
             patient.setPhoneNumber(faker.phoneNumber().cellPhone());
             patient.setAddress(faker.address().fullAddress());
             patient.setRegimen(regimens.get(rand.nextInt(regimens.size())));
             patient.setLastViralLoadDate(faker.date().past(90, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
-            patient.setFacility(facilities.get(rand.nextInt(facilities.size())));
             if (patient.getSex().equals("Female")) {
                 patient.setNextCervicalCancerDate(faker.date().future(90, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
             }
