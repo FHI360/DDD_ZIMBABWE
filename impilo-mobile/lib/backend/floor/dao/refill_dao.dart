@@ -1,6 +1,8 @@
 import 'package:floor/floor.dart';
 import 'package:impilo/backend/floor/entities/refill.dart';
 
+import '../entities/devolve.dart';
+
 @DatabaseView('''
 WITH Estimated AS (
 	SELECT * FROM (
@@ -87,6 +89,15 @@ abstract class RefillDao {
   @update
   Future<int> updateRecord(Refill refill);
 
+  @Query("DELETE Refill Clinic")
+  Future<void> deleteAll();
+
+  @Query('SELECT COUNT(*) > 0 FROM Refill WHERE synced = 0')
+  Future<bool?> hasUnSynced();
+
+  @Query("UPDATE Refill SET synced = 1")
+  Future<void> updateAllSynced();
+
   @Query("delete from Refill where id = :id")
   Future<void> deleteById(int id);
 
@@ -108,4 +119,27 @@ abstract class RefillDao {
   ''')
   Future<BarcodeDispense?> barcodeQuantity(
       String siteCode, String regimen, String barcode);
+}
+
+
+@dao
+abstract class DevolveDao {
+  @Query('SELECT * FROM Devolve WHERE synced = 0')
+  Future<List<Devolve>> findUnSynced();
+
+  @Query(
+      'SELECT * FROM Devolve WHERE patientId = :patientId ORDER BY date DESC LIMIT 1')
+  Future<Devolve?> findByPatient(String patientId);
+
+  @insert
+  Future<void> insertRecord(Devolve devolve);
+
+  @Query("DELETE FROM Devolve")
+  Future<void> deleteAll();
+
+  @Query('SELECT COUNT(*) > 0 FROM Devolve WHERE synced= 0')
+  Future<bool?> hasUnSynced();
+
+  @Query("UPDATE Devolve SET synced = 1")
+  Future<void> updateAllSynced();
 }

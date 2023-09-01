@@ -2,15 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
-import 'package:impilo/backend/floor/entities/clinic_data.dart';
-import 'package:logging/logging.dart';
-
-import '../../backend/backend.dart';
-import '../../flutter_flow/lat_lng.dart';
-import '../../flutter_flow/place.dart';
 import '../../flutter_flow/uploaded_file.dart';
-
-final log = Logger('Serialization');
 
 /// SERIALIZATION HELPERS
 
@@ -20,37 +12,14 @@ String dateTimeRangeToString(DateTimeRange dateTimeRange) {
   return '$startStr|$endStr';
 }
 
-String placeToString(FFPlace place) => jsonEncode({
-      'latLng': place.latLng.serialize(),
-      'name': place.name,
-      'address': place.address,
-      'city': place.city,
-      'state': place.state,
-      'country': place.country,
-      'zipCode': place.zipCode,
-    });
-
 String uploadedFileToString(FFUploadedFile uploadedFile) =>
     uploadedFile.serialize();
 
-const _kDocIdDelimeter = '|';
-String _serializeDocumentReference(DocumentReference ref) {
-  final docIds = <String>[];
-  DocumentReference? currentRef = ref;
-  while (currentRef != null) {
-    docIds.add(currentRef.id);
-    // Get the parent document (catching any errors that arise).
-    currentRef = safeGet<DocumentReference?>(() => currentRef?.parent.parent);
-  }
-  // Reverse the list to get the correct ordering.
-  return docIds.reversed.join(_kDocIdDelimeter);
-}
-
 String? serializeParam(
-  dynamic param,
-  ParamType paramType, [
-  bool isList = false,
-]) {
+    dynamic param,
+    ParamType paramType, [
+      bool isList = false,
+    ]) {
   try {
     if (param == null) {
       return null;
@@ -76,22 +45,15 @@ String? serializeParam(
         return (param as DateTime).millisecondsSinceEpoch.toString();
       case ParamType.DateTimeRange:
         return dateTimeRangeToString(param as DateTimeRange);
-      case ParamType.LatLng:
-        return (param as LatLng).serialize();
       case ParamType.Color:
         return (param as Color).toCssString();
-      case ParamType.FFPlace:
-        return placeToString(param as FFPlace);
       case ParamType.FFUploadedFile:
         return uploadedFileToString(param as FFUploadedFile);
       case ParamType.JSON:
-        log.info('Encoding parameters', param);
         return json.encode(param);
-      case ParamType.DocumentReference:
-        return _serializeDocumentReference(param as DocumentReference);
-      case ParamType.Document:
-        final reference = (param as dynamic).reference as DocumentReference;
-        return _serializeDocumentReference(reference);
+
+      case ParamType.SupabaseRow:
+        return null;
 
       default:
         return null;
@@ -117,55 +79,9 @@ DateTimeRange? dateTimeRangeFromString(String dateTimeRangeStr) {
   );
 }
 
-LatLng? latLngFromString(String latLngStr) {
-  final pieces = latLngStr.split(',');
-  if (pieces.length != 2) {
-    return null;
-  }
-  return LatLng(
-    double.parse(pieces.first.trim()),
-    double.parse(pieces.last.trim()),
-  );
-}
-
-FFPlace placeFromString(String placeStr) {
-  final serializedData = jsonDecode(placeStr) as Map<String, dynamic>;
-  final data = {
-    'latLng': serializedData.containsKey('latLng')
-        ? latLngFromString(serializedData['latLng'] as String)
-        : const LatLng(0.0, 0.0),
-    'name': serializedData['name'] ?? '',
-    'address': serializedData['address'] ?? '',
-    'city': serializedData['city'] ?? '',
-    'state': serializedData['state'] ?? '',
-    'country': serializedData['country'] ?? '',
-    'zipCode': serializedData['zipCode'] ?? '',
-  };
-  return FFPlace(
-    latLng: data['latLng'] as LatLng,
-    name: data['name'] as String,
-    address: data['address'] as String,
-    city: data['city'] as String,
-    state: data['state'] as String,
-    country: data['country'] as String,
-    zipCode: data['zipCode'] as String,
-  );
-}
-
 FFUploadedFile uploadedFileFromString(String uploadedFileStr) =>
     FFUploadedFile.deserialize(uploadedFileStr);
 
-DocumentReference _deserializeDocumentReference(
-  String refStr,
-  List<String> collectionNamePath,
-) {
-  var path = '';
-  final docIds = refStr.split(_kDocIdDelimeter);
-  for (int i = 0; i < docIds.length && i < collectionNamePath.length; i++) {
-    path += '/${collectionNamePath[i]}/${docIds[i]}';
-  }
-  return FirebaseFirestore.instance.doc(path);
-}
 
 enum ParamType {
   int,
@@ -181,15 +97,15 @@ enum ParamType {
   JSON,
   Document,
   DocumentReference,
-  SupabaseRow
+  SupabaseRow,
 }
 
 dynamic deserializeParam<T>(
-  String? param,
-  ParamType paramType,
-  bool isList, [
-  List<String>? collectionNamePath,
-]) {
+    String? param,
+    ParamType paramType,
+    bool isList, [
+      List<String>? collectionNamePath,
+    ]) {
   try {
     if (param == null) {
       return null;
@@ -203,7 +119,7 @@ dynamic deserializeParam<T>(
           .where((p) => p is String)
           .map((p) => p as String)
           .map((p) =>
-              deserializeParam<T>(p, paramType, false, collectionNamePath))
+          deserializeParam<T>(p, paramType, false, collectionNamePath))
           .where((p) => p != null)
           .map((p) => p! as T)
           .toList();
@@ -224,18 +140,17 @@ dynamic deserializeParam<T>(
             : null;
       case ParamType.DateTimeRange:
         return dateTimeRangeFromString(param);
-      case ParamType.LatLng:
-        return latLngFromString(param);
       case ParamType.Color:
         return fromCssColor(param);
-      case ParamType.FFPlace:
-        return placeFromString(param);
       case ParamType.FFUploadedFile:
         return uploadedFileFromString(param);
       case ParamType.JSON:
         return json.decode(param);
-      case ParamType.DocumentReference:
-        return _deserializeDocumentReference(param, collectionNamePath ?? []);
+
+      case ParamType.SupabaseRow:
+        final data = json.decode(param) as Map<String, dynamic>;
+        return data;
+
       default:
         return null;
     }
@@ -243,35 +158,4 @@ dynamic deserializeParam<T>(
     print('Error deserializing parameter: $e');
     return null;
   }
-}
-
-Future<dynamic> Function(String) getDoc(
-  List<String> collectionNamePath,
-  Serializer serializer,
-) {
-  return (String ids) => _deserializeDocumentReference(ids, collectionNamePath)
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
-}
-
-Future<List<T>> Function(String) getDocList<T>(
-  List<String> collectionNamePath,
-  Serializer<T> serializer,
-) {
-  return (String idsList) {
-    List<String> docIds = [];
-    try {
-      final ids = json.decode(idsList) as Iterable;
-      docIds = ids.where((d) => d is String).map((d) => d as String).toList();
-    } catch (_) {}
-    return Future.wait(
-      docIds.map(
-        (ids) => _deserializeDocumentReference(ids, collectionNamePath)
-            .get()
-            .then(
-              (s) => serializers.deserializeWith(serializer, serializedData(s)),
-            ),
-      ),
-    ).then((docs) => docs.where((d) => d != null).map((d) => d!).toList());
-  };
 }

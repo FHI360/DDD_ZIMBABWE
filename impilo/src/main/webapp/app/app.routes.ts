@@ -1,5 +1,5 @@
-import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import {Routes} from '@angular/router';
+import {HomeComponent} from './home/home.component';
 
 export const APP_ROUTES: Routes = [
     {
@@ -9,8 +9,8 @@ export const APP_ROUTES: Routes = [
     },
     {
         path: 'site-assignments',
-        loadChildren: () => import('./site-assignment/site-assignment.module')
-            .then(m => m.SiteAssignmentModule)
+        loadChildren: () => import('./devolve/devolve.module')
+            .then(m => m.DevolveModule)
     },
     {
         path: 'stocks',
@@ -29,11 +29,10 @@ export const APP_ROUTES: Routes = [
     },
     {
         path: 'reports',
-        loadChildren: () => import('./reports/reports.module')
-            .then(m => m.ReportsModule)
+        loadChildren: () => import('./reporting/indicator/indicator.routing')
     },
     {
         path: 'sync',
-        loadChildren: () => import('./sync/sync.routes')
+        loadChildren: () => import('./synchronisation/synchronization.routing')
     }
 ];

@@ -7,6 +7,7 @@ import io.github.jbella.snl.core.api.domain.Organisation;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ROLE_USER')")
 public class OfcadSiteService {
     private final EntityManager em;
     private final EntityViewManager evm;
@@ -23,7 +25,7 @@ public class OfcadSiteService {
     public List<Organisation.ShortView> list(String keyword) {
         var settings = EntityViewSetting.create(Organisation.ShortView.class);
         var cb = cbf.create(em, Organisation.class)
-            .where("type").eq("OFCAD Site");
+            .where("type").eq("OUTLET");
         if (StringUtils.isNotBlank(keyword)) {
             keyword = "%" + keyword + "%";
             //@formatter:off

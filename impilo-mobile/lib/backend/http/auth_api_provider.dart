@@ -5,7 +5,7 @@ class AuthAPIProvider {
   Future<dynamic> authenticate(
       {required String username, required String password}) async {
     final response = await api.post(
-      '/api/authenticate',
+      '${FFAppState().baseUrl}/api/authenticate',
       data: {
         'username': username,
         'password': password,
@@ -16,13 +16,11 @@ class AuthAPIProvider {
 
   Future<void> processProfile() async {
     final response = await api.get(
-      '/api/account',
+      '${FFAppState().baseUrl}/api/account',
       options: Options(
         headers: {},
       ),
     );
-
-    print('Response: $response');
 
     FFAppState().code = response.data['organisation']['id'];
     FFAppState().name = response.data['organisation']['name'];

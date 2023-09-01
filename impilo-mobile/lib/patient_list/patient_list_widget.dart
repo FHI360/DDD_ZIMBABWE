@@ -74,8 +74,7 @@ class _PatientListWidgetState extends State<PatientListWidget> {
             size: 30.0,
           ),
           onPressed: () async {
-            print('Pressed');
-            context.goNamed('siteHome');
+            context.pushNamed('siteHome');
           },
         ),
         title: Text(

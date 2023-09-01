@@ -24,7 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StockIssuance, StockIssuanceService } from './stock-issuance.service';
 import { StockIssuanceDetailsComponent } from './components/details/stock-issuance.details.component';
 import { catchError, EMPTY, Observable } from 'rxjs';
-import { PagedResult, SharedModule } from '@mattae/angular-shared';
+import {FuseAlertComponent, PagedResult} from '@mattae/angular-shared';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -162,9 +162,9 @@ const ROUTES: Routes = [
         MatPaginatorModule,
         ReactiveFormsModule,
         MatTooltipModule,
-        SharedModule,
         MatSelectModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        FuseAlertComponent
     ],
     declarations: [
         IssuanceManagerComponent,

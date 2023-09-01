@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.entities.Refill;
 import org.fhi360.plugins.impilo.domain.repositories.RefillRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ROLE_USER')")
 public class RefillService {
     private final RefillRepository refillRepository;
     private final EntityViewManager evm;

@@ -1,0 +1,70 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <mat-drawer-container
+            class="flex-auto h-full bg-card dark:bg-transparent">
+
+        <!-- Drawer -->
+        <mat-drawer
+                class="w-100 md:w-160 dark:bg-gray-900"
+                [mode]="drawerMode"
+                [opened]="false"
+                [position]="'end'"
+                [disableClose]="true"
+                #matDrawer>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex h-screen bg-gray-100 dark:bg-transparent border">
+
+            <!-- Main -->
+            <div class="flex-auto overflow-y-scroll">
+
+                <!-- Header -->
+                <div
+                        class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between p-6 sm:py-12 md:px-8 border-b bg-card dark:bg-transparent">
+
+                    <!-- Title -->
+                    <div>
+                        <div
+                                class="text-4xl font-extrabold tracking-tight leading-none">{{'IMPILO.REPORT.TITLE.INDICATORS' | transloco}}</div>
+                    </div>
+                </div>
+
+                <!-- Main actions -->
+                <div class="flex flex-auto p-4">
+                    <div class="flex flex-col flex-auto w-full mx-auto">
+                        <div class="pt-10 mx-auto w-2/3" [formGroup]="range">
+                            <div class="bg-card p-4">
+                                <fuse-alert
+                                        *ngIf="showAlert"
+                                        [appearance]="'outline'"
+                                        [showIcon]="false"
+                                        [type]="alert.type"
+                                        class="mb-4 mt-2">
+                                    {{alert.message | transloco}}
+                                </fuse-alert>
+                                <div class="flex flex-col">
+                                    <mat-form-field class="w-full">
+                                        <mat-label> {{'IMPILO.REPORT.INDICATORS.DATE' | transloco}}</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker" [max]="today">
+                                            <input matStartDate formControlName="start"
+                                                   placeholder="{{'IMPILO.REPORT.DATE.START' | transloco}}">
+                                            <input matEndDate formControlName="end"
+                                                   placeholder="{{'IMPILO.REPORT.DATE.END' | transloco}}">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="flex flex-row justify-end">
+                                    <button mat-raised-button color="primary" [disabled]="range.invalid || running"
+                                            (click)="generate()">
+                                        {{'IMPILO.REPORT.ACTIONS.GENERATE' | transloco}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

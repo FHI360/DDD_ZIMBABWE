@@ -23,4 +23,13 @@ abstract class ClinicDao {
 
   @Query("delete from Clinic where id = :id")
   Future<void> deleteById(int id);
+
+  @Query("DELETE FROM Clinic")
+  Future<void> deleteAll();
+
+  @Query('SELECT COUNT(*) > 0 FROM Clinic WHERE synced = 0')
+  Future<bool?> hasUnSynced();
+
+  @Query("UPDATE Clinic SET synced = 1")
+  Future<void> updateAllSynced();
 }

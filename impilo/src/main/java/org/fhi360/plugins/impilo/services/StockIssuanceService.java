@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Stock;
 import org.fhi360.plugins.impilo.domain.entities.StockIssuance;
 import org.pf4j.PluginManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@PreAuthorize("hasRole('ROLE_USER')")
 @RequiredArgsConstructor
 public class StockIssuanceService {
     private final EntityViewManager evm;

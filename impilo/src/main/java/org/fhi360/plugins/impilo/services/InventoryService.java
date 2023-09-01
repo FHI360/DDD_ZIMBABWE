@@ -6,6 +6,7 @@ import com.blazebit.persistence.view.EntityViewSetting;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.fhi360.plugins.impilo.domain.entities.StockIssuance;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ROLE_USER')")
 public class InventoryService {
     private final EntityViewManager evm;
     private final EntityManager em;

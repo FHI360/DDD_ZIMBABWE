@@ -1,8 +1,6 @@
 package org.fhi360.plugins.impilo.domain.entities;
 
-import com.blazebit.persistence.view.CreatableEntityView;
-import com.blazebit.persistence.view.EntityView;
-import com.blazebit.persistence.view.IdMapping;
+import com.blazebit.persistence.view.*;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
@@ -37,6 +35,10 @@ public class StockRequest {
     @NotNull
     private String requestId;
 
+    private Boolean synced = false;
+
+    private UUID reference;
+
     @NotNull
     @ManyToOne
     private Organisation site;
@@ -69,5 +71,24 @@ public class StockRequest {
         Organisation.ShortView getSite();
 
         void setSite(Organisation.ShortView site);
+
+        Boolean getSynced();
+
+        void setSynced(Boolean synced);
+
+        UUID getReference();
+
+        void setReference(UUID reference);
+
+        @PostCreate
+        default void postCreate() {
+            setSynced(false);
+        }
+    }
+
+    @EntityView(StockRequest.class)
+    @UpdatableEntityView
+    public interface UpdateView extends CreateView {
+        void setId(UUID id);
     }
 }

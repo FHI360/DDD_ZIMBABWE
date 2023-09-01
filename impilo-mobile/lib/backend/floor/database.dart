@@ -6,6 +6,7 @@ import 'package:floor/floor.dart';
 import 'package:impilo/backend/floor/dao/clinic_dao.dart';
 import 'package:impilo/backend/floor/dao/inventory_dao.dart';
 import 'package:impilo/backend/floor/dao/patient_dao.dart';
+import 'package:impilo/backend/floor/entities/devolve.dart';
 import 'package:impilo/backend/floor/entities/inventory.dart';
 import 'package:impilo/backend/floor/entities/inventory_request.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
@@ -25,7 +26,8 @@ part 'database.g.dart'; // the generated code will be there
   Patient,
   Refill,
   Inventory,
-  InventoryRequest
+  InventoryRequest,
+  Devolve
 ], views: [
   AssignedRegimen,
   BarcodeDispense,
@@ -46,4 +48,6 @@ abstract class AppDatabase extends FloorDatabase {
   InventoryDao get inventoryDao;
 
   InventoryRequestDao get inventoryRequestDao;
+
+  DevolveDao get devolveDao;
 }

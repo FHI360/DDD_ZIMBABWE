@@ -14,10 +14,10 @@ module.exports = withModuleFederationPlugin({
     exposes: {
         'StockModule': './src/main/webapp/app/stock/stock.module.ts',
         'StockIssuanceModule': './src/main/webapp/app/stock-issuance/stock-issuance.module.ts',
-        'SiteAssignmentModule': './src/main/webapp/app/site-assignment/site-assignment.module.ts',
+        'DevolveModule': './src/main/webapp/app/devolve/devolve.module.ts',
         'StockRequestModule': './src/main/webapp/app/stock-request/stock.request.module.ts',
-        'ReportsModule': './src/main/webapp/app/reports/reports.module.ts',
-        'EhrSyncRoutes': './src/main/webapp/app/sync/sync.routes.ts',
+        'IndicatorRouting': './src/main/webapp/app/reporting/indicator/indicator.routing.ts',
+        'SyncRouting': './src/main/webapp/app/synchronisation/synchronization.routing.ts',
     },
     shared: share({
         "@angular/core": {singleton: true, strictVersion: false},

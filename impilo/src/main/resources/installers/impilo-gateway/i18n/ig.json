@@ -5,8 +5,10 @@
       "STOCKS": "Ebuka",
       "STOCK_ISSUANCE": "Ntinye ego",
       "STOCK_REQUEST": "Arịrịọ ebuka",
-      "REPORTS": "Akụkọ ihe ngosi OFCAD",
-      "SYNC": "Mmekọrịta E.HR"
+      "REPORTS": {
+        "TITLE": "Akụkọ",
+        "INDICATORS": "Ihe ngosi na-akọ"
+      }
     },
     "TITLE": {
       "STOCKS": "Ebuka",
@@ -17,8 +19,7 @@
       "ADD_STOCK_ISSUANCE": "Dekọọ mmepụta ngwaahịa",
       "PATIENTS": "Ndị ọrịa",
       "STOCK_REQUEST": "Arịrịọ ebuka",
-      "REPORTS": "Akụkọ ihe ngosi OFCAD",
-      "SYNC": "Mmekọrịta E.HR"
+      "REPORTS": "Akụkọ ihe ngosi OFCAD"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -98,7 +99,6 @@
       "SEARCH": "Chọọ...",
       "NO_DATA": "Enweghị data onye ọrịa dị",
       "TITLE": "Ọrụ saịtị onye ọrịa",
-      "facilityName": "Ihe owuwu",
       "FACILITY": "Ihe owuwu"
     },
     "STOCK_REQUEST": {
@@ -116,12 +116,24 @@
         "ISSUE": "Wepụta ngwaahịa"
       }
     },
-    "SYNC": {
-      "SUCCESS": "Mekọrịtara data nke ọma na yana site na sava E.HR",
-      "ERROR": "Njehie mekọrịta data n'etiti desktọpụ Impilo na sava E.HR",
-      "AUTHORIZATION_ERROR": "Enweghị ike iji sava E.HR nyochaa ya",
-      "SYNCHRONIZE": "Mekọrịta data",
-      "SYNCHRONIZATION": "Mekọrịta data"
+    "REPORT": {
+      "DATE": {
+        "START": "Ụbọchị mmalite",
+        "END": "Ụbọchị ngwụcha"
+      },
+      "ACTIONS": {
+        "GENERATE": "Mepụta"
+      },
+      "MESSAGES": {
+        "SUCCESS": "ewepụtara akụkọ nke ọma",
+        "ERROR": "Ọgbọ akụkọ dara"
+      },
+      "TITLE": {
+        "MSR": "Akụkọ nchịkọta kwa ọnwa"
+      },
+      "MSR": {
+        "DATE": "Oge"
+      }
     }
   }
 }

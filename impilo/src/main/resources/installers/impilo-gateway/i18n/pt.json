@@ -5,8 +5,10 @@
       "STOCKS": "Ações",
       "STOCK_ISSUANCE": "emissão de ações",
       "STOCK_REQUEST": "Solicitação de ações",
-      "REPORTS": "Relatório de Indicadores do OFCAD",
-      "SYNC": "Sincronização E.HR"
+      "REPORTS": {
+        "TITLE": "Relatórios",
+        "INDICATORS": "Relatório de indicadores"
+      }
     },
     "TITLE": {
       "STOCKS": "Ações",
@@ -17,8 +19,7 @@
       "ADD_STOCK_ISSUANCE": "Emissão de ações recorde",
       "PATIENTS": "Pacientes",
       "STOCK_REQUEST": "Solicitação de ações",
-      "REPORTS": "Relatório de Indicadores do OFCAD",
-      "SYNC": "Sincronização E.HR"
+      "REPORTS": "Relatório de Indicadores do OFCAD"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -98,7 +99,6 @@
       "SEARCH": "Procurar...",
       "NO_DATA": "Nenhum dado do paciente disponível",
       "TITLE": "Atribuição do local do paciente",
-      "facilityName": "Instalação",
       "FACILITY": "Instalação"
     },
     "STOCK_REQUEST": {
@@ -116,12 +116,24 @@
         "ISSUE": "Emitir ações"
       }
     },
-    "SYNC": {
-      "SUCCESS": "Dados sincronizados com sucesso de e para o E.HR Server",
-      "ERROR": "Erro ao sincronizar dados entre o desktop Impilo e o E.HR Server",
-      "AUTHORIZATION_ERROR": "Não foi possível autenticar com o E.HR Server",
-      "SYNCHRONIZE": "Sincronizar dados",
-      "SYNCHRONIZATION": "Sincronizar dados"
+    "REPORT": {
+      "DATE": {
+        "START": "Data de início",
+        "END": "Data final"
+      },
+      "ACTIONS": {
+        "GENERATE": "Gerar"
+      },
+      "MESSAGES": {
+        "SUCCESS": "Relatório gerado com sucesso",
+        "ERROR": "Falha na geração do relatório"
+      },
+      "TITLE": {
+        "MSR": "Relatório resumido mensal"
+      },
+      "MSR": {
+        "DATE": "Período"
+      }
     }
   }
 }

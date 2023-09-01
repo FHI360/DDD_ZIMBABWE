@@ -17,6 +17,7 @@ class FFAppState extends ChangeNotifier {
   Future initializePersistedState() async {
     secureStorage = FlutterSecureStorage();
     _code = await secureStorage.getString('ff_code') ?? _code;
+    _baseUrl = await secureStorage.getString('ff_baseUrl') ?? _baseUrl;
     _name = await secureStorage.getString('ff_name') ?? _name;
     _accessToken = await secureStorage.getString('ff_accessToken') ?? _accessToken;
     _refreshToken = await secureStorage.getString('ff_refreshToken') ?? _refreshToken;
@@ -39,6 +40,13 @@ class FFAppState extends ChangeNotifier {
 
   void deleteCode() {
     secureStorage.delete(key: 'ff_code');
+  }
+
+  String _baseUrl = '';
+  String get baseUrl => _baseUrl;
+  set baseUrl(String _value) {
+    _baseUrl = _value;
+    secureStorage.setString('ff_baseUrl', _value);
   }
 
   String _accessToken = '';
@@ -93,16 +101,6 @@ class FFAppState extends ChangeNotifier {
   set regimenQty(int _value) {
     _regimenQty = _value;
   }
-}
-
-LatLng? _latLngFromString(String? val) {
-  if (val == null) {
-    return null;
-  }
-  final split = val.split(',');
-  final lat = double.parse(split.first);
-  final lng = double.parse(split.last);
-  return LatLng(lat, lng);
 }
 
 extension FlutterSecureStorageExtensions on FlutterSecureStorage {

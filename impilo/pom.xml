@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.4</version>
+        <version>3.1.2</version>
         <relativePath/>
     </parent>
     <groupId>org.fhi360.plugins</groupId>
@@ -16,8 +15,16 @@
         <node.version>v16.17.0</node.version>
         <yarn.version>v1.22.0</yarn.version>
         <java.version>17</java.version>
-        <blaze-persistence.version>1.6.7</blaze-persistence.version>
+        <blaze-persistence.version>1.6.9</blaze-persistence.version>
+        <aspose.version>23.6</aspose.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>AsposeJavaAPI</id>
+            <name>Aspose Java API</name>
+            <url>https://repository.aspose.com/repo/</url>
+        </repository>
+    </repositories>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -162,7 +169,7 @@
         </dependency>
         <dependency>
             <groupId>com.blazebit</groupId>
-            <artifactId>blaze-persistence-integration-hibernate-6.0</artifactId>
+            <artifactId>blaze-persistence-integration-hibernate-6.2</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -172,17 +179,14 @@
         <dependency>
             <groupId>com.blazebit</groupId>
             <artifactId>blaze-persistence-integration-entity-view-spring</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.blazebit</groupId>
             <artifactId>blaze-persistence-integration-spring-data-2.7</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.blazebit</groupId>
             <artifactId>blaze-persistence-integration-spring-data-base</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.blazebit</groupId>
@@ -202,6 +206,11 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-cells</artifactId>
+            <version>${aspose.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -220,10 +229,7 @@
                             <Plugin-Version>${project.version}</Plugin-Version>
                             <Plugin-Provider>Matthew Edor&lt;&lt;medor@fhi360.org&gt;&gt;</Plugin-Provider>
                             <Plugin-Dependencies>angular-frontend</Plugin-Dependencies>
-                            <Plugin-Description>Gateway application to support connectivity between the Impilo mobile
-                                app and E.HR server at the facility. Also manages bidirectional sync between the two
-                                components and a stop gap for features not available yet on the E.HR server
-                            </Plugin-Description>
+                            <Plugin-Description>Gateway application to support connectivity between the Impilo mobile app and E.HR server at the facility. Also manages bidirectional sync between the two components and a stop gap for features not available yet on the E.HR server</Plugin-Description>
                             <Plugin-Class>org.fhi360.plugins.impilo.ImpiloGatewayPlugin</Plugin-Class>
                         </manifestEntries>
                     </archive>
@@ -277,12 +283,16 @@
                         </goals>
                         <configuration>
                             <artifactSet>
-                                <!--These are only included for random data generation; won't be included for production deployment-->
                                 <includes>
+                                    <!-- Random Data generation; remove for production-->
                                     <include>net.datafaker:datafaker</include>
                                     <include>com.github.javafaker:javafaker</include>
                                     <include>com.github.mifmif:generex</include>
                                     <include>dk.brics.automaton:automaton</include>
+                                    <!--End-->
+                                    <!-- Aspose dependencies -->
+                                    <include>com.aspose:aspose-cells</include>
+                                    <!-- End -->
                                 </includes>
                             </artifactSet>
                         </configuration>

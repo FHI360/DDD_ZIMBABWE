@@ -1,0 +1,49 @@
+[
+    {
+        "category": "CORE.CONFIGURATION.SYSTEM_CONFIGURATIONS",
+        "data": [
+            {
+                "key": "APP_TITLE",
+                "value": "Impilo",
+                "type": "string"
+            }
+        ]
+    },
+    {
+        "category": "IMPILO.CONFIGURATION.SYNCHRONIZATION",
+        "data": [
+            {
+                "key": "EHR_SERVER.URL",
+                "value": "http://197.221.242.150:10408",
+                "type": "string",
+                "regex": "^(https?://)?([\\da-z.-]+)(\\.[a-z.]{2,6})?(:\\d{1,5})?$"
+            },
+            {
+                "key": "EHR_SERVER.USERNAME",
+                "value": "admin",
+                "type": "string"
+            },
+            {
+                "key": "EHR_SERVER.PASSWORD",
+                "value": "@Password123!",
+                "type": "string"
+            },
+            {
+                "key": "CENTRAL_SERVER.URL",
+                "value": "http://197.221.242.150:10408",
+                "type": "string",
+                "regex": "^(https?://)?([\\da-z.-]+)(\\.[a-z.]{2,6})?(:\\d{1,5})?$"
+            },
+            {
+                "key": "CENTRAL_SERVER.USERNAME",
+                "value": "admin",
+                "type": "string"
+            },
+            {
+                "key": "CENTRAL_SERVER.PASSWORD",
+                "value": "@Password123!",
+                "type": "string"
+            }
+        ]
+    }
+]

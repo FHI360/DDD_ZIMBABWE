@@ -573,38 +573,53 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        if (!(_model.patient?.serviceDiscontinued ?? false))
-                          FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 20,
-                            borderWidth: 1,
-                            buttonSize: 40,
-                            icon: Icon(
+                  if (!(_model.patient?.serviceDiscontinued ?? false))
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                      child: InkWell(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                              child: Text(
+                                'Refill patient',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: FlutterFlowTheme.of(context)
+                                          .bodyText1Family,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBtnText,
+                                      useGoogleFonts: GoogleFonts.asMap()
+                                          .containsKey(
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText1Family),
+                                    ),
+                              ),
+                            ),
+                            Icon(
                               Icons.add,
                               color: FlutterFlowTheme.of(context).primaryText,
                               size: 20,
                             ),
-                            onPressed: () async {
-                              context.pushNamed(
-                                'refill',
-                                queryParams: {
-                                  'patientId': serializeParam(
-                                    _model.patient!.id!,
-                                    ParamType.int,
-                                  ),
-                                }.withoutNulls,
-                              );
-                            },
-                          ),
-                      ],
+                          ],
+                        ),
+                        onTap: () async {
+                          context.pushNamed(
+                            'refill',
+                            queryParams: {
+                              'patientId': serializeParam(
+                                _model.patient!.id!,
+                                ParamType.int,
+                              ),
+                            }.withoutNulls,
+                          );
+                        },
+                      ),
                     ),
-                  ),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                     child: Row(

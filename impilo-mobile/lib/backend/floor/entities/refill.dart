@@ -1,4 +1,5 @@
 import 'package:floor/floor.dart';
+import 'package:impilo/flutter_flow/flutter_flow_util.dart';
 
 @entity
 class Refill {
@@ -6,7 +7,7 @@ class Refill {
   int? id;
   DateTime date;
   String regimen;
-  int patientId;
+  String patientId;
   int quantityPrescribed;
   int quantityDispensed;
   DateTime dateNextRefill;
@@ -28,7 +29,17 @@ class Refill {
       this.barcode,
       this.synced);
 
-/*@override
-  List<Object?> get props =>
-      [date, patientId, quantityPrescribed, quantityDispensed];*/
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date.toIso8601String().substring(0, 10),
+      'patient': {'id': patientId},
+      'dateNextRefill': dateNextRefill.toIso8601String().substring(0, 10),
+      'missedDoses': missedDoses,
+      'adverseIssues': adverseIssues,
+      'regimen': regimen,
+      'quantityPrescribed': quantityPrescribed,
+      'quantityDispensed': quantityDispensed,
+      'organisation': {'id': FFAppState().code}
+    };
+  }
 }

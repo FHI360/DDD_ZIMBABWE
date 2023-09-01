@@ -103,6 +103,7 @@
     "defaultProject": "impilo-gateway",
     "cli": {
         "defaultCollection": "@angular-eslint/schematics",
-        "packageManager": "yarn"
+        "packageManager": "yarn",
+        "analytics": "c3f4b7df-2e82-4b5e-9893-2633ed6c743c"
     }
 }

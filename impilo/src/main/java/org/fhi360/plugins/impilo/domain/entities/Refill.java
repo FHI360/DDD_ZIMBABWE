@@ -1,6 +1,7 @@
 package org.fhi360.plugins.impilo.domain.entities;
 
 import com.blazebit.persistence.view.*;
+import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -37,12 +38,17 @@ public class Refill {
 
     private Boolean adverseIssues;
 
-    private Boolean fromServer;
+    private Boolean synced = false;
 
-    private Boolean synced;
+    private UUID reference;
 
     @ManyToOne
+    @NotNull
     private Patient patient;
+
+    @ManyToOne
+    @NotNull
+    private Organisation organisation;
 
     @EntityView(Refill.class)
     @CreatableEntityView
@@ -88,18 +94,21 @@ public class Refill {
 
         void setSynced(Boolean synced);
 
-        Boolean getFromServer();
+        UUID getReference();
 
-        void setFromServer(Boolean fromServer);
+        void setReference(UUID reference);
 
         Patient.IdView getPatient();
 
         void setPatient(Patient.IdView patient);
 
+        Organisation.IdView getOrganisation();
+
+        void setOrganisation(Organisation.IdView organisation);
+
         @PostCreate
         default void postCreate() {
             setSynced(false);
-            setFromServer(false);
         }
     }
 

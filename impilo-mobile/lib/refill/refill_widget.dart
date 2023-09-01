@@ -2914,8 +2914,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                   double.tryParse(_model
                                                                       .temperatureController
                                                                       .text),
-                                                                  _model.patient?.id ??
-                                                                      0,
+                                                                  _model.patient!.uuid ,
                                                                   getCurrentTimestamp,
                                                                   functions.booleanFromYesNo(_model
                                                                       .coughingValue),
@@ -2939,9 +2938,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                   _model.patient
                                                                           ?.assignedRegimen ??
                                                                       '',
-                                                                  _model.patient
-                                                                          ?.id ??
-                                                                      0,
+                                                                  _model.patient!.uuid,
                                                                   int.tryParse(_model.qtyPrescribedController.text) ??
                                                                       0,
                                                                   int.tryParse(

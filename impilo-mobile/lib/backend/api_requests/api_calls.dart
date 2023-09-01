@@ -17,7 +17,7 @@ class SiteActivationCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'Site Activation',
-      apiUrl: 'http://192.168.1.220:8080/api/impilo/activation/activate/site/$code',
+      apiUrl: '${FFAppState().baseUrl}/api/impilo/activation/activate/site/$code',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -48,7 +48,7 @@ class InventoryFulfillmentCall {
     return ApiManager.instance.makeApiCall(
       callName: 'Inventory Fulfillment',
       apiUrl:
-          'http://192.168.1.220:8080/api/impilo/inventory/fulfillment/site/$code/unique-id/$uniqueId',
+          '${FFAppState().baseUrl}/api/impilo/inventory/fulfillment/site/$code/unique-id/$uniqueId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -75,7 +75,7 @@ class DiscontinueServiceCall {
     return ApiManager.instance.makeApiCall(
       callName: 'Service Discontinuation Request',
       apiUrl:
-          'http://192.168.1.220:8080/api/impilo/activation/discontinue-services/client/$uniqueId/site/$siteCode',
+          '${FFAppState().baseUrl}/api/impilo/activation/discontinue-services/client/$uniqueId/site/$siteCode',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -102,7 +102,7 @@ class InventoryRequestCall {
     return ApiManager.instance.makeApiCall(
       callName: 'Inventory Request',
       apiUrl:
-          'http://192.168.1.220:8080/api/impilo/inventory/request/site/$siteCode/date/$date/unique-id/$uniqueId',
+          '${FFAppState().baseUrl}/api/impilo/inventory/request/site/$siteCode/date/$date/unique-id/$uniqueId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -124,7 +124,7 @@ class AcknowledgeInventoryCall {
     return ApiManager.instance.makeApiCall(
       callName: 'Inventory Acknowledge',
       apiUrl:
-      'http://192.168.1.220:8080/api/impilo/inventory/acknowledge/site/$siteCode/unique-id/$uniqueId',
+      '${FFAppState().baseUrl}/api/impilo/inventory/acknowledge/site/$siteCode/unique-id/$uniqueId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},

@@ -8,7 +8,6 @@ import 'package:impilo/report_list/report_list.dart';
 import 'package:logging/logging.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../../auth/firebase_user_provider.dart';
 import '../../index.dart';
 import 'serialization_util.dart';
 
@@ -16,12 +15,9 @@ export 'package:go_router/go_router.dart';
 
 export 'serialization_util.dart';
 
-final log = Logger('ExampleLogger');
 const kTransitionInfoKey = '__transition_info__';
 
 class AppStateNotifier extends ChangeNotifier {
-  ImpiloFirebaseUser? initialUser;
-  ImpiloFirebaseUser? user;
   bool showSplashImage = true;
   String? _redirectLocation;
 
@@ -50,20 +46,7 @@ class AppStateNotifier extends ChangeNotifier {
   /// to perform subsequent actions (such as navigation) afterwards.
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
-  void update(ImpiloFirebaseUser newUser) {
-    initialUser ??= newUser;
-    user = newUser;
-    // Refresh the app on auth change unless explicitly marked otherwise.
-    if (notifyOnAuthChange) {
-      notifyListeners();
-    }
-    // Once again mark the notifier as needing to update on auth change
-    // (in order to catch sign in / out events).
-    updateNotifyOnAuthChange(true);
-  }
-
   void stopShowingSplashImage() {
-    print('Stop flash');
     showSplashImage = false;
     notifyListeners();
   }
@@ -88,32 +71,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => LoginWidget(),
             ),
             FFRoute(
-              name: 'resetAccount',
-              path: 'reset-account',
-              builder: (context, params) => ResetAccountWidget(),
-            ),
-            FFRoute(
-              name: 'registerOutlet',
-              path: 'register-site',
-              requireAuth: true,
-              builder: (context, params) => RegisterOutletWidget(),
-            ),
-            FFRoute(
-              name: 'outletWelcome',
-              path: 'outlet-welcome',
-              requireAuth: true,
-              builder: (context, params) => OutletWelcomeWidget(),
-            ),
-            FFRoute(
-              name: 'activateSite',
-              path: 'activate-site',
-              requireAuth: true,
-              builder: (context, params) => ActivateSiteWidget(),
-            ),
-            FFRoute(
               name: 'siteHome',
-              path: 'site-home',
-              requireAuth: true,
+              path: 'siteHome',
               builder: (context, params) => SiteHomeWidget(),
             ),
             FFRoute(
@@ -171,7 +130,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
       ],
-      urlPathStrategy: UrlPathStrategy.path,
+
     );
 
 extension NavParamExtensions on Map<String, String?> {
@@ -219,20 +178,11 @@ extension NavigationExtensions on BuildContext {
 }
 
 extension GoRouterExtensions on GoRouter {
-  AppStateNotifier get appState =>
-      (routerDelegate.refreshListenable as AppStateNotifier);
+  void prepareAuthEvent([bool ignoreRedirect = false]) => null;
 
-  void prepareAuthEvent([bool ignoreRedirect = false]) =>
-      appState.hasRedirect() && !ignoreRedirect
-          ? null
-          : appState.updateNotifyOnAuthChange(false);
+  bool shouldRedirect(bool ignoreRedirect) => !ignoreRedirect;
 
-  bool shouldRedirect(bool ignoreRedirect) =>
-      !ignoreRedirect && appState.hasRedirect();
-
-  void setRedirectLocationIfUnset(String location) =>
-      (routerDelegate.refreshListenable as AppStateNotifier)
-          .updateNotifyOnAuthChange(false);
+  void setRedirectLocationIfUnset(String location) => null;
 }
 
 extension _GoRouterStateExtensions on GoRouterState {
@@ -325,7 +275,7 @@ class FFRoute {
   GoRoute toRoute(AppStateNotifier appStateNotifier) => GoRoute(
         name: name,
         path: path,
-        redirect: (state) {
+        redirect: (_, state) {
           if (appStateNotifier.shouldRedirect) {
             final redirectLocation = appStateNotifier.getRedirectLocation();
             appStateNotifier.clearRedirectLocation();
@@ -339,7 +289,6 @@ class FFRoute {
           return null;
         },
         pageBuilder: (context, state) {
-          print('Loading: ${appStateNotifier.loading}');
           final ffParams = FFParameters(state, asyncParams);
           final page = ffParams.hasFutures
               ? FutureBuilder(

@@ -42,21 +42,41 @@
             <column name="next_appointment_date" type="date">
                 <constraints nullable="true"/>
             </column>
+            <column name="reference" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="facility_id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="facility_name" type="varchar(128)">
                 <constraints nullable="false"/>
             </column>
+            <column name="organisation_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+
+        <addForeignKeyConstraint baseTableName="patient" baseColumnNames="organisation_id"
+                                 constraintName="fk_patient_organisation_id" referencedTableName="organisation"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="2023072304-02" author="mattae">
-        <createTable tableName="site_assignment">
+        <createTable tableName="devolve">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="site_id" type="UUID">
+            <column name="date" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason_discontinued" type="varchar(256)"/>
+            <column name="synced" type="bool" defaultValueComputed="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reference" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="organisation_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
             <column name="patient_id" type="UUID">
@@ -64,12 +84,12 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="site_assignment" baseColumnNames="site_id"
-                                 constraintName="fk_site_assignment_site_id" referencedTableName="organisation"
+        <addForeignKeyConstraint baseTableName="devolve" baseColumnNames="organisation_id"
+                                 constraintName="fk_devolve_organisation_id" referencedTableName="organisation"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="site_assignment" baseColumnNames="patient_id"
-                                 constraintName="fk_site_assignment_patient_id" referencedTableName="patient"
+        <addForeignKeyConstraint baseTableName="devolve" baseColumnNames="patient_id"
+                                 constraintName="fk_devolve_patient_id" referencedTableName="patient"
                                  referencedColumnNames="id"/>
     </changeSet>
 
@@ -114,10 +134,20 @@
             <column name="synced" type="bool" defaultValueComputed="false">
                 <constraints nullable="false"/>
             </column>
+            <column name="reference" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="patient_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
+            <column name="organisation_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+
+        <addForeignKeyConstraint baseTableName="clinic_data" baseColumnNames="organisation_id"
+                                 constraintName="fk_clinic_data_organisation_id" referencedTableName="organisation"
+                                 referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="clinic_data" baseColumnNames="patient_id"
                                  constraintName="fk_clinic_data_patient_id" referencedTableName="patient"
@@ -125,27 +155,6 @@
     </changeSet>
 
     <changeSet id="2023072304-04" author="mattae">
-        <createTable tableName="discontinuation">
-            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="date" type="date">
-                <constraints nullable="false"/>
-            </column>
-            <column name="reason" type="varchar(256)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="patient_id" type="UUID">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addForeignKeyConstraint baseTableName="discontinuation" baseColumnNames="patient_id"
-                                 constraintName="fk_discontinuation_patient_id" referencedTableName="patient"
-                                 referencedColumnNames="id"/>
-    </changeSet>
-
-    <changeSet id="2023072304-05" author="mattae">
         <createTable tableName="refill">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -174,20 +183,27 @@
             <column name="synced" type="bool" defaultValueComputed="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="from_server" type="bool" defaultValueComputed="false">
-                <constraints nullable="false"/>
+            <column name="reference" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="patient_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
+            <column name="organisation_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+
+        <addForeignKeyConstraint baseTableName="refill" baseColumnNames="organisation_id"
+                                 constraintName="fk_refill_organisation_id" referencedTableName="organisation"
+                                 referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="refill" baseColumnNames="patient_id"
                                  constraintName="fk_refill_patient_id" referencedTableName="patient"
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-06" author="mattae">
+    <changeSet id="2023072304-05" author="mattae">
         <createTable tableName="stock">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -223,7 +239,7 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-07" author="mattae">
+    <changeSet id="2023072304-06" author="mattae">
         <createTable tableName="stock_issuance">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -233,6 +249,12 @@
             </column>
             <column name="bottles" type="bigint">
                 <constraints nullable="false"/>
+            </column>
+            <column name="synced" type="bool" defaultValueComputed="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reference" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="site_id" type="UUID">
                 <constraints nullable="false"/>
@@ -247,13 +269,13 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-08" author="mattae">
+    <changeSet id="2023072304-07" author="mattae">
         <addColumn tableName="stock_issuance">
             <column name="acknowledge" type="bool"/>
         </addColumn>
     </changeSet>
 
-    <changeSet id="2023072304-09" author="mattae">
+    <changeSet id="2023072304-08" author="mattae">
         <dropColumn tableName="stock_issuance" columnName="acknowledge"/>
         <addColumn tableName="stock_issuance">
             <column name="acknowledged" type="bool"/>
@@ -261,13 +283,13 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="2023072304-10" author="mattae">
+    <changeSet id="2023072304-09" author="mattae">
         <addColumn tableName="stock_issuance">
             <column name="acknowledge" type="bool"/>
         </addColumn>
     </changeSet>
 
-    <changeSet id="2023072304-11" author="mattae">
+    <changeSet id="2023072304-10" author="mattae">
         <createTable tableName="stock_request">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -284,6 +306,9 @@
             <column name="request_id" type="varchar(128)">
                 <constraints nullable="false"/>
             </column>
+            <column name="reference" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="site_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
@@ -294,7 +319,7 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-12" author="mattae">
+    <changeSet id="2023072304-11" author="mattae">
         <addColumn tableName="stock_issuance">
             <column name="request_id" type="UUID">
                 <constraints nullable="false"/>
@@ -333,4 +358,22 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="202306062304-02" author="mattae">
+        <createTable tableName="org_mapping">
+            <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="local" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="remote" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="org_mapping" baseColumnNames="local"
+                                 constraintName="fk_org_mapping_local_id"
+                                 referencedTableName="organisation"
+                                 referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

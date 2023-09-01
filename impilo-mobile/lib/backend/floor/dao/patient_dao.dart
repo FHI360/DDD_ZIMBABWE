@@ -82,6 +82,6 @@ abstract class PatientDao {
   Future<void> discontinueService(
       int id, DateTime dateDiscontinued, String reasonDiscontinued);
 
-  @Query("delete from Patient where id = :id")
-  Future<void> deleteById(int id);
+  @Query("delete from Patient")
+  Future<void> deleteAll();
 }

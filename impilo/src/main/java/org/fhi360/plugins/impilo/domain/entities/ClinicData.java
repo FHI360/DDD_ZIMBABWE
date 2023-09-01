@@ -4,6 +4,7 @@ import com.blazebit.persistence.view.CreatableEntityView;
 import com.blazebit.persistence.view.EntityView;
 import com.blazebit.persistence.view.IdMapping;
 import com.blazebit.persistence.view.UpdatableEntityView;
+import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,13 +20,11 @@ import java.util.UUID;
 @Getter
 @Setter
 public class ClinicData {
+    @NotNull
+    LocalDate date;
     @Id
     @UUIDV7
     private UUID id;
-
-    @NotNull
-    LocalDate date;
-
     private Float weight;
 
     private Integer diastolic;
@@ -46,10 +45,17 @@ public class ClinicData {
 
     private Boolean tbReferred;
 
-    private Boolean synced;
+    private Boolean synced = false;
+
+    private UUID reference;
 
     @ManyToOne
+    @NotNull
     private Patient patient;
+
+    @ManyToOne
+    @NotNull
+    private Organisation organisation;
 
     @EntityView(ClinicData.class)
     @CreatableEntityView
@@ -102,8 +108,21 @@ public class ClinicData {
 
         void setTbReferred(Boolean tbReferred);
 
+        Boolean getSynced();
+
+        void setSynced(Boolean synced);
+
+        UUID getReference();
+
+        void setReference(UUID reference);
+
         Patient.IdView getPatient();
+
         void setPatient(Patient.IdView patient);
+
+        Organisation.IdView getOrganisation();
+
+        void setOrganisation(Organisation.IdView organisation);
     }
 
     @EntityView(ClinicData.class)

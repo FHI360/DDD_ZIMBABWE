@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:impilo/backend/http/account_service.dart';
+import 'package:impilo/backend/http/sync_service.dart';
 import 'package:provider/provider.dart';
 
-import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '../custom_code/actions/save_records_from_activation.dart';
 import 'activation_model.dart';
 
 export 'activation_model.dart';
@@ -97,7 +97,7 @@ class _ActivationWidgetState extends State<ActivationWidget> {
                         size: 24.0,
                       ),
                       onPressed: () async {
-                        Navigator.pop(context);
+                       context.pushNamed('siteHome');
                       },
                     ),
                   ],
@@ -149,41 +149,17 @@ class _ActivationWidgetState extends State<ActivationWidget> {
                       ),
                       FFButtonWidget(
                         onPressed: () async {
-                          var _shouldSetState = false;
-                          _model.patients = await SiteActivationCall.call(
-                            code: FFAppState().code,
-                          );
-                          _shouldSetState = true;
-                          if (!(_model.patients?.succeeded ?? true) ||
-                              _model.patients?.jsonBody['site'] == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Error synchronizing with facility',
-                                  style: TextStyle(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                  ),
-                                ),
-                                duration: Duration(milliseconds: 4000),
-                                backgroundColor: Color(0xFFB7463A),
-                              ),
-                            );
-                            if (_shouldSetState) setState(() {});
-                            return;
-                          } else {
-                            FFAppState().name =
-                                _model.patients?.jsonBody['site'];
-                            //Loop and create records
-                            List<dynamic> patients =
-                                _model.patients?.jsonBody['patients'];
-                            saveRecordsFromActivation(
-                                patients, FFAppState().code);
+                          final syncService = SyncService();
+                          final success =
+                          await syncService.processSync();
+
+                          if (success) {
+                            final service = AccountService();
+                            await service.processAccount();
                           }
 
                           context.pushNamed('patientList');
 
-                          if (_shouldSetState) setState(() {});
                         },
                         text: 'Synchronization',
                         options: FFButtonOptions(

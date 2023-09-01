@@ -24,7 +24,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LuxonModule } from 'luxon-angular';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PagedResult, SharedModule } from '@mattae/angular-shared';
+import {FuseAlertComponent, PagedResult} from '@mattae/angular-shared';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { catchError, EMPTY, Observable } from 'rxjs';
@@ -146,10 +146,10 @@ const ROUTES: Routes = [
         ReactiveFormsModule,
         LuxonModule,
         MatTooltipModule,
-        SharedModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatSortModule
+        MatSortModule,
+        FuseAlertComponent
     ],
     declarations: [
         StockDetailsComponent,

@@ -10,7 +10,7 @@ import { StockIssuance, StockIssuanceService } from '../../stock-issuance.servic
 
 @Component({
     selector: 'stock-issuance-list',
-    templateUrl: './stock-issuace-list.component.html',
+    templateUrl: './stock-issuance-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StockIssuanceListComponent implements OnInit, OnDestroy {

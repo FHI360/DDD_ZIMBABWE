@@ -1,18 +1,15 @@
 package org.fhi360.plugins.impilo.domain.entities;
 
-import com.blazebit.persistence.view.EntityView;
-import com.blazebit.persistence.view.IdMapping;
-import com.blazebit.persistence.view.Mapping;
-import com.blazebit.persistence.view.MappingSubquery;
+import com.blazebit.persistence.view.*;
+import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.fhi360.plugins.impilo.domain.providers.DateOfNextRefillSubqueryProvider;
-import org.fhi360.plugins.impilo.domain.providers.LastClinicDateSubqueryProvider;
-import org.fhi360.plugins.impilo.domain.providers.LastRefillDateSubqueryProvider;
-import org.fhi360.plugins.impilo.domain.providers.PatientSiteSubqueryProvider;
+import org.fhi360.plugins.impilo.domain.providers.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -52,6 +49,12 @@ public class Patient {
 
     private String facilityName;
 
+    private UUID reference;
+
+    @ManyToOne
+    @NotNull
+    private Organisation organisation;
+
     @EntityView(Patient.class)
     public interface IdView {
         @IdMapping
@@ -59,30 +62,101 @@ public class Patient {
     }
 
     @EntityView(Patient.class)
+    @CreatableEntityView
+    public interface CreateView extends IdView {
+        void setId(UUID id);
+
+        String getFamilyName();
+
+        void setFamilyName(String name);
+
+        String getGivenName();
+
+        void setGivenName(String name);
+
+        LocalDate getDateOfBirth();
+
+        void setDateOfBirth(LocalDate dateOfBirth);
+
+        String getSex();
+
+        void setSex(String sex);
+
+        String getPhoneNumber();
+
+        void setPhoneNumber(String phoneNumber);
+
+        String getAddress();
+
+        void setAddress(String address);
+
+        String getHospitalNumber();
+
+        void setHospitalNumber(String hospitalNumber);
+
+        String getRegimen();
+
+        void setRegimen(String regimen);
+
+        LocalDate getNextAppointmentDate();
+
+        void setNextAppointmentDate(LocalDate appointmentDate);
+
+        String getPatientId();
+
+        void setPatientId(String patientId);
+
+        String getPersonId();
+
+        void setPersonId(String personId);
+
+        String getFacilityId();
+
+        void setFacilityId(String facilityId);
+
+        String getFacilityName();
+
+        void setFacilityName(String facilityName);
+
+        UUID getReference();
+
+        void setReference(UUID reference);
+
+        Organisation.IdView getOrganisation();
+
+        void setOrganisation(Organisation.IdView organisation);
+    }
+
+    @EntityView(Patient.class)
     public record ListView(
         @IdMapping UUID id, String givenName, String familyName, String sex,
         LocalDate dateOfBirth, String address,
         String phoneNumber, String hospitalNumber, String regimen,
-        @MappingSubquery(PatientSiteSubqueryProvider.class)
-        String site, String facilityName
+        String facilityName,
+        @MappingSubquery(PatientSiteNameSubqueryProvider.class)
+        String site
     ) {
     }
 
     @EntityView(Patient.class)
     public record View(@IdMapping UUID id, String givenName, String familyName, String sex,
                        LocalDate dateOfBirth, String address, LocalDate nextAppointmentDate,
-                       String phoneNumber, String hospitalNumber, String regimen,
+                       String phoneNumber, String hospitalNumber, @Mapping("regimen") String assignedRegimen,
                        @MappingSubquery(LastRefillDateSubqueryProvider.class)
                        LocalDate lastRefillDate,
                        @MappingSubquery(LastClinicDateSubqueryProvider.class)
                        LocalDate lastClinicVisit,
                        @MappingSubquery(DateOfNextRefillSubqueryProvider.class)
                        LocalDate nextRefillDate,
+                       @MappingSubquery(PatientSiteCodeSubqueryProvider.class)
+                       UUID siteCode,
+                       @MappingSubquery(PatientSiteNameSubqueryProvider.class)
+                       String facility,
                        @Mapping("Refill[patient.id IN VIEW(id)]")
                        List<RefillView> refills) {
         @EntityView(Refill.class)
         public record RefillView(LocalDate date, LocalDate dateNextRefill, String regimen, Integer qtyDispensed,
-                                 Integer qtyPrescribed, Boolean fromServer) {
+                                 Integer qtyPrescribed) {
 
         }
     }

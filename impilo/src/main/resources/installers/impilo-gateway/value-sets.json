@@ -1,0 +1,38 @@
+[
+    {
+        "system": "ORGANISATION_IDENTIFIER_PROVIDER",
+        "description": "The type of identifier provider for base organizations",
+        "lang": "en",
+        "order": 2,
+        "values": [
+            {
+                "code": "system",
+                "display": "System",
+                "active": true
+            }
+        ]
+    },
+    {
+        "system": "ORGANISATION_TYPE",
+        "description": "The organisation types",
+        "lang": "en",
+        "order": 2,
+        "values": [
+            {
+                "code": "FACILITY",
+                "display": "Facility",
+                "active": true
+            },
+            {
+                "code": "OUTLET",
+                "display": "OFCAD Site",
+                "active": true
+            },
+            {
+                "code": "CO",
+                "display": "Central Office",
+                "active": true
+            }
+        ]
+    }
+]

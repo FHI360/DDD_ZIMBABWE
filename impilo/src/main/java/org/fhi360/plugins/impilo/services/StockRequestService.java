@@ -12,6 +12,7 @@ import org.fhi360.plugins.impilo.domain.entities.StockIssuance;
 import org.fhi360.plugins.impilo.domain.entities.StockRequest;
 import org.fhi360.plugins.impilo.web.models.ARVRequest;
 import org.fhi360.plugins.impilo.web.models.StockFulfill;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ROLE_USER')")
 public class StockRequestService {
     private final CriteriaBuilderFactory cbf;
     private final EntityManager em;

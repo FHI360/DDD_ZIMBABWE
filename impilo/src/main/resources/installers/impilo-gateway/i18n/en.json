@@ -5,8 +5,30 @@
             "STOCKS": "Stocks",
             "STOCK_ISSUANCE": "Stocks issuance",
             "STOCK_REQUEST": "Stocks request",
-            "REPORTS": "OFCAD Indicators Report",
-            "SYNC": "E.HR Synchronization"
+            "REPORTS": {
+                "TITLE": "Reports",
+                "INDICATORS": "Indicators report"
+            },
+            "SYNC": "Synchronization"
+        },
+        "REPORT": {
+            "DATE": {
+                "START": "Start Date",
+                "END": "End Date"
+            },
+            "ACTIONS": {
+                "GENERATE": "Generate"
+            },
+            "MESSAGES": {
+                "SUCCESS": "Report successfully generated",
+                "ERROR": "Report generation failed"
+            },
+            "TITLE": {
+                "INDICATORS": "Indicators Report"
+            },
+            "INDICATORS": {
+                "DATE": "Period"
+            }
         },
         "TITLE": {
             "STOCKS": "Stocks",
@@ -17,8 +39,7 @@
             "STOCK_ISSUANCE": "Stock issuance details",
             "ADD_STOCK_ISSUANCE": "Record stock issuance",
             "STOCK_REQUEST": "Stocks request",
-            "REPORTS": "OFCAD Indicators Report",
-            "SYNC": "E.HR Synchronization"
+            "REPORTS": "OFCAD Indicators Report"
         },
         "STOCK": {
             "LIST_PAGE": {
@@ -114,11 +135,15 @@
             }
         },
         "SYNC": {
-            "SUCCESS": "Data synced successfully to and from the E.HR Server",
-            "ERROR": "Error syncing data between Impilo desktop the E.HR Server",
-            "AUTHORIZATION_ERROR": "Couldn't authenticate with the E.HR Server",
-            "SYNCHRONIZE": "Synchronize data",
-            "SYNCHRONIZATION": "Synchronize data"
+            "TITLE": "Data Synchronisation",
+            "ACTIONS": {
+                "EHR": "Sync with E.HR Server",
+                "CENTRAL_SERVER": "Sync with Central Server"
+            },
+            "MESSAGES": {
+                "SUCCESS": "Data successfully synchronised",
+                "ERROR": "Error synchronising"
+            }
         }
     }
 }

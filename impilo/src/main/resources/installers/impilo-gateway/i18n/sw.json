@@ -5,8 +5,10 @@
       "STOCKS": "Hisa",
       "STOCK_ISSUANCE": "Utoaji wa hisa",
       "STOCK_REQUEST": "Ombi la hisa",
-      "REPORTS": "Ripoti ya Viashiria vya OFCAD",
-      "SYNC": "Usawazishaji wa E.HR"
+      "REPORTS": {
+        "TITLE": "Ripoti",
+        "INDICATORS": "Ripoti ya viashiria"
+      }
     },
     "TITLE": {
       "STOCKS": "Hisa",
@@ -17,8 +19,7 @@
       "ADD_STOCK_ISSUANCE": "Rekodi utoaji wa hisa",
       "PATIENTS": "Wagonjwa",
       "STOCK_REQUEST": "Ombi la hisa",
-      "REPORTS": "Ripoti ya Viashiria vya OFCAD",
-      "SYNC": "Usawazishaji wa E.HR"
+      "REPORTS": "Ripoti ya Viashiria vya OFCAD"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -98,7 +99,6 @@
       "SEARCH": "Tafuta...",
       "NO_DATA": "Hakuna data ya mgonjwa inayopatikana",
       "TITLE": "Mgawo wa tovuti ya mgonjwa",
-      "facilityName": "Kituo",
       "FACILITY": "Kituo"
     },
     "STOCK_REQUEST": {
@@ -116,12 +116,24 @@
         "ISSUE": "Suala hisa"
       }
     },
-    "SYNC": {
-      "SUCCESS": "Data imesawazishwa kwa mafanikio kwenda na kutoka kwa Seva ya E.HR",
-      "ERROR": "Hitilafu katika kusawazisha data kati ya kompyuta ya mezani ya Impilo na Seva ya E.HR",
-      "AUTHORIZATION_ERROR": "Haikuweza kuthibitisha na Seva ya E.HR",
-      "SYNCHRONIZE": "Sawazisha data",
-      "SYNCHRONIZATION": "Sawazisha data"
+    "REPORT": {
+      "DATE": {
+        "START": "Tarehe ya Kuanza",
+        "END": "Tarehe ya mwisho"
+      },
+      "ACTIONS": {
+        "GENERATE": "Tengeneza"
+      },
+      "MESSAGES": {
+        "SUCCESS": "Ripoti imetolewa",
+        "ERROR": "Uzalishaji wa ripoti umeshindwa"
+      },
+      "TITLE": {
+        "MSR": "Ripoti ya Muhtasari wa Kila Mwezi"
+      },
+      "MSR": {
+        "DATE": "Kipindi"
+      }
     }
   }
 }

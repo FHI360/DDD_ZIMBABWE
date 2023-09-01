@@ -8,7 +8,7 @@ class ClinicData {
   int? diastolic;
   double? weight;
   double? temperature;
-  final int patientId;
+  String patientId;
   final DateTime date;
   bool? coughing;
   bool? swelling;
@@ -34,6 +34,18 @@ class ClinicData {
       this.tbReferred,
       this.synced);
 
-/*@override
-  List<Object?> get props => [patientId, date];*/
+  Map<String, dynamic> toJson() => {
+    'systolic': systolic,
+    'diastolic': diastolic,
+    'weight': weight,
+    'temperature': temperature,
+    'patient': {'id': patientId},
+    'date': date.toIso8601String().substring(0, 10),
+    'coughing': coughing,
+    'swelling': swelling,
+    'sweating': sweating,
+    'fever': fever,
+    'weightLoss': weightLoss,
+    'tbReferred': tbReferred
+  };
 }

@@ -17,14 +17,12 @@ class Patient {
   String address;
   DateTime lastClinicVisit;
   DateTime lastRefillDate;
-  DateTime nextTptDate;
   DateTime nextAppointmentDate;
-  DateTime nextViralLoadDate;
-  DateTime nextCervicalCancerDate;
-  DateTime nextVisitDate;
+  DateTime nextRefillDate;
   bool serviceDiscontinued;
   String reasonDiscontinued;
   DateTime dateDiscontinued;
+  String uuid;
   bool synced;
 
   Patient(
@@ -42,40 +40,36 @@ class Patient {
       this.address,
       this.lastClinicVisit,
       this.lastRefillDate,
-      this.nextTptDate,
       this.nextAppointmentDate,
-      this.nextCervicalCancerDate,
-      this.nextViralLoadDate,
-      this.nextVisitDate,
+      this.nextRefillDate,
       this.serviceDiscontinued,
       this.reasonDiscontinued,
       this.dateDiscontinued,
+      this.uuid,
       this.synced);
 
   factory Patient.fromJson(Map<String, dynamic> row) => Patient(
-      row['id'],
+      null,
       row['givenName'],
       row['familyName'],
-      row['hospitalNo'],
-      row['uniqueId'],
-      row['dateOfBirth'],
+      row['hospitalNumber'],
+      row['uniqueId'] ?? '',
+      DateTime.parse(row['dateOfBirth']),
       row['sex'],
       row['phoneNumber'],
       row['assignedRegimen'],
       row['facility'],
       row['siteCode'],
       row['address'],
-      row['lastClinicVisit'],
-      row['lastRefillDate'],
-      row['nextTptDate'],
-      row['nextAppointmentDate'],
-      row['nextViralLoadDate'],
-      row['nextCervicalCancerDate'],
-      row['nextVisitDate'],
-      row['serviceDiscontinued'],
-      row['reasonDiscontinued'],
-      row['dateDiscontinued'],
-      row['synced']);
+      DateTime.tryParse(row['lastClinicVisit'] ?? '') ?? DateTime(1900),
+      DateTime.tryParse(row['lastRefillDate'] ?? '') ?? DateTime(1900),
+      DateTime.tryParse(row['nextAppointmentDate'] ?? '') ?? DateTime(1900),
+      DateTime.tryParse(row['nextRefillDate'] ?? '') ?? DateTime(1900),
+      false,
+      '',
+      DateTime(1970),
+      row['id'],
+      true);
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -90,25 +84,10 @@ class Patient {
         'facility': facility,
         'siteCode': siteCode,
         'address': address,
-        'lastClinicVisit':
-            lastClinicVisit != null ? lastClinicVisit.toIso8601String() : null,
-        'lastRefillDate':
-            lastRefillDate != null ? lastRefillDate.toIso8601String() : null,
-        'nextTptDate':
-            nextTptDate != null ? nextTptDate.toIso8601String() : null,
-        'nextViralLoadDate': nextAppointmentDate != null
-            ? nextAppointmentDate.toIso8601String()
-            : null,
-        'nextCervicalCancerDate': nextCervicalCancerDate != null
-            ? nextCervicalCancerDate.toIso8601String()
-            : null,
-        'nextVisitDate':
-            nextVisitDate != null ? nextVisitDate.toIso8601String() : null,
+        'lastClinicVisit': lastClinicVisit.toIso8601String(),
+        'lastRefillDate': lastRefillDate.toIso8601String(),
         'serviceDiscontinued': serviceDiscontinued,
         'reasonDiscontinued': reasonDiscontinued,
-        'dateDiscontinued':
-            dateDiscontinued != null ? dateDiscontinued.toIso8601String() : null
+        'dateDiscontinued': dateDiscontinued.toIso8601String()
       };
-/*@override
-  List<Object?> get props => [uniqueId, hospitalNo];*/
 }

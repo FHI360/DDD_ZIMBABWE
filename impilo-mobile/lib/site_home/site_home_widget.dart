@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:impilo/auth/auth_util.dart';
 import 'package:impilo/backend/floor/entities/inventory.dart';
 import 'package:impilo/main.dart';
 import 'package:provider/provider.dart';
@@ -130,9 +129,12 @@ class _SiteHomeWidgetState extends State<SiteHomeWidget> {
                         ),
                         onPressed: () async {
                           GoRouter.of(context).prepareAuthEvent();
-                          await signOut();
+                          FFAppState().accessToken = '';
+                          FFAppState().refreshToken = '';
+                          FFAppState().code = '';
+                          FFAppState().name = '';
                           //GoRouter.of(context).clearRedirectLocation();
-                          context.goNamedAuth('login', mounted);
+                          context.pushNamed('login');
                         },
                       ),
                     ],
@@ -480,7 +482,7 @@ class _SiteHomeWidgetState extends State<SiteHomeWidget> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Synchronize patient data to device',
+                                                  'Synchronize data to and fro server',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyText1

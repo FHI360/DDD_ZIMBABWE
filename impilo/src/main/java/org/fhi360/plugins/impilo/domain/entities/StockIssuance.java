@@ -30,6 +30,8 @@ public class StockIssuance {
 
     private String batchIssuanceId;
 
+    private UUID reference;
+
     @ManyToOne
     private Organisation site;
 
@@ -52,6 +54,11 @@ public class StockIssuance {
         LocalDate getDate();
 
         void setDate(LocalDate date);
+
+        UUID getReference();
+
+        void setReference(UUID reference);
+
 
         @NotNull
         Stock.IdView getStock();
