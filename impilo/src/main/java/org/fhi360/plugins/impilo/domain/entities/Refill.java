@@ -117,4 +117,10 @@ public class Refill {
     public interface UpdateView extends CreateView {
         void setId(UUID id);
     }
+
+    @EntityView(Refill.class)
+    public record ListView(LocalDate date, LocalDate dateNextRefill, String regimen, Integer qtyDispensed,
+                           Integer qtyPrescribed) {
+
+    }
 }

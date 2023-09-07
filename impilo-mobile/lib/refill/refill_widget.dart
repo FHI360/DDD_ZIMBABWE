@@ -195,6 +195,35 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                           8.0),
                                                 ),
                                                 child: InkWell(
+                                                  onTap: () async {
+                                                    DateTime now = DateTime.now();
+                                                    DateTime min = DateTime(
+                                                        now.year - 1,
+                                                        now.month,
+                                                        now.day);
+                                                    final _datePickedDate =
+                                                        await showDatePicker(
+                                                      context: context,
+                                                      initialDate:
+                                                          getCurrentTimestamp,
+                                                      firstDate:
+                                                          min,
+                                                      lastDate:
+                                                          getCurrentTimestamp,
+                                                    );
+
+                                                    if (_datePickedDate !=
+                                                        null) {
+                                                      setState(() {
+                                                        _model.datePicked1 =
+                                                            DateTime(
+                                                          _datePickedDate.year,
+                                                          _datePickedDate.month,
+                                                          _datePickedDate.day,
+                                                        );
+                                                      });
+                                                    }
+                                                  },
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -204,9 +233,9 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                           padding:
                                                               EdgeInsetsDirectional
                                                                   .fromSTEB(
-                                                                      1.0,
-                                                                      0.0,
-                                                                      1.0,
+                                                                      3.0,
+                                                                      3.0,
+                                                                      3.0,
                                                                       0.0),
                                                           child: Row(
                                                             mainAxisSize:
@@ -229,7 +258,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                           .start,
                                                                   children: [
                                                                     Text(
-                                                                      'Date of visit',
+                                                                      'Visit Date',
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyText1,
@@ -237,7 +266,8 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                     Text(
                                                                       dateTimeFormat(
                                                                         'yMMMd',
-                                                                        getCurrentTimestamp,
+                                                                        _model
+                                                                            .datePicked,
                                                                         locale:
                                                                             FFLocalizations.of(context).languageCode,
                                                                       ),
@@ -247,7 +277,24 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                     ),
                                                                   ],
                                                                 ),
-                                                              )
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            1.0,
+                                                                            0.0,
+                                                                            5.0,
+                                                                            0.0),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .date_range,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                                  size: 24.0,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                         ),
@@ -2663,43 +2710,40 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                             8.0),
                                                   ),
                                                   child: InkWell(
-                                                    onTap:
-                                                        () async {
+                                                    onTap: () async {
                                                       DateTime nrd = DateTime(
-                                                          getCurrentTimestamp
+                                                          _model.datePicked1!
                                                               .year,
-                                                          getCurrentTimestamp
+                                                          _model.datePicked1!
                                                               .month,
-                                                          getCurrentTimestamp.day +
-                                                              (int.tryParse(_model.qtyDispensedController.text) ??
+                                                          _model.datePicked1!
+                                                                  .day +
+                                                              (int.tryParse(_model
+                                                                      .qtyDispensedController
+                                                                      .text) ??
                                                                   0));
                                                       final _datePickedDate =
-                                                      await showDatePicker(
-                                                        context:
-                                                        context,
-                                                        initialDate:
-                                                        nrd,
+                                                          await showDatePicker(
+                                                        context: context,
+                                                        initialDate: nrd,
                                                         firstDate:
-                                                        getCurrentTimestamp,
+                                                            getCurrentTimestamp,
                                                         lastDate:
-                                                        DateTime(
-                                                            2050),
+                                                            DateTime(2050),
                                                       );
 
                                                       if (_datePickedDate !=
                                                           null) {
-                                                        setState(
-                                                                () {
-                                                              _model.datePicked =
-                                                                  DateTime(
-                                                                    _datePickedDate
-                                                                        .year,
-                                                                    _datePickedDate
-                                                                        .month,
-                                                                    _datePickedDate
-                                                                        .day,
-                                                                  );
-                                                            });
+                                                        setState(() {
+                                                          _model.datePicked =
+                                                              DateTime(
+                                                            _datePickedDate
+                                                                .year,
+                                                            _datePickedDate
+                                                                .month,
+                                                            _datePickedDate.day,
+                                                          );
+                                                        });
                                                       }
                                                     },
                                                     child: Row(
@@ -2754,24 +2798,22 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                     ],
                                                                   ),
                                                                 ),
-                                                  Padding(
-                                                    padding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                        1.0,
-                                                        0.0,
-                                                        5.0,
-                                                        0.0),
-                                                    child:
-                                                                Icon(
-                                                                  Icons
-                                                                      .date_range,
-                                                                  color: FlutterFlowTheme.of(
-                                                                      context)
-                                                                      .secondaryText,
-                                                                  size: 24.0,
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          1.0,
+                                                                          0.0,
+                                                                          5.0,
+                                                                          0.0),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .date_range,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                    size: 24.0,
+                                                                  ),
                                                                 ),
-                                                  ),
                                                               ],
                                                             ),
                                                           ),
@@ -2888,7 +2930,10 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                           .text) >
                                                                       FFAppState()
                                                                           .regimenQty) ||
-                                                              !_model.verified)
+                                                              !_model
+                                                                  .verified ||
+                                                              _model.datePicked1 ==
+                                                                  null)
                                                           ? null
                                                           : () async {
                                                               if (_model.formKey
@@ -2914,7 +2959,9 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                   double.tryParse(_model
                                                                       .temperatureController
                                                                       .text),
-                                                                  _model.patient!.uuid ,
+                                                                  _model
+                                                                      .patient!
+                                                                      .uuid,
                                                                   getCurrentTimestamp,
                                                                   functions.booleanFromYesNo(_model
                                                                       .coughingValue),
@@ -2934,12 +2981,15 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                           clinic));
                                                               var refill = Refill(
                                                                   null,
-                                                                  getCurrentTimestamp,
-                                                                  _model.patient
-                                                                          ?.assignedRegimen ??
+                                                                  _model
+                                                                      .datePicked1!,
+                                                                  _model.patient?.assignedRegimen ??
                                                                       '',
-                                                                  _model.patient!.uuid,
-                                                                  int.tryParse(_model.qtyPrescribedController.text) ??
+                                                                  _model
+                                                                      .patient!
+                                                                      .uuid,
+                                                                  int.tryParse(_model
+                                                                          .qtyPrescribedController.text) ??
                                                                       0,
                                                                   int.tryParse(
                                                                           _model

@@ -10,12 +10,14 @@ export interface Patient {
     givenName?: string;
     familyName?: string;
     dateOfBirth?: DateTime
+    lastRefillDate?: DateTime;
+    nextRefillDate?: DateTime;
     sex?: string;
     phoneNumber?: string;
     address?: string;
     hospitalNumber?: string;
     uniqueId?: string;
-    regimen?: string;
+    assignedRegimen?: string;
     site?: string,
     facility?: string
 }

@@ -8,7 +8,8 @@
       "REPORTS": {
         "TITLE": "Ripoti",
         "INDICATORS": "Ripoti ya viashiria"
-      }
+      },
+      "SYNC": "Usawazishaji"
     },
     "TITLE": {
       "STOCKS": "Hisa",
@@ -19,7 +20,8 @@
       "ADD_STOCK_ISSUANCE": "Rekodi utoaji wa hisa",
       "PATIENTS": "Wagonjwa",
       "STOCK_REQUEST": "Ombi la hisa",
-      "REPORTS": "Ripoti ya Viashiria vya OFCAD"
+      "REPORTS": "Ripoti ya Viashiria vya OFCAD",
+      "PATIENT_DETAILS": "Maelezo ya mgonjwa"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -30,7 +32,7 @@
         "NO_DATA": "Hakuna data ya hisa inayopatikana",
         "FACILITY": "Kituo cha afya",
         "REGIMEN": "Dawa ya ARV",
-        "BOTTLES": "Chupa",
+        "BOTTLES": "Hisa ya Awali",
         "ISSUED": "Kiasi kimetolewa",
         "BALANCE": "Mizani",
         "BATCH_NO": "Kundi Na",
@@ -85,7 +87,7 @@
         "EDIT": "Hariri"
       }
     },
-    "ASSIGNMENT": {
+    "PATIENT_LIST": {
       "GIVEN_NAME": "Jina la kwanza",
       "FAMILY_NAME": "Jina la ukoo",
       "ASSIGNED_REGIMEN": "Dawa ya ARV Iliyokabidhiwa",
@@ -93,13 +95,14 @@
       "HOSPITAL_NUMBER": "Nambari ya hospitali",
       "UNIQUE_ID": "Kitambulisho cha kipekee",
       "SITE": "Tovuti ya OFCAD",
-      "ASSIGNED": "Imekabidhiwa",
-      "UNASSIGNED": "Haijakabidhiwa",
+      "DEVOLVED": "Iliyogatuliwa",
+      "NOT_DEVOLVED": "Si kugatuliwa",
       "ALL": "Wagonjwa wote",
       "SEARCH": "Tafuta...",
       "NO_DATA": "Hakuna data ya mgonjwa inayopatikana",
-      "TITLE": "Mgawo wa tovuti ya mgonjwa",
-      "FACILITY": "Kituo"
+      "TITLE": "Wagonjwa",
+      "FACILITY": "Kituo",
+      "ACTIONS": ""
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -129,11 +132,41 @@
         "ERROR": "Uzalishaji wa ripoti umeshindwa"
       },
       "TITLE": {
-        "MSR": "Ripoti ya Muhtasari wa Kila Mwezi"
+        "MSR": "Ripoti ya Muhtasari wa Kila Mwezi",
+        "INDICATORS": "Ripoti ya Viashiria"
       },
       "MSR": {
         "DATE": "Kipindi"
+      },
+      "INDICATORS": {
+        "DATE": "Kipindi"
       }
+    },
+    "SYNC": {
+      "TITLE": "Usawazishaji wa Data",
+      "ACTIONS": {
+        "EHR": "Sawazisha na Seva ya E.HR",
+        "CENTRAL_SERVER": "Sawazisha na Seva ya Kati"
+      },
+      "MESSAGES": {
+        "SUCCESS": "Data imesawazishwa",
+        "ERROR": "Hitilafu katika kusawazisha"
+      },
+      "SCHEDULE": {
+        "SYNC_INTERVAL": "Muda wa kusawazisha kiotomatiki (sekunde)",
+        "INTERVAL_MIN": "Muda wa chini ni sekunde 300",
+        "ERROR": "Kulikuwa na hitilafu katika kuratibu usawazishaji otomatiki; tafadhali jaribu tena baadae",
+        "SUCCESS": "Usawazishaji otomatiki umeratibiwa",
+        "SCHEDULE": "Ratiba"
+      }
+    },
+    "PATIENT": {
+      "REFILL_HISTORY": "Jaza upya historia",
+      "NEXT_REFILL": "Tarehe inayofuata ya kujaza tena",
+      "LAST_REFILL": "Tarehe ya mwisho ya kujaza tena",
+      "REFILL_DURATION": "Muda wa kujaza tena",
+      "REFILL_DAYS": "Siku {{days}}",
+      "DEVOLVE": "Toa mgonjwa"
     }
   }
 }

@@ -4,6 +4,7 @@ import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.view.EntityViewManager;
 import com.blazebit.persistence.view.EntityViewSetting;
 import com.mattae.snl.plugins.security.extensions.AuthenticationServiceExtension;
+import io.github.jbella.snl.core.api.services.ExtensionService;
 import io.github.jbella.snl.core.api.services.errors.RecordNotFoundException;
 import io.github.jbella.snl.core.api.services.util.PagedResult;
 import jakarta.persistence.EntityManager;
@@ -28,10 +29,14 @@ public class StockIssuanceService {
     private final EntityViewManager evm;
     private final EntityManager em;
     private final CriteriaBuilderFactory cbf;
-    private final PluginManager pluginManager;
+    private final ExtensionService extensionService;
 
     @Transactional
     public StockIssuance.View save(StockIssuance.CreateView stock) {
+        if (stock.getId() == null) {
+            stock.setReference(UUID.randomUUID());
+        }
+        stock.setSynced(false);
         evm.save(em, stock);
         return getById(stock.getId());
     }
@@ -66,10 +71,10 @@ public class StockIssuanceService {
             .endOr();
             //@formatter:on
         }
-        var hierarchy = pluginManager.getExtensions(AuthenticationServiceExtension.class).stream()
-            .map(AuthenticationServiceExtension::getOrganisationHierarchy).findFirst().orElse(new ArrayList<>());
+        var hierarchy = extensionService.getPriorityExtension(AuthenticationServiceExtension.class)
+            .getOrganisationHierarchy();
         if (!hierarchy.isEmpty()) {
-            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("Facility")) {
+            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("FACILITY")) {
                 cb.where("stock.facility.id").eq(hierarchy.get(0).getId());
             }
         }
@@ -86,10 +91,10 @@ public class StockIssuanceService {
         var settings = EntityViewSetting.create(Stock.View.class);
         var cb = cbf.create(em, Stock.class);
 
-        var hierarchy = pluginManager.getExtensions(AuthenticationServiceExtension.class).stream()
-            .map(AuthenticationServiceExtension::getOrganisationHierarchy).findFirst().orElse(new ArrayList<>());
+        var hierarchy = extensionService.getPriorityExtension(AuthenticationServiceExtension.class)
+            .getOrganisationHierarchy();
         if (!hierarchy.isEmpty()) {
-            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("Facility")) {
+            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("FACILITY")) {
                 cb.where("facility.id").eq(hierarchy.get(0).getId());
             }
         }

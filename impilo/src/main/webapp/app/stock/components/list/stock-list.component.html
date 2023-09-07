@@ -32,7 +32,7 @@
                         <!-- Add button -->
                         <button
                             mat-flat-button
-                            *ngIf="orgType === 'Facility'"
+                            *ngIf="orgType === 'FACILITY'"
                             [routerLink]="['./details']"
                             [color]="'primary'">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
@@ -105,7 +105,7 @@
                                                     [matMenuTriggerFor]="actionsMenu"
                                                     mat-icon-button
                                                     type="button">
-                                                <mat-icon svgIcon="mat:more_horiz"></mat-icon>
+                                                <mat-icon svgIcon="mat_outline:more_vert"></mat-icon>
                                             </button>
                                         </td>
                                     </ng-container>
@@ -122,7 +122,7 @@
                                     class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
                                     <mat-icon
                                         class="icon-size-24"
-                                        [svgIcon]="'heroicons_outline:document-search'"></mat-icon>
+                                        [svgIcon]="'heroicons_outline:folder-open'"></mat-icon>
                                     <div class="mt-6 text-2xl font-semibold tracking-tight text-secondary">
                                         {{'IMPILO.STOCK.LIST_PAGE.NO_DATA' | transloco}}
                                     </div>

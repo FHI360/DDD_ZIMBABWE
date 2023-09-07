@@ -19,7 +19,7 @@ class AssignedRegimen {
       ) r WHERE rn = 1
   )
   SELECT siteCode, givenName, familyName, hospitalNo, sex, dateOfBirth, date, 
-    dateNextRefill FROM last_refill JOIN patient ON patientId = id ORDER BY givenName, familyName
+    dateNextRefill FROM last_refill JOIN patient ON patientId = uuid ORDER BY givenName, familyName
 ''', viewName: 'LastRefill')
 class LastRefill {
   final String siteCode;

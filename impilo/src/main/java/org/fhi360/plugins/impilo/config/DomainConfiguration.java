@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     basePackageClasses = {CoreDomain.class, ImpiloGatewayDomain.class}
 )
 @RequiredArgsConstructor
-@Import(TransactionHandler.class)
+//@Import(TransactionHandler.class)
 public class DomainConfiguration {
 
 }

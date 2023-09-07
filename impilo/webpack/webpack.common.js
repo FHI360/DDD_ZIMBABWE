@@ -14,7 +14,7 @@ module.exports = withModuleFederationPlugin({
     exposes: {
         'StockModule': './src/main/webapp/app/stock/stock.module.ts',
         'StockIssuanceModule': './src/main/webapp/app/stock-issuance/stock-issuance.module.ts',
-        'DevolveModule': './src/main/webapp/app/devolve/devolve.module.ts',
+        'DevolveRouting': './src/main/webapp/app/devolve/devolve.routing.ts',
         'StockRequestModule': './src/main/webapp/app/stock-request/stock.request.module.ts',
         'IndicatorRouting': './src/main/webapp/app/reporting/indicator/indicator.routing.ts',
         'SyncRouting': './src/main/webapp/app/synchronisation/synchronization.routing.ts',

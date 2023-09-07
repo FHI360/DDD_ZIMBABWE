@@ -16,7 +16,7 @@
         "system": "ORGANISATION_TYPE",
         "description": "The organisation types",
         "lang": "en",
-        "order": 2,
+        "order": 3,
         "values": [
             {
                 "code": "FACILITY",

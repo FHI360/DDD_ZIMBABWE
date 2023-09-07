@@ -33,6 +33,7 @@
         "TITLE": {
             "STOCKS": "Stocks",
             "PATIENTS": "Patients",
+            "PATIENT_DETAILS": "Patient details",
             "STOCK": "Stock details",
             "ADD_STOCK": "Add Stock details",
             "STOCK_ISSUANCE_LIST": "Stock issuance list",
@@ -50,7 +51,7 @@
                 "NO_DATA": "No stock data available",
                 "FACILITY": "Health facility",
                 "REGIMEN": "ARV Drug",
-                "BOTTLES": "Bottles",
+                "BOTTLES": "Initial Stock",
                 "ISSUED": "Qty issued",
                 "BALANCE": "Balance",
                 "BATCH_NO": "Batch No",
@@ -105,7 +106,7 @@
                 "STOCK_REQUIRED": "Stock entry is required"
             }
         },
-        "ASSIGNMENT": {
+        "PATIENT_LIST": {
             "GIVEN_NAME": "First name",
             "FAMILY_NAME": "Surname",
             "ASSIGNED_REGIMEN": "Assigned ARV Drug",
@@ -113,12 +114,13 @@
             "HOSPITAL_NUMBER": "Hospital number",
             "FACILITY": "Facility",
             "SITE": "OFCAD Site",
-            "ASSIGNED": "Assigned",
-            "UNASSIGNED": "Unassigned",
+            "DEVOLVED": "Devolved",
+            "NOT_DEVOLVED": "Not devolved",
             "ALL": "All patients",
             "SEARCH": "Search...",
             "NO_DATA": "No patient data available",
-            "TITLE": "Patient site assignment"
+            "TITLE": "Patients",
+            "ACTIONS": ""
         },
         "STOCK_REQUEST": {
             "LIST_PAGE": {
@@ -134,6 +136,14 @@
                 "ISSUE": "Issue stock"
             }
         },
+        "PATIENT": {
+            "REFILL_HISTORY": "Refill history",
+            "NEXT_REFILL": "Next refill date",
+            "LAST_REFILL": "Last refill date",
+            "REFILL_DURATION": "Refill duration",
+            "REFILL_DAYS": "{{days}} Days",
+            "DEVOLVE": "Devolve patient"
+        },
         "SYNC": {
             "TITLE": "Data Synchronisation",
             "ACTIONS": {
@@ -143,6 +153,13 @@
             "MESSAGES": {
                 "SUCCESS": "Data successfully synchronised",
                 "ERROR": "Error synchronising"
+            },
+            "SCHEDULE": {
+                "SYNC_INTERVAL": "Auto-sync interval (secs)",
+                "INTERVAL_MIN": "Minimum interval is 300 seconds",
+                "ERROR": "There was an error scheduling auto-sync; please try again later",
+                "SUCCESS": "Auto-sync successfully scheduled",
+                "SCHEDULE": "Schedule"
             }
         }
     }

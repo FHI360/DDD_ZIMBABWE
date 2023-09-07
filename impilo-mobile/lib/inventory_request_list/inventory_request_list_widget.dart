@@ -4,10 +4,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/inventory.dart';
 import 'package:impilo/backend/floor/entities/inventory_request.dart';
+import 'package:impilo/backend/http/Inventory_service.dart';
 import 'package:impilo/main.dart';
 import 'package:provider/provider.dart';
 
-import '/backend/api_requests/api_calls.dart';
 import '/components/inventory_request_widget.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -195,8 +195,12 @@ class _InventoryRequestListWidgetState
                                 width: double.infinity,
                                 height: 150,
                                 decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
+                                  color: !listViewInventoryRequestRow.fulfilled
+                                      ? Colors.amber
+                                      : !listViewInventoryRequestRow
+                                              .acknowledged
+                                          ? Colors.lightGreenAccent
+                                          : Colors.green,
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 4,
@@ -304,21 +308,14 @@ class _InventoryRequestListWidgetState
                                                                       true
                                                                   ? null
                                                                   : () async {
-                                                                      var response = await AcknowledgeInventoryCall.call(
-                                                                          siteCode: FFAppState()
-                                                                              .code,
-                                                                          uniqueId:
+                                                                      var _database =
+                                                                          await database;
+                                                                      _database
+                                                                          .inventoryRequestDao
+                                                                          .acknowledged(
                                                                               listViewInventoryRequestRow.uniqueId);
-                                                                      if (response
-                                                                          .succeeded) {
-                                                                        var _database =
-                                                                            await database;
-                                                                        _database
-                                                                            .inventoryRequestDao
-                                                                            .acknowledged(listViewInventoryRequestRow.uniqueId);
-                                                                      }
                                                                     },
-                                                          text: 'Received',
+                                                          text: 'Acknowledge',
                                                           options:
                                                               FFButtonOptions(
                                                             width: 110,
@@ -398,58 +395,49 @@ class _InventoryRequestListWidgetState
                                                 size: 30,
                                               ),
                                               onPressed: () async {
-                                                _model.apiResult =
-                                                    await InventoryFulfillmentCall
-                                                        .call(
-                                                            code: FFAppState()
-                                                                .code,
-                                                            uniqueId:
-                                                                listViewInventoryRequestRow
-                                                                    .uniqueId);
-                                                if ((_model
-                                                        .apiResult?.succeeded ??
-                                                    true)) {
-                                                  var _database =
-                                                      await database;
-                                                  var inventory = _model
-                                                      .apiResult?.jsonBody;
-                                                  if (inventory != null) {
-                                                    for (var i = 0;
-                                                        i < inventory.length;
-                                                        i++) {
-                                                      var curr = await _database
-                                                          .inventoryDao
-                                                          .findByUniqueIdAndRegimen(
-                                                              listViewInventoryRequestRow
-                                                                  .uniqueId,
-                                                              listViewInventoryRequestRow
-                                                                  .regimen);
-                                                      if (curr.isEmpty) {
-                                                        var _inventory = Inventory(
-                                                            null,
+                                                var inventory =
+                                                    await InventoryService()
+                                                        .fulfill(
+                                                            FFAppState().code,
+                                                            listViewInventoryRequestRow
+                                                                .uniqueId);
+                                                var _database = await database;
+                                                if (inventory != null) {
+                                                  for (var i = 0;
+                                                      i < inventory.length;
+                                                      i++) {
+                                                    var curr = await _database
+                                                        .inventoryDao
+                                                        .findByUniqueIdAndRegimen(
                                                             listViewInventoryRequestRow
                                                                 .uniqueId,
                                                             listViewInventoryRequestRow
-                                                                .regimen,
-                                                            inventory[i]
-                                                                ['bottles'],
-                                                            inventory[i]
-                                                                ['batchNo'],
-                                                            inventory[i]
-                                                                ['barcode'],
-                                                            FFAppState().code,
-                                                            DateTime.parse(
-                                                                inventory[i][
-                                                                    'expirationDate']));
-                                                        _database.inventoryDao
-                                                            .insertRecord(
-                                                                _inventory);
-                                                        _database
-                                                            .inventoryRequestDao
-                                                            .fulfilled(
-                                                                listViewInventoryRequestRow
-                                                                    .uniqueId);
-                                                      }
+                                                                .regimen);
+                                                    if (curr.isEmpty) {
+                                                      var _inventory = Inventory(
+                                                          null,
+                                                          listViewInventoryRequestRow
+                                                              .uniqueId,
+                                                          listViewInventoryRequestRow
+                                                              .regimen,
+                                                          inventory[i]
+                                                              ['bottles'],
+                                                          inventory[i]
+                                                              ['batchNo'],
+                                                          inventory[i]
+                                                              ['barcode'],
+                                                          FFAppState().code,
+                                                          DateTime.parse(inventory[
+                                                                  i][
+                                                              'expirationDate']));
+                                                      _database.inventoryDao
+                                                          .insertRecord(
+                                                              _inventory);
+                                                      _database
+                                                          .inventoryRequestDao
+                                                          .fulfilled(
+                                                              listViewInventoryRequestRow
+                                                                  .uniqueId);
                                                     }
                                                   }
                                                   setState(() {});

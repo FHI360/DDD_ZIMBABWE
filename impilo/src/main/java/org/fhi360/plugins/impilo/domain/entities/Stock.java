@@ -6,12 +6,17 @@ import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.fhi360.plugins.impilo.domain.providers.StockIssuedSubqueryProvider;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 public class Stock {
     @Id
     @UUIDV7
@@ -30,6 +35,11 @@ public class Stock {
     private LocalDate expirationDate;
 
     private LocalDate manufactureDate;
+
+    private Boolean synced = false;
+
+    @NotNull
+    private UUID reference;
 
     @ManyToOne
     private Organisation facility;
@@ -77,9 +87,22 @@ public class Stock {
 
         void setBottles(Long bottles);
 
+        UUID getReference();
+
+        void setReference(UUID reference);
+
+        Boolean getSynced();
+
+        void setSynced(Boolean synced);
+
         Organisation.IdView getFacility();
 
         void setFacility(Organisation.IdView facility);
+
+        @PrePersist
+        default void prePersist() {
+            setSynced(false);
+        }
     }
 
     @EntityView(Stock.class)

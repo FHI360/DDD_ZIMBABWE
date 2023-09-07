@@ -8,7 +8,8 @@
       "REPORTS": {
         "TITLE": "Iroyin",
         "INDICATORS": "Iroyin afihan"
-      }
+      },
+      "SYNC": "Amuṣiṣẹpọ"
     },
     "TITLE": {
       "STOCKS": "Ọjà",
@@ -19,7 +20,8 @@
       "ADD_STOCK_ISSUANCE": "Igbasilẹ ipinfunni iṣura",
       "PATIENTS": "Awọn alaisan",
       "STOCK_REQUEST": "Akojopo ìbéèrè",
-      "REPORTS": "OFCAD Ifi Iroyin"
+      "REPORTS": "OFCAD Ifi Iroyin",
+      "PATIENT_DETAILS": "Awọn alaye alaisan"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -30,7 +32,7 @@
         "NO_DATA": "Ko si data ọja to wa",
         "FACILITY": "Ilera ohun elo",
         "REGIMEN": "Oògùn ARV",
-        "BOTTLES": "Awọn igo",
+        "BOTTLES": "Iṣura akọkọ",
         "ISSUED": "Qty ti jade",
         "BALANCE": "Iwontunwonsi",
         "BATCH_NO": "Ipele No",
@@ -85,7 +87,7 @@
         "EDIT": "Ṣatunkọ"
       }
     },
-    "ASSIGNMENT": {
+    "PATIENT_LIST": {
       "GIVEN_NAME": "Orukọ akọkọ",
       "FAMILY_NAME": "Oruko idile",
       "ASSIGNED_REGIMEN": "Oògùn ARV ti a sọtọ",
@@ -93,13 +95,14 @@
       "HOSPITAL_NUMBER": "Nọmba ile iwosan",
       "UNIQUE_ID": "Oto idamo",
       "SITE": "Aaye OFCAD",
-      "ASSIGNED": "sọtọ",
-      "UNASSIGNED": "Ti ko ni ipin",
+      "DEVOLVED": "Iyasọtọ",
+      "NOT_DEVOLVED": "Ko ṣe iyasọtọ",
       "ALL": "Gbogbo awọn alaisan",
       "SEARCH": "Wa...",
       "NO_DATA": "Ko si data alaisan ti o wa",
-      "TITLE": "Iṣẹ iyansilẹ ojula alaisan",
-      "FACILITY": "Ohun elo"
+      "TITLE": "Awọn alaisan",
+      "FACILITY": "Ohun elo",
+      "ACTIONS": ""
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -129,11 +132,41 @@
         "ERROR": "Iṣiṣe ijabọ kuna"
       },
       "TITLE": {
-        "MSR": "Oṣooṣu Lakotan Iroyin"
+        "MSR": "Oṣooṣu Lakotan Iroyin",
+        "INDICATORS": "Atọka Iroyin"
       },
       "MSR": {
         "DATE": "Akoko"
+      },
+      "INDICATORS": {
+        "DATE": "Akoko"
       }
+    },
+    "SYNC": {
+      "TITLE": "Amuṣiṣẹpọ data",
+      "ACTIONS": {
+        "EHR": "Muṣiṣẹpọ pẹlu E.HR Server",
+        "CENTRAL_SERVER": "Muṣiṣẹpọ pẹlu Central Server"
+      },
+      "MESSAGES": {
+        "SUCCESS": "Data muṣiṣẹpọ ni aṣeyọri",
+        "ERROR": "Aṣiṣe mimuuṣiṣẹpọ"
+      },
+      "SCHEDULE": {
+        "SYNC_INTERVAL": "Àárí ìsiṣẹ́pọ̀ aládàáṣe (ìṣẹ́jú àáyá)",
+        "INTERVAL_MIN": "Aarin aarin to kere julọ jẹ awọn aaya 300",
+        "ERROR": "Aṣiṣe kan wa ṣiṣe eto imuṣiṣẹpọ aifọwọyi; jọwọ gbiyanju lẹẹkansi nigbamii",
+        "SUCCESS": "A ṣe eto imuṣiṣẹpọ ni aṣeyọri",
+        "SCHEDULE": "Iṣeto"
+      }
+    },
+    "PATIENT": {
+      "REFILL_HISTORY": "Ṣatunkun itan",
+      "NEXT_REFILL": "Nigbamii ti ṣatunkun ọjọ",
+      "LAST_REFILL": "Ọjọ ipari ti o kẹhin",
+      "REFILL_DURATION": "Atunkun iye akoko",
+      "REFILL_DAYS": "{{days}} Ọjọ",
+      "DEVOLVE": "Devolve alaisan"
     }
   }
 }

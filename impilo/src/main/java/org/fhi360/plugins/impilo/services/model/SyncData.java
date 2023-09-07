@@ -14,4 +14,5 @@ public class SyncData {
     private List<Refill> refills;
     private List<ClinicData> clinicData;
     private List<Devolve> devolves;
+    private List<InventoryRequest> requests;
 }

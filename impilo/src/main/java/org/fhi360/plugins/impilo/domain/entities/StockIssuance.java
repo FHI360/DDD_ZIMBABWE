@@ -1,19 +1,23 @@
 package org.fhi360.plugins.impilo.domain.entities;
 
-import com.blazebit.persistence.view.CreatableEntityView;
-import com.blazebit.persistence.view.EntityView;
-import com.blazebit.persistence.view.IdMapping;
+import com.blazebit.persistence.view.*;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
+@ToString
 public class StockIssuance {
     @Id
     @UUIDV7
@@ -32,6 +36,8 @@ public class StockIssuance {
 
     private UUID reference;
 
+    private Boolean synced = false;
+
     @ManyToOne
     private Organisation site;
 
@@ -40,6 +46,7 @@ public class StockIssuance {
 
     @EntityView(StockIssuance.class)
     @CreatableEntityView
+    @UpdatableEntityView
     public interface CreateView {
         @IdMapping
         UUID getId();
@@ -59,6 +66,9 @@ public class StockIssuance {
 
         void setReference(UUID reference);
 
+        Boolean getSynced();
+
+        void setSynced(Boolean synced);
 
         @NotNull
         Stock.IdView getStock();
@@ -74,6 +84,11 @@ public class StockIssuance {
         StockRequest.IdView getRequest();
 
         void setRequest(StockRequest.IdView request);
+
+        @PrePersist
+        default void prePersist() {
+            setSynced(false);
+        }
     }
 
     @EntityView(StockIssuance.class)

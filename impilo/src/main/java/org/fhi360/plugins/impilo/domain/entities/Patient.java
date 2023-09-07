@@ -64,8 +64,6 @@ public class Patient {
     @EntityView(Patient.class)
     @CreatableEntityView
     public interface CreateView extends IdView {
-        void setId(UUID id);
-
         String getFamilyName();
 
         void setFamilyName(String name);
@@ -128,6 +126,12 @@ public class Patient {
     }
 
     @EntityView(Patient.class)
+    @UpdatableEntityView
+    public interface UpdateView extends CreateView {
+        void setId(UUID id);
+    }
+
+    @EntityView(Patient.class)
     public record ListView(
         @IdMapping UUID id, String givenName, String familyName, String sex,
         LocalDate dateOfBirth, String address,
@@ -151,13 +155,6 @@ public class Patient {
                        @MappingSubquery(PatientSiteCodeSubqueryProvider.class)
                        UUID siteCode,
                        @MappingSubquery(PatientSiteNameSubqueryProvider.class)
-                       String facility,
-                       @Mapping("Refill[patient.id IN VIEW(id)]")
-                       List<RefillView> refills) {
-        @EntityView(Refill.class)
-        public record RefillView(LocalDate date, LocalDate dateNextRefill, String regimen, Integer qtyDispensed,
-                                 Integer qtyPrescribed) {
-
-        }
+                       String facility) {
     }
 }

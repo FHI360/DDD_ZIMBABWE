@@ -6,6 +6,12 @@ import {FuseAlertComponent, FuseAlertType} from '@mattae/angular-shared';
 import {catchError, EMPTY, finalize, map} from 'rxjs';
 import {NgIf} from '@angular/common';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'synchronization',
@@ -15,7 +21,14 @@ import {MatSidenavModule} from '@angular/material/sidenav';
         TranslocoModule,
         FuseAlertComponent,
         NgIf,
-        MatSidenavModule
+        MatSidenavModule,
+        FormsModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatIconModule,
+        MatTooltipModule
     ],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,9 +44,13 @@ export class SynchronisationComponent implements OnInit {
         message: ''
     };
 
+    intervalCtl: FormControl = new FormControl(null, [Validators.min(300), Validators.required]);
+    scheduling = false;
+
     drawerMode: 'side' | 'over';
 
-    constructor(private service: SynchronizationService, private _changeDetectorRef: ChangeDetectorRef,
+    constructor(private _service: SynchronizationService,
+                private _changeDetectorRef: ChangeDetectorRef,
                 private _translocoService: TranslocoService) {
     }
 
@@ -43,7 +60,7 @@ export class SynchronisationComponent implements OnInit {
     syncEHR() {
         this.running = true;
         this.showAlert = false;
-        this.service.syncEHR().pipe(
+        this._service.syncEHR().pipe(
             map(res => {
                 this.alert = {
                     type: 'success',
@@ -56,7 +73,7 @@ export class SynchronisationComponent implements OnInit {
                 this.showAlert = true;
                 this.alert = {
                     type: 'error',
-                    message: err.details?.message
+                    message: `${this._translocoService.translate('IMPILO.SYNC.MESSAGES.ERROR')}: ${this._translocoService.translate(err.error.detail)}`
                 };
                 this._changeDetectorRef.markForCheck();
                 return EMPTY;
@@ -70,27 +87,50 @@ export class SynchronisationComponent implements OnInit {
     syncCentralServer() {
         this.running = true;
         this.showAlert = false;
-        this.service.syncEHR().pipe(
+        this._service.syncCentralServer().pipe(
             map(res => {
                 this.alert = {
                     type: 'success',
                     message: 'IMPILO.SYNC.MESSAGES.SUCCESS',
                 };
-                this.showAlert = true;
-                this._changeDetectorRef.markForCheck();
             }),
             catchError((err: any) => {
-                this.showAlert = true;
                 this.alert = {
                     type: 'error',
                     message: `${this._translocoService.translate('IMPILO.SYNC.MESSAGES.ERROR')}: ${err.error.detail}`
                 };
-                this._changeDetectorRef.markForCheck();
                 return EMPTY;
             }),
             finalize(() => {
                 this.running = false;
+                this.showAlert = true;
+                this._changeDetectorRef.markForCheck();
             })
         ).subscribe();
+    }
+
+    scheduleSync() {
+        this.scheduling = true;
+        this._service.scheduleSync(this.intervalCtl.value).pipe(
+            map(_=> {
+                this.intervalCtl.patchValue(null);
+                this.alert = {
+                    type: 'success',
+                    message: 'IMPILO.SYNC.SCHEDULE.SUCCESS'
+                };
+            }),
+            catchError((err: any) => {
+                this.alert = {
+                    type: 'error',
+                    message:'IMPILO.SYNC.SCHEDULE.ERROR'
+                };
+                return EMPTY;
+            }),
+            finalize(() => {
+                this.scheduling = false;
+                this.showAlert = true;
+                this._changeDetectorRef.markForCheck();
+            })
+        ).subscribe()
     }
 }

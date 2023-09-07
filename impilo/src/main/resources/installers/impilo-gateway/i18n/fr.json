@@ -8,7 +8,8 @@
       "REPORTS": {
         "TITLE": "Rapports",
         "INDICATORS": "Rapport sur les indicateurs"
-      }
+      },
+      "SYNC": "Synchronisation"
     },
     "TITLE": {
       "STOCKS": "Actions",
@@ -19,7 +20,8 @@
       "ADD_STOCK_ISSUANCE": "Record d'émissions d'actions",
       "PATIENTS": "Les patients",
       "STOCK_REQUEST": "Demande de stocks",
-      "REPORTS": "Rapport sur les indicateurs de l'OFCAD"
+      "REPORTS": "Rapport sur les indicateurs de l'OFCAD",
+      "PATIENT_DETAILS": "Détails du patient"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -30,7 +32,7 @@
         "NO_DATA": "Aucune donnée de stock disponible",
         "FACILITY": "Établissement de santé",
         "REGIMEN": "Médicament ARV",
-        "BOTTLES": "Bouteilles",
+        "BOTTLES": "Stock initial",
         "ISSUED": "Qté émise",
         "BALANCE": "Équilibre",
         "BATCH_NO": "N ° de lot",
@@ -85,7 +87,7 @@
         "EDIT": "Modifier"
       }
     },
-    "ASSIGNMENT": {
+    "PATIENT_LIST": {
       "GIVEN_NAME": "Prénom",
       "FAMILY_NAME": "Nom de famille",
       "ASSIGNED_REGIMEN": "Médicament ARV attribué",
@@ -93,13 +95,14 @@
       "HOSPITAL_NUMBER": "Numéro d'hôpital",
       "UNIQUE_ID": "Identifiant unique",
       "SITE": "Site de l'OFCAD",
-      "ASSIGNED": "Attribué",
-      "UNASSIGNED": "Non attribué",
+      "DEVOLVED": "Déconcentré",
+      "NOT_DEVOLVED": "Non dévolu",
       "ALL": "Tous les patients",
       "SEARCH": "Recherche...",
       "NO_DATA": "Aucune donnée disponible sur les patients",
-      "TITLE": "Affectation du site patient",
-      "FACILITY": "Facilité"
+      "TITLE": "Les patients",
+      "FACILITY": "Facilité",
+      "ACTIONS": ""
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -129,11 +132,41 @@
         "ERROR": "La génération du rapport a échoué"
       },
       "TITLE": {
-        "MSR": "Rapport récapitulatif mensuel"
+        "MSR": "Rapport récapitulatif mensuel",
+        "INDICATORS": "Rapport sur les indicateurs"
       },
       "MSR": {
         "DATE": "Période"
+      },
+      "INDICATORS": {
+        "DATE": "Période"
       }
+    },
+    "SYNC": {
+      "TITLE": "Synchronisation des données",
+      "ACTIONS": {
+        "EHR": "Synchroniser avec le serveur E.HR",
+        "CENTRAL_SERVER": "Synchroniser avec le serveur central"
+      },
+      "MESSAGES": {
+        "SUCCESS": "Données synchronisées avec succès",
+        "ERROR": "Erreur de synchronisation"
+      },
+      "SCHEDULE": {
+        "SYNC_INTERVAL": "Intervalle de synchronisation automatique (secondes)",
+        "INTERVAL_MIN": "L'intervalle minimum est de 300 secondes",
+        "ERROR": "Une erreur s'est produite lors de la planification de la synchronisation automatique ; Veuillez réessayer plus tard",
+        "SUCCESS": "Synchronisation automatique planifiée avec succès",
+        "SCHEDULE": "Calendrier"
+      }
+    },
+    "PATIENT": {
+      "REFILL_HISTORY": "Historique des recharges",
+      "NEXT_REFILL": "Prochaine date de recharge",
+      "LAST_REFILL": "Date de la dernière recharge",
+      "REFILL_DURATION": "Durée de recharge",
+      "REFILL_DAYS": "{{days}} jours",
+      "DEVOLVE": "Dévolution du patient"
     }
   }
 }

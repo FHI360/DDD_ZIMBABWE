@@ -19,7 +19,7 @@ abstract class InventoryRequestDao {
   @Query('Update InventoryRequest set fulfilled = 1 WHERE uniqueId = :uniqueId')
   Future<void> fulfilled(String uniqueId);
 
-  @Query('Update InventoryRequest set acknowledged = 1 WHERE uniqueId = :uniqueId')
+  @Query('Update InventoryRequest set acknowledged = 1, synced = 0 WHERE uniqueId = :uniqueId')
   Future<void> acknowledged(String uniqueId);
 
   @insert
@@ -30,4 +30,13 @@ abstract class InventoryRequestDao {
 
   @Query("delete from Inventory where id = :id")
   Future<void> deleteById(int id);
+
+  @Query('SELECT COUNT(*) > 0 FROM InventoryRequest WHERE synced = 0')
+  Future<bool?> hasUnSynced();
+
+  @Query("UPDATE InventoryRequest SET synced = 1")
+  Future<void> updateAllSynced();
+
+  @Query('SELECT * FROM InventoryRequest where synced = 0')
+  Future<List<InventoryRequest>> findUnSynced();
 }

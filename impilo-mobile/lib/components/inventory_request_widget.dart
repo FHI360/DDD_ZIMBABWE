@@ -5,11 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/inventory_request.dart';
 import 'package:impilo/main.dart';
 import 'package:logging/logging.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -496,37 +494,6 @@ class _InventoryRequestWidgetState extends State<InventoryRequestWidget> {
                                                 _model.error = null;
                                               });
                                               var uniqueId = Uuid().v4();
-                                              _model.response =
-                                                  await InventoryRequestCall
-                                                      .call(
-                                                siteCode: FFAppState().code,
-                                                date: getCurrentTimestamp
-                                                    .toIso8601String()
-                                                    .substring(0, 10),
-                                                uniqueId: uniqueId,
-                                                itemsJson: {
-                                                  'arvDrug':
-                                                      _model.regimenValue,
-                                                  'bottles': int.parse(_model
-                                                      .textController.text)
-                                                },
-                                              );
-                                              _shouldSetState = true;
-                                              if (!(_model.response != null ||
-                                                  _model.response!.jsonBody)) {
-                                                showToast(
-                                                  '''An error has occurred while trying to transmit request''',
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                  position:
-                                                      ToastPosition.bottom,
-                                                  backgroundColor: Colors.red,
-                                                  radius: 3.0,
-                                                  textStyle:
-                                                      TextStyle(fontSize: 15.0),
-                                                );
-                                                return;
-                                              }
                                               var _request = InventoryRequest(
                                                   null,
                                                   uniqueId,
@@ -538,7 +505,8 @@ class _InventoryRequestWidgetState extends State<InventoryRequestWidget> {
                                                   false,
                                                   false,
                                                   FFAppState().code,
-                                                  getCurrentTimestamp);
+                                                  getCurrentTimestamp,
+                                                  false);
                                               database.then((value) => value
                                                   .inventoryRequestDao
                                                   .insertRecord(_request));

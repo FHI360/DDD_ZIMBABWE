@@ -27,4 +27,9 @@ public class ServerSyncService {
             throw new SynchronisationError(e.getMessage());
         }
     }
+
+    public void scheduleSync(long intervalSecs){
+        facilityServerService.scheduleTask(intervalSecs);
+    }
+
 }

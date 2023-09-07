@@ -9,7 +9,7 @@
     </parent>
     <groupId>org.fhi360.plugins</groupId>
     <artifactId>impilo</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.8</version>
     <name>Impilo Gateway Plugin</name>
     <properties>
         <node.version>v16.17.0</node.version>
@@ -229,7 +229,7 @@
                             <Plugin-Version>${project.version}</Plugin-Version>
                             <Plugin-Provider>Matthew Edor&lt;&lt;medor@fhi360.org&gt;&gt;</Plugin-Provider>
                             <Plugin-Dependencies>angular-frontend</Plugin-Dependencies>
-                            <Plugin-Description>Gateway application to support connectivity between the Impilo mobile app and E.HR server at the facility. Also manages bidirectional sync between the two components and a stop gap for features not available yet on the E.HR server</Plugin-Description>
+                            <Plugin-Description>Gateway application to support connectivity between the Impilo mobile app and E.HR server at the facility. Also manages bidirectional sync between the two components</Plugin-Description>
                             <Plugin-Class>org.fhi360.plugins.impilo.ImpiloGatewayPlugin</Plugin-Class>
                         </manifestEntries>
                     </archive>

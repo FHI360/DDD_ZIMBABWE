@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import net.datafaker.Faker;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.repositories.PatientRepository;
-import org.fhi360.plugins.impilo.domain.repositories.RefillRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +17,14 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Remove this class before deployment
+ */
 @Service
 @RequiredArgsConstructor
 public class RandomDataService {
     private final TransactionHandler transactionHandler;
     private final PatientRepository patientRepository;
-    private final RefillRepository refillRepository;
     private final EntityViewManager evm;
     private final EntityManager em;
     Random rand = new Random();
@@ -31,7 +32,7 @@ public class RandomDataService {
 
     @PostConstruct
     public void init() {
-        if (patientRepository.count() == 0) {
+        if (((long) em.createQuery("select count(o) from Organisation o where o.type = 'FACILITY'").getSingleResult()) == 0) {
             transactionHandler.runInTransaction(() -> {
                 generateFacilities();
                 generateSite();
@@ -48,7 +49,7 @@ public class RandomDataService {
         party.setType("FACILITY");
         org.setName(faker.medical().hospitalName());
         org.setParty(party);
-        org.setType("Facility");
+        org.setType("FACILITY");
 
         evm.save(em, org);
     }
@@ -67,6 +68,8 @@ public class RandomDataService {
 
     private void generatePatient() {
         UUID facilityId = UUID.randomUUID();
+        List<Organisation> facilities = em.createQuery("select o from Organisation o where o.type = 'FACILITY'")
+            .getResultList();
         Random rand = new Random();
         List<String> regimens = List.of("ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
             "AZT(300mg)+3TC(150mg)+LPV/r(200/50mg)", "ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)",
@@ -80,11 +83,12 @@ public class RandomDataService {
             patient.setHospitalNumber(faker.idNumber().peselNumber());
             patient.setPhoneNumber(faker.phoneNumber().cellPhone());
             patient.setAddress(faker.address().fullAddress());
-            patient.setFacilityId(facilityId.toString());
-            patient.setFacilityName(faker.name().name());
+            patient.setFacilityId(facilities.get(0).getId().toString());
+            patient.setFacilityName(facilities.get(0).getName());
             patient.setRegimen(regimens.get(rand.nextInt(regimens.size())));
             patient.setNextAppointmentDate(faker.date().future(180, TimeUnit.DAYS).toLocalDateTime().toLocalDate());
             patient.setReference(UUID.randomUUID());
+            patient.setOrganisation(facilities.get(0));
 
             patientRepository.save(patient);
         }

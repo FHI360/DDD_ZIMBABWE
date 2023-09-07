@@ -37,8 +37,8 @@ class Refill {
       'missedDoses': missedDoses,
       'adverseIssues': adverseIssues,
       'regimen': regimen,
-      'quantityPrescribed': quantityPrescribed,
-      'quantityDispensed': quantityDispensed,
+      'qtyPrescribed': quantityPrescribed,
+      'qtyDispensed': quantityDispensed,
       'organisation': {'id': FFAppState().code}
     };
   }

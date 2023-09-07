@@ -269,23 +269,10 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-07" author="mattae">
-        <addColumn tableName="stock_issuance">
-            <column name="acknowledge" type="bool"/>
-        </addColumn>
-    </changeSet>
-
     <changeSet id="2023072304-08" author="mattae">
-        <dropColumn tableName="stock_issuance" columnName="acknowledge"/>
         <addColumn tableName="stock_issuance">
             <column name="acknowledged" type="bool"/>
             <column name="batch_issuance_id" type="varchar(64)"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="2023072304-09" author="mattae">
-        <addColumn tableName="stock_issuance">
-            <column name="acknowledge" type="bool"/>
         </addColumn>
     </changeSet>
 
@@ -359,7 +346,7 @@
     </changeSet>
 
     <changeSet id="202306062304-02" author="mattae">
-        <createTable tableName="org_mapping">
+        <createTable tableName="id_mappings">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
             </column>
@@ -370,10 +357,20 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
+    </changeSet>
 
-        <addForeignKeyConstraint baseTableName="org_mapping" baseColumnNames="local"
-                                 constraintName="fk_org_mapping_local_id"
-                                 referencedTableName="organisation"
-                                 referencedColumnNames="id"/>
+    <changeSet id="202306062304-03" author="mattae">
+        <addColumn tableName="stock_request">
+            <column name="synced" type="bool"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="202306062304-04" author="mattae">
+        <addColumn tableName="stock">
+            <column name="synced" type="bool" defaultValueComputed="false"/>
+            <column name="reference" type="UUID" defaultValueComputed="uuid_v7()">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

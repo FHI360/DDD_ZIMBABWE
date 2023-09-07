@@ -56,6 +56,7 @@ public class StockRequestService {
             stockRequest.setArvDrug(request.getArvDrug());
             stockRequest.setDate(date);
             stockRequest.setRequestId(requestId);
+            stockRequest.setReference(UUID.randomUUID());
             evm.save(em, stockRequest);
 
             return true;

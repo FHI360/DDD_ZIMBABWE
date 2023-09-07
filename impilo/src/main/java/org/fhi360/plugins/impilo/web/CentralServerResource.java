@@ -16,13 +16,13 @@ public class CentralServerResource {
     private final CentralServerService serverService;
 
     @GetMapping("/facility-data/{facilityId}")
-    public FacilityData getFacilityData(@PathVariable String facilityId,
-                                        @RequestParam(required = false) List<UUID> siteIds) {
-        return serverService.retrieveFacilityData(facilityId, siteIds);
+    public FacilityData getFacilityData(@PathVariable UUID facilityId,
+                                        @RequestParam(required = false) List<UUID> outletIds) {
+        return serverService.retrieveFacilityData(facilityId, outletIds);
     }
 
     @PostMapping("/server-data")
-    public boolean saveData(@RequestBody ServerData data) throws Exception {
+    public boolean saveData(@RequestBody ServerData data) {
         return serverService.saveData(data);
     }
 

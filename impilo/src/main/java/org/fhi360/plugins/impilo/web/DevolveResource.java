@@ -2,7 +2,6 @@ package org.fhi360.plugins.impilo.web;
 
 import io.github.jbella.snl.core.api.services.util.PagedResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.services.DevolveService;
 import org.springframework.web.bind.annotation.*;

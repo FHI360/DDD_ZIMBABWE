@@ -1,17 +1,19 @@
 package org.fhi360.plugins.impilo.services;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.view.ConvertOption;
 import com.blazebit.persistence.view.EntityViewManager;
 import com.blazebit.persistence.view.EntityViewSetting;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.jbella.snl.core.api.domain.Address;
+import io.github.jbella.snl.core.api.domain.Identifier;
 import io.github.jbella.snl.core.api.domain.Organisation;
+import io.github.jbella.snl.core.api.domain.Party;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.fhi360.plugins.impilo.domain.entities.*;
-import org.fhi360.plugins.impilo.domain.repositories.DevolveRepository;
-import org.fhi360.plugins.impilo.domain.repositories.OrgMappingRepository;
-import org.fhi360.plugins.impilo.domain.repositories.PatientRepository;
-import org.fhi360.plugins.impilo.domain.repositories.StockIssuanceRepository;
+import org.fhi360.plugins.impilo.domain.repositories.*;
 import org.fhi360.plugins.impilo.services.model.FacilityData;
 import org.fhi360.plugins.impilo.services.model.ServerData;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ROLE_USER')")
+@Slf4j
 public class CentralServerService {
     private final EntityManager em;
     private final CriteriaBuilderFactory cbf;
@@ -36,7 +39,9 @@ public class CentralServerService {
     private final PatientRepository patientRepository;
     private final StockIssuanceRepository stockIssuanceRepository;
     private final DevolveRepository devolveRepository;
-    private final OrgMappingRepository mappingRepository;
+    private final IdMappingRepository mappingRepository;
+    private final StockRepository stockRepository;
+    private final StockRequestRepository stockRequestRepository;
     private final Map<UUID, FacilityData> acknowledgment = new HashMap<>();
 
     @Transactional
@@ -45,18 +50,22 @@ public class CentralServerService {
         data.getOutlets().forEach(this::saveOrUpdateOrganisation);
 
         data.getPatients().forEach(c -> {
-            var _patient = objectMapper.convertValue(c, Patient.class);
-            mappingRepository.findByLocal(c.getOrganisation().getId()).ifPresent(mapping -> {
-                c.setOrganisation(getOrganisationIdView(mapping.getRemote()));
+            mappingRepository.findByRemote(c.getOrganisation().getId()).ifPresent(mapping -> {
+                c.setOrganisation(getOrganisationIdView(mapping.getLocal()));
             });
+            var _patient = objectMapper.convertValue(c, Patient.class);
             var patient = patientRepository.findByReference(c.getReference()).orElse(_patient);
             BeanUtils.copyProperties(_patient, patient, "id");
 
-            OrgMapping mapping = new OrgMapping();
-            mapping.setRemote(c.getId());
-            patient = patientRepository.save(patient);
-            mapping.setLocal(patient.getId());
-            mappingRepository.save(mapping);
+            if (mappingRepository.findByRemote(c.getId()).isEmpty()) {
+                IdMappings mapping = new IdMappings();
+                mapping.setRemote(c.getId());
+                patient = patientRepository.save(patient);
+                mapping.setLocal(patient.getId());
+                mappingRepository.save(mapping);
+            } else {
+                patientRepository.save(patient);
+            }
         });
 
         var devolves = data.getDevolves().stream()
@@ -76,27 +85,73 @@ public class CentralServerService {
             .toList();
         devolveRepository.saveAll(devolves);
 
-        var issues = data.getStockIssuance().stream()
-            .map(c -> {
-                var _issuance = objectMapper.convertValue(c, StockIssuance.class);
-                var issuance = stockIssuanceRepository.findByReference(c.getReference()).orElse(_issuance);
-                BeanUtils.copyProperties(_issuance, issuance, "id");
-                return issuance;
-            })
-            .toList();
-        stockIssuanceRepository.saveAll(issues);
+        data.getStocks().forEach(c -> {
+            mappingRepository.findByRemote(c.getFacility().getId()).ifPresent(mapping -> {
+                c.setFacility(getOrganisationIdView(mapping.getLocal()));
+            });
+            var _stock = objectMapper.convertValue(c, Stock.class);
+            var stock = stockRepository.findByReference(c.getReference()).orElse(_stock);
+            BeanUtils.copyProperties(_stock, stock, "id");
 
+            if (mappingRepository.findByRemote(c.getId()).isEmpty()) {
+                IdMappings mapping = new IdMappings();
+                mapping.setRemote(c.getId());
+                stock = stockRepository.save(stock);
+                mapping.setLocal(stock.getId());
+                mappingRepository.save(mapping);
+            } else {
+                stockRepository.save(stock);
+            }
+        });
+
+        data.getStockRequests().forEach(c -> {
+            if (mappingRepository.findByRemote(c.getId()).isEmpty()) {
+                IdMappings mapping = new IdMappings();
+                mapping.setRemote(c.getId());
+                stockRequestRepository.findByReference(c.getReference()).ifPresent(req -> mapping.setLocal(req.getId()));
+                mappingRepository.save(mapping);
+            }
+        });
+
+        data.getStockIssuance().forEach(c -> {
+            StockIssuance.CreateView issuance = evm.create(StockIssuance.CreateView.class);
+            var settings = EntityViewSetting.create(StockIssuance.CreateView.class);
+            var cb = cbf.create(em, StockIssuance.class)
+                .where("reference").eq(c.getReference());
+            try {
+                issuance = evm.applySetting(settings, cb).getSingleResult();
+            } catch (Exception ignored) {
+            }
+
+            StockIssuance.CreateView finalIssuance = issuance;
+            mappingRepository.findByRemote(c.getRequest().getId()).ifPresent(mapping -> {
+                finalIssuance.setRequest(getStockRequestIdView(mapping.getLocal()));
+            });
+            mappingRepository.findByRemote(c.getSite().getId()).ifPresent(mapping -> {
+                finalIssuance.setSite(getOrganisationIdView(mapping.getLocal()));
+            });
+            mappingRepository.findByRemote(c.getStock().getId()).ifPresent(mapping -> {
+                finalIssuance.setStock(getStockIdView(mapping.getLocal()));
+            });
+
+            BeanUtils.copyProperties(c, finalIssuance, "id", "request", "site", "stock");
+            finalIssuance.setSynced(true);
+
+            evm.save(em, issuance);
+        });
 
         return true;
     }
 
     @Transactional
-    public FacilityData retrieveFacilityData(String facilityId, List<UUID> sites) {
+    public FacilityData retrieveFacilityData(UUID facilityId, List<UUID> sites) {
+        facilityId = mappingRepository.findByRemote(facilityId).map(IdMappings::getLocal).orElse(facilityId);
+
         FacilityData facilityData = new FacilityData();
 
         var settings1 = EntityViewSetting.create(Devolve.CreateView.class);
         var cb1 = cbf.create(em, Devolve.class)
-            .where("patient.facilityId").eq(facilityId)
+            .where("patient.organisation.id").eq(facilityId)
             .where("synced").eq(false);
         List<Devolve.CreateView> devolves = evm.applySetting(settings1, cb1).getResultList().stream()
             .map(d -> {
@@ -113,15 +168,15 @@ public class CentralServerService {
 
         var settings2 = EntityViewSetting.create(Refill.UpdateView.class);
         var cb2 = cbf.create(em, Refill.class)
-            .where("patient.facilityId").eq(facilityId)
+            .where("patient.organisation.id").eq(facilityId)
             .where("synced").eq(false);
         List<Refill.UpdateView> refills = evm.applySetting(settings2, cb2).getResultList().stream()
             .map(d -> {
-                mappingRepository.findByLocal(d.getPatient().getId()).ifPresent(mapping -> {
-                    d.setPatient(getPatientIdView(mapping.getRemote()));
-                });
                 mappingRepository.findByLocal(d.getOrganisation().getId()).ifPresent(mapping -> {
                     d.setOrganisation(getOrganisationIdView(mapping.getRemote()));
+                });
+                mappingRepository.findByLocal(d.getPatient().getId()).ifPresent(mapping -> {
+                    d.setPatient(getPatientIdView(mapping.getRemote()));
                 });
                 return d;
             })
@@ -130,7 +185,7 @@ public class CentralServerService {
 
         var settings3 = EntityViewSetting.create(ClinicData.UpdateView.class);
         var cb3 = cbf.create(em, ClinicData.class)
-            .where("patient.facilityId").eq(facilityId)
+            .where("patient.organisation.id").eq(facilityId)
             .where("synced").eq(false);
         List<ClinicData.UpdateView> clinics = evm.applySetting(settings3, cb3).getResultList().stream()
             .map(d -> {
@@ -146,14 +201,21 @@ public class CentralServerService {
         facilityData.setClinics(clinics);
 
         if (sites != null && !sites.isEmpty()) {
+            var outletIds = sites.stream()
+                .flatMap(id -> mappingRepository.findByRemote(id).stream())
+                .map(IdMappings::getLocal)
+                .toList();
+
             var settings4 = EntityViewSetting.create(StockRequest.UpdateView.class);
             var cb4 = cbf.create(em, StockRequest.class)
-                .where("site.id").in(sites)
+                .where("site.id").in(outletIds)
                 .where("synced").eq(false);
             List<StockRequest.UpdateView> requests = evm.applySetting(settings4, cb4).getResultList().stream()
                 .map(d -> {
                     mappingRepository.findByLocal(d.getSite().getId()).ifPresent(mapping -> {
-                        d.setSite(evm.convert(getOrganisationIdView(mapping.getRemote()), Organisation.ShortView.class));
+                        d.setSite(evm.convert(
+                            getOrganisationIdView(mapping.getRemote()), Organisation.ShortView.class,
+                            ConvertOption.IGNORE_MISSING_ATTRIBUTES));
                     });
                     return d;
                 })
@@ -196,46 +258,69 @@ public class CentralServerService {
         }
     }
 
-    private void saveOrUpdateOrganisation(Organisation.CreateView organisation) {
+    private void saveOrUpdateOrganisation(Organisation.UpdateView organisation) {
         UUID remoteId = organisation.getId();
-        UUID localId = mappingRepository.findByRemote(remoteId).map(OrgMapping::getLocal).orElse(null);
+        UUID localId = mappingRepository.findByRemote(remoteId).map(IdMappings::getLocal).orElse(null);
         if (localId == null) {//New organisation at Central Server
-            var party = organisation.getParty();
+            Organisation.CreateView org = evm.create(Organisation.CreateView.class);
+            BeanUtils.copyProperties(organisation, org, "id", "party");
+            Party.PartyView party = evm.create(Party.PartyView.class);
+            BeanUtils.copyProperties(organisation.getParty(), party, "id", "addresses", "identifiers");
             party.setAddresses(
-                party.getAddresses().stream()
+                organisation.getParty().getAddresses().stream()
                     .map(a -> {
-                        a.setId(null);
-                        return a;
+                        Address.AddressView address = evm.create(Address.AddressView.class);
+                        BeanUtils.copyProperties(a, address, "id", "party");
+                        return address;
                     })
                     .collect(Collectors.toSet())
             );
             party.setIdentifiers(
-                party.getIdentifiers().stream()
+                organisation.getParty().getIdentifiers().stream()
                     .map(a -> {
-                        a.setId(null);
-                        return a;
+                        Identifier.IdentifierView identifier = evm.create(Identifier.IdentifierView.class);
+                        BeanUtils.copyProperties(a, identifier, "id", "party");
+                        return identifier;
                     })
                     .collect(Collectors.toSet())
             );
-            organisation.setParty(party);
-            evm.save(em, organisation);
+            org.setParty(party);
+            evm.save(em, org);
 
-            OrgMapping mapping = new OrgMapping();
-            mapping.setRemote(remoteId);
-            mapping.setLocal(organisation.getId());
-            mappingRepository.save(mapping);
+            if (mappingRepository.findByRemote(remoteId).isEmpty()) {
+                IdMappings mapping = new IdMappings();
+                mapping.setRemote(remoteId);
+                mapping.setLocal(org.getId());
+                mappingRepository.save(mapping);
+            }
         }
     }
 
     private Patient.IdView getPatientIdView(UUID id) {
-        var settings = EntityViewSetting.create(Patient.IdView.class);
-        var cb = cbf.create(em, Patient.class).where("id").eq(id);
-        return evm.applySetting(settings, cb).getSingleResult();
+        Patient.UpdateView view = evm.create(Patient.UpdateView.class);
+        view.setId(id);
+
+        return evm.convert(view, Patient.IdView.class);
     }
 
     private Organisation.IdView getOrganisationIdView(UUID id) {
-        var settings = EntityViewSetting.create(Organisation.IdView.class);
-        var cb = cbf.create(em, Organisation.class).where("id").eq(id);
-        return evm.applySetting(settings, cb).getSingleResult();
+        Organisation.UpdateView view = evm.create(Organisation.UpdateView.class);
+        view.setId(id);
+
+        return evm.convert(view, Organisation.IdView.class);
+    }
+
+    private Stock.IdView getStockIdView(UUID id) {
+        Stock.CreateView view = evm.create(Stock.CreateView.class);
+        view.setId(id);
+
+        return evm.convert(view, Stock.IdView.class);
+    }
+
+    private StockRequest.IdView getStockRequestIdView(UUID id) {
+        StockRequest.UpdateView view = evm.create(StockRequest.UpdateView.class);
+        view.setId(id);
+
+        return evm.convert(view, StockRequest.IdView.class);
     }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class InventoryRequestModel extends FlutterFlowModel {
@@ -19,8 +18,6 @@ class InventoryRequestModel extends FlutterFlowModel {
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
 
-  // Stores action output result for [Backend Call - API (Inventory Request)] action in Button widget.
-  ApiCallResponse? response;
 
   String? _numericControllerValidator(BuildContext context, String? val) {
     if (val != null && int.tryParse(val) == null) {

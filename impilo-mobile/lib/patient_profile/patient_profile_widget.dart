@@ -57,7 +57,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
-  Future<List<Refill>> getRefill(int patientId) async {
+  Future<List<Refill>> getRefill(String patientId) async {
     var _database = await database;
     return _database.refillDao.findByPatient(patientId);
   }
@@ -129,8 +129,10 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  if(_model.patient?.dateOfBirth != DateTime(1900))
                   Container(
                     width: double.infinity,
+                    height: 200,
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).secondaryBackground,
                       boxShadow: [
@@ -157,7 +159,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${_model.patient?.givenName} ${_model.patient?.familyName}',
+                                  '${_model.patient?.givenName ?? ''} ${_model.patient?.familyName ?? ''}',
                                   style: FlutterFlowTheme.of(context).title3,
                                 ),
                                 Text(
@@ -283,6 +285,29 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                           .bodyText1,
                                     ),
                                   ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      5, 30, 0, 0),
+                                  child: Text(
+                                        _model.patient?.assignedRegimen ?? '',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                      fontFamily:
+                                      FlutterFlowTheme.of(context)
+                                          .bodyText1Family,
+                                      color:
+                                      FlutterFlowTheme.of(context)
+                                          .customColor1,
+                                      useGoogleFonts:
+                                      GoogleFonts.asMap()
+                                          .containsKey(
+                                          FlutterFlowTheme.of(
+                                              context)
+                                              .bodyText1Family),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -443,43 +468,10 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                                 ),
                                           ),
                                         ),
+                                        if(_model.patient?.lastRefillDate != DateTime(1900))
                                         Text(
                                           dateTimeFormat('yMMMd',
                                               _model.patient?.lastRefillDate),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Container(
-                                          width: 120,
-                                          height: 20,
-                                          decoration: BoxDecoration(),
-                                          child: Text(
-                                            'Last VL Date',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyText1
-                                                .override(
-                                                  fontFamily:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyText1Family,
-                                                  fontWeight: FontWeight.w500,
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family),
-                                                ),
-                                          ),
-                                        ),
-                                        Text(
-                                          dateTimeFormat('yMMMd',
-                                              _model.patient?.lastClinicVisit!),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1,
                                         ),
@@ -511,6 +503,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                                 ),
                                           ),
                                         ),
+                                        if(_model.patient?.lastClinicVisit != DateTime(1900))
                                         Text(
                                           dateTimeFormat(
                                               'yMMMd',
@@ -642,7 +635,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               FutureBuilder<List<Refill>>(
-                                future: getRefill(_model.patient?.id ?? 0),
+                                future: getRefill(_model.patient?.uuid ?? ''),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
                                   if (!snapshot.hasData) {
@@ -845,7 +838,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                                                             '#,##0',
                                                                         locale:
                                                                             '',
-                                                                      ),
+                                                                      ) + ' bottles',
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyText1
@@ -892,7 +885,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                                                             '#,##0',
                                                                         locale:
                                                                             '',
-                                                                      ),
+                                                                      ) + ' bottles',
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyText1

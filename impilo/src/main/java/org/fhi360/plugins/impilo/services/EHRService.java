@@ -3,7 +3,6 @@ package org.fhi360.plugins.impilo.services;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jbella.snl.core.api.services.ConfigurationService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
@@ -138,6 +137,7 @@ public class EHRService {
     }
 
     private List<Map<String, Object>> retrievePatients() throws Exception {
+        BASE_URL = getBaseUrl();
         List<Map<String, Object>> patients = new ArrayList<>();
         var token = authenticate();
         int page = 0;
@@ -151,8 +151,8 @@ public class EHRService {
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             JsonNode body = objectMapper.readTree(response.body());
-            if (body.at("content").isArray()) {
-                for (JsonNode record : body.at("content")) {
+            if (body.at("/content").isArray()) {
+                for (JsonNode record : body.at("/content")) {
                     String patientId = record.at("/id").asText();
                     String hospitalNumber = record.at("/hospitalNumber").asText();
                     String facilityId = record.at("/facility/id").asText();
@@ -177,6 +177,7 @@ public class EHRService {
     }
 
     private List<Map<String, Object>> retrievePersons() throws Exception {
+        BASE_URL = getBaseUrl();
         List<Map<String, Object>> persons = new ArrayList<>();
         var token = authenticate();
         int page = 0;
@@ -221,6 +222,7 @@ public class EHRService {
     }
 
     private List<Map<String, Object>> retrievePhones() throws Exception {
+        BASE_URL = getBaseUrl();
         List<Map<String, Object>> phones = new ArrayList<>();
         var token = authenticate();
         int page = 0;
@@ -234,8 +236,8 @@ public class EHRService {
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             JsonNode body = objectMapper.readTree(response.body());
-            if (body.at("content").isArray()) {
-                for (JsonNode record : body.at("content")) {
+            if (body.at("/content").isArray()) {
+                for (JsonNode record : body.at("/content")) {
                     String number = record.at("/number").asText();
                     String personId = record.at("/personId").asText();
                     lastPage = body.at("/last").asBoolean();
@@ -254,6 +256,7 @@ public class EHRService {
     }
 
     private List<Map<String, Object>> retrievePrescriptions() throws Exception {
+        BASE_URL = getBaseUrl();
         List<Map<String, Object>> prescriptions = new ArrayList<>();
         var token = authenticate();
         int page = 0;
@@ -295,6 +298,7 @@ public class EHRService {
     }
 
     private String authenticate() throws Exception {
+        BASE_URL = getBaseUrl();
         String username = configurationService.getValueAsStringForKey("IMPILO.CONFIGURATION.SYNCHRONIZATION", "EHR_SERVER.USERNAME")
             .orElse("");
         String password = configurationService.getValueAsStringForKey("IMPILO.CONFIGURATION.SYNCHRONIZATION", "EHR_SERVER.PASSWORD")
@@ -309,13 +313,14 @@ public class EHRService {
             .header("Content-Type", "application/json")
             .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
+            throw new RuntimeException(response.body());
+        }
         JsonNode body = objectMapper.readTree(response.body());
         return "Bearer " + StringUtils.trimToEmpty(body.at("/id_token").asText());
     }
-
-    @PostConstruct
-    public void init() {
-        BASE_URL = configurationService.getValueAsStringForKey("IMPILO.CONFIGURATION.SYNCHRONIZATION", "EHR_SERVER.URL")
+    private String getBaseUrl() {
+        return configurationService.getValueAsStringForKey("IMPILO.CONFIGURATION.SYNCHRONIZATION", "EHR_SERVER.URL")
             .orElse("");
     }
 }

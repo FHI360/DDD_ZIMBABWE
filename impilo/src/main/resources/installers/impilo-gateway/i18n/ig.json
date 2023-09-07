@@ -8,7 +8,8 @@
       "REPORTS": {
         "TITLE": "Akụkọ",
         "INDICATORS": "Ihe ngosi na-akọ"
-      }
+      },
+      "SYNC": "Mmekọrịta"
     },
     "TITLE": {
       "STOCKS": "Ebuka",
@@ -19,7 +20,8 @@
       "ADD_STOCK_ISSUANCE": "Dekọọ mmepụta ngwaahịa",
       "PATIENTS": "Ndị ọrịa",
       "STOCK_REQUEST": "Arịrịọ ebuka",
-      "REPORTS": "Akụkọ ihe ngosi OFCAD"
+      "REPORTS": "Akụkọ ihe ngosi OFCAD",
+      "PATIENT_DETAILS": "Nkọwa ndị ọrịa"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -30,7 +32,7 @@
         "NO_DATA": "Enweghị data ngwaahịa dị",
         "FACILITY": "Ụlọ ọrụ ahụike",
         "REGIMEN": "Ọgwụ ARV",
-        "BOTTLES": "Klas",
+        "BOTTLES": "Ngwaahịa mbụ",
         "ISSUED": "ewepụtara Qty",
         "BALANCE": "Nhazi",
         "BATCH_NO": "Ogbe Mba",
@@ -85,7 +87,7 @@
         "EDIT": "Dezie"
       }
     },
-    "ASSIGNMENT": {
+    "PATIENT_LIST": {
       "GIVEN_NAME": "Aha mbụ",
       "FAMILY_NAME": "Aha nna",
       "ASSIGNED_REGIMEN": "Ọgwụ ARV ekenyere",
@@ -93,13 +95,14 @@
       "HOSPITAL_NUMBER": "Nọmba ụlọ ọgwụ",
       "UNIQUE_ID": "Ihe nchọpụta pụrụ iche",
       "SITE": "saịtị OFCAD",
-      "ASSIGNED": "Enyere ya",
-      "UNASSIGNED": "Ekenyeghi ya",
+      "DEVOLVED": "Ewepụtara",
+      "NOT_DEVOLVED": "Ewepụghị ya",
       "ALL": "Ndị ọrịa niile",
       "SEARCH": "Chọọ...",
       "NO_DATA": "Enweghị data onye ọrịa dị",
-      "TITLE": "Ọrụ saịtị onye ọrịa",
-      "FACILITY": "Ihe owuwu"
+      "TITLE": "Ndị ọrịa",
+      "FACILITY": "Ihe owuwu",
+      "ACTIONS": ""
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -129,11 +132,41 @@
         "ERROR": "Ọgbọ akụkọ dara"
       },
       "TITLE": {
-        "MSR": "Akụkọ nchịkọta kwa ọnwa"
+        "MSR": "Akụkọ nchịkọta kwa ọnwa",
+        "INDICATORS": "Akụkọ ihe ngosi"
       },
       "MSR": {
         "DATE": "Oge"
+      },
+      "INDICATORS": {
+        "DATE": "Oge"
       }
+    },
+    "SYNC": {
+      "TITLE": "Mmekọrịta data",
+      "ACTIONS": {
+        "EHR": "Mekọrịta ya na sava E.HR",
+        "CENTRAL_SERVER": "Mekọrịta ya na Central Server"
+      },
+      "MESSAGES": {
+        "SUCCESS": "Mekọrịtara data nke ọma",
+        "ERROR": "Njehie imekọrịta ihe"
+      },
+      "SCHEDULE": {
+        "SYNC_INTERVAL": "Oge mmekọrịta akpaaka (nkeji nkeji)",
+        "INTERVAL_MIN": "Oge kacha nta bụ sekọnd 300",
+        "ERROR": "Enwere mperi ịhazi mmekọrịta akpaaka; biko nwaa ọzọ ma emechaa",
+        "SUCCESS": "Ahaziri mmekọrịta akpaaka nke ọma",
+        "SCHEDULE": "Nhazi oge"
+      }
+    },
+    "PATIENT": {
+      "REFILL_HISTORY": "Mejupụta akụkọ ihe mere eme",
+      "NEXT_REFILL": "Ụbọchị njuputa na-esote",
+      "LAST_REFILL": "Ụbọchị njuputa ikpeazụ",
+      "REFILL_DURATION": "Ogologo oge njuputa",
+      "REFILL_DAYS": "{{days}} Ụbọchị",
+      "DEVOLVE": "Wepụta onye ọrịa"
     }
   }
 }

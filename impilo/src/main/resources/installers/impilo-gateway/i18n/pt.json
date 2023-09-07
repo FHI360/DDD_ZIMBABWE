@@ -8,7 +8,8 @@
       "REPORTS": {
         "TITLE": "Relatórios",
         "INDICATORS": "Relatório de indicadores"
-      }
+      },
+      "SYNC": "Sincronização"
     },
     "TITLE": {
       "STOCKS": "Ações",
@@ -19,7 +20,8 @@
       "ADD_STOCK_ISSUANCE": "Emissão de ações recorde",
       "PATIENTS": "Pacientes",
       "STOCK_REQUEST": "Solicitação de ações",
-      "REPORTS": "Relatório de Indicadores do OFCAD"
+      "REPORTS": "Relatório de Indicadores do OFCAD",
+      "PATIENT_DETAILS": "Detalhes do paciente"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -30,7 +32,7 @@
         "NO_DATA": "Nenhum dado de estoque disponível",
         "FACILITY": "Estabelecimento de saúde",
         "REGIMEN": "Medicamento ARV",
-        "BOTTLES": "Garrafas",
+        "BOTTLES": "Estoque inicial",
         "ISSUED": "Quantidade emitida",
         "BALANCE": "Equilíbrio",
         "BATCH_NO": "Lote N º",
@@ -85,7 +87,7 @@
         "EDIT": "Editar"
       }
     },
-    "ASSIGNMENT": {
+    "PATIENT_LIST": {
       "GIVEN_NAME": "Primeiro nome",
       "FAMILY_NAME": "Sobrenome",
       "ASSIGNED_REGIMEN": "Medicamento ARV atribuído",
@@ -93,13 +95,14 @@
       "HOSPITAL_NUMBER": "número do hospital",
       "UNIQUE_ID": "Identificador único",
       "SITE": "Local OFCAD",
-      "ASSIGNED": "Atribuído",
-      "UNASSIGNED": "Não atribuído",
+      "DEVOLVED": "Devolvido",
+      "NOT_DEVOLVED": "Não descentralizado",
       "ALL": "Todos os pacientes",
       "SEARCH": "Procurar...",
       "NO_DATA": "Nenhum dado do paciente disponível",
-      "TITLE": "Atribuição do local do paciente",
-      "FACILITY": "Instalação"
+      "TITLE": "Pacientes",
+      "FACILITY": "Instalação",
+      "ACTIONS": ""
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -129,11 +132,41 @@
         "ERROR": "Falha na geração do relatório"
       },
       "TITLE": {
-        "MSR": "Relatório resumido mensal"
+        "MSR": "Relatório resumido mensal",
+        "INDICATORS": "Relatório de Indicadores"
       },
       "MSR": {
         "DATE": "Período"
+      },
+      "INDICATORS": {
+        "DATE": "Período"
       }
+    },
+    "SYNC": {
+      "TITLE": "Sincronização de dados",
+      "ACTIONS": {
+        "EHR": "Sincronizar com o servidor E.HR",
+        "CENTRAL_SERVER": "Sincronizar com o Servidor Central"
+      },
+      "MESSAGES": {
+        "SUCCESS": "Dados sincronizados com sucesso",
+        "ERROR": "Erro ao sincronizar"
+      },
+      "SCHEDULE": {
+        "SYNC_INTERVAL": "Intervalo de sincronização automática (s)",
+        "INTERVAL_MIN": "O intervalo mínimo é de 300 segundos",
+        "ERROR": "Ocorreu um erro ao agendar a sincronização automática; por favor, tente novamente mais tarde",
+        "SUCCESS": "Sincronização automática agendada com sucesso",
+        "SCHEDULE": "Agendar"
+      }
+    },
+    "PATIENT": {
+      "REFILL_HISTORY": "Histórico de recarga",
+      "NEXT_REFILL": "Próxima data de recarga",
+      "LAST_REFILL": "Data da última recarga",
+      "REFILL_DURATION": "Duração da recarga",
+      "REFILL_DAYS": "{{days}} dias",
+      "DEVOLVE": "Devolver paciente"
     }
   }
 }

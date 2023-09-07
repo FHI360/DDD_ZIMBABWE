@@ -12,9 +12,20 @@ class InventoryRequest {
   final bool acknowledged;
   final String siteCode;
   final DateTime date;
+  final bool synced;
 
   InventoryRequest(this.id, this.uniqueId, this.regimen, this.quantity, this.fulfilled,
-      this.acknowledged, this.siteCode, this.date);
+      this.acknowledged, this.siteCode, this.date, this.synced);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date.toIso8601String(),
+      'regimen': regimen,
+      'quantity': quantity,
+      'siteCode': siteCode,
+      'uniqueId': uniqueId
+    };
+  }
 
   /*@override
   List<Object?> get props => [uniqueId];*/

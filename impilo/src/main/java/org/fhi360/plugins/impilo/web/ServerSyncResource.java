@@ -1,24 +1,28 @@
 package org.fhi360.plugins.impilo.web;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.fhi360.plugins.impilo.services.ServerSyncService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/impilo/sync")
+@RequestMapping("/api/impilo/server-sync")
 @RequiredArgsConstructor
 public class ServerSyncResource {
     private final ServerSyncService serverSyncService;
 
     @GetMapping("/ehr")
-    public void syncEhr() throws Exception {
+    public void syncEhr() {
         serverSyncService.syncEhr();
     }
 
     @GetMapping("/central-server")
-    public void syncCentralServer() throws Exception {
+    public void syncCentralServer(){
         serverSyncService.synCentralServer();
+    }
+
+    @PostMapping("/schedule-sync")
+    public void scheduleSync(@RequestBody @Valid long intervalSecs) {
+        serverSyncService.scheduleSync(intervalSecs);
     }
 }

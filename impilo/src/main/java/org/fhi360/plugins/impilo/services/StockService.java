@@ -4,7 +4,7 @@ import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.view.EntityViewManager;
 import com.blazebit.persistence.view.EntityViewSetting;
 import com.mattae.snl.plugins.security.extensions.AuthenticationServiceExtension;
-import io.github.jbella.snl.core.api.services.TransactionHandler;
+import io.github.jbella.snl.core.api.services.ExtensionService;
 import io.github.jbella.snl.core.api.services.errors.RecordNotFoundException;
 import io.github.jbella.snl.core.api.services.util.PagedResult;
 import jakarta.persistence.EntityManager;
@@ -14,12 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.entities.Stock;
-import org.pf4j.PluginManager;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,21 +28,14 @@ public class StockService {
     private final EntityViewManager evm;
     private final EntityManager em;
     private final CriteriaBuilderFactory cbf;
-    private final PluginManager pluginManager;
-    private final TransactionHandler transactionHandler;
+    private final ExtensionService extensionService;
 
+    @Transactional
     public Stock.View save(Stock.CreateView stock) {
-        var hierarchy = pluginManager.getExtensions(AuthenticationServiceExtension.class).stream()
-            .map(AuthenticationServiceExtension::getOrganisationHierarchy).findFirst().orElse(new ArrayList<>());
-        if (!hierarchy.isEmpty()) {
-            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("Facility")) {
-                stock.setFacility(hierarchy.get(0));
-            }
-        }
-        transactionHandler.runInTransaction(() -> {
-            evm.save(em, stock);
-            return null;
-        });
+        var facility = extensionService.getPriorityExtension(AuthenticationServiceExtension.class).organisation();
+        stock.setFacility(facility);
+        stock.setReference(UUID.randomUUID());
+        evm.save(em, stock);
         return getById(stock.getId());
     }
 
@@ -65,11 +56,11 @@ public class StockService {
             .distinct()
             .select("regimen");
 
-        var hierarchy = pluginManager.getExtensions(AuthenticationServiceExtension.class).stream()
-            .map(AuthenticationServiceExtension::getOrganisationHierarchy).findFirst().orElse(new ArrayList<>());
+        var hierarchy = extensionService.getPriorityExtension(AuthenticationServiceExtension.class)
+            .getOrganisationHierarchy();
         if (!hierarchy.isEmpty()) {
-            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("Facility")) {
-                cb.where("facility.id").eq(hierarchy.get(0).getId());
+            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("FACILITY")) {
+                cb.where("organisation.id").eq(hierarchy.get(0).getId());
             }
         }
         return cb.getResultList()
@@ -95,10 +86,10 @@ public class StockService {
             .endOr();
             //@formatter:on
         }
-        var hierarchy = pluginManager.getExtensions(AuthenticationServiceExtension.class).stream()
-            .map(AuthenticationServiceExtension::getOrganisationHierarchy).findFirst().orElse(new ArrayList<>());
+        var hierarchy = extensionService.getPriorityExtension(AuthenticationServiceExtension.class)
+            .getOrganisationHierarchy();
         if (!hierarchy.isEmpty()) {
-            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("Facility")) {
+            if (hierarchy.size() == 1 && hierarchy.get(0).getType().equals("FACILITY")) {
                 cb.where("facility.id").eq(hierarchy.get(0).getId());
             }
         }

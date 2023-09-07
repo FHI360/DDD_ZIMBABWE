@@ -8,7 +8,8 @@
       "REPORTS": {
         "TITLE": "Rahotanni",
         "INDICATORS": "Rahotanni sun nuna"
-      }
+      },
+      "SYNC": "Aiki tare"
     },
     "TITLE": {
       "STOCKS": "Hannun jari",
@@ -19,7 +20,8 @@
       "ADD_STOCK_ISSUANCE": "Yi rikodin fitar da hannun jari",
       "PATIENTS": "Marasa lafiya",
       "STOCK_REQUEST": "Neman hannun jari",
-      "REPORTS": "Rahoton Manuniya na OFCAD"
+      "REPORTS": "Rahoton Manuniya na OFCAD",
+      "PATIENT_DETAILS": "Bayanin haƙuri"
     },
     "STOCK": {
       "LIST_PAGE": {
@@ -30,7 +32,7 @@
         "NO_DATA": "Babu bayanan haja",
         "FACILITY": "Wurin lafiya",
         "REGIMEN": "Magungunan ARV",
-        "BOTTLES": "kwalabe",
+        "BOTTLES": "Hannun Farko",
         "ISSUED": "Qty ya bayar",
         "BALANCE": "Ma'auni",
         "BATCH_NO": "Batch No",
@@ -85,7 +87,7 @@
         "EDIT": "Gyara"
       }
     },
-    "ASSIGNMENT": {
+    "PATIENT_LIST": {
       "GIVEN_NAME": "Sunan rana",
       "FAMILY_NAME": "Sunan mahaifi",
       "ASSIGNED_REGIMEN": "Magungunan ARV da aka sanya",
@@ -93,13 +95,14 @@
       "HOSPITAL_NUMBER": "Lambar asibiti",
       "UNIQUE_ID": "Mai ganowa na musamman",
       "SITE": "OFCAD Site",
-      "ASSIGNED": "An sanyawa",
-      "UNASSIGNED": "Ba a sanyawa ba",
+      "DEVOLVED": "Ƙaddamarwa",
+      "NOT_DEVOLVED": "Ba a karkata ba",
       "ALL": "Duk marasa lafiya",
       "SEARCH": "Bincika...",
       "NO_DATA": "Babu bayanan haƙuri da akwai",
-      "TITLE": "Aikin wurin mara lafiya",
-      "FACILITY": "Kayan aiki"
+      "TITLE": "Marasa lafiya",
+      "FACILITY": "Kayan aiki",
+      "ACTIONS": ""
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -129,11 +132,41 @@
         "ERROR": "Samar da rahoton ya gaza"
       },
       "TITLE": {
-        "MSR": "Rahoton Takaitaccen Wata-wata"
+        "MSR": "Rahoton Takaitaccen Wata-wata",
+        "INDICATORS": "Rahoton Manuniya"
       },
       "MSR": {
         "DATE": "Lokaci"
+      },
+      "INDICATORS": {
+        "DATE": "Lokaci"
       }
+    },
+    "SYNC": {
+      "TITLE": "Aiki tare bayanai",
+      "ACTIONS": {
+        "EHR": "Aiki tare da E.HR Server",
+        "CENTRAL_SERVER": "Aiki tare da Central Server"
+      },
+      "MESSAGES": {
+        "SUCCESS": "An yi nasarar aiki tare bayanai",
+        "ERROR": "Kuskuren aiki tare"
+      },
+      "SCHEDULE": {
+        "SYNC_INTERVAL": "Tazarar daidaitawa ta atomatik (mintuna)",
+        "INTERVAL_MIN": "Matsakaicin tazara shine daƙiƙa 300",
+        "ERROR": "An sami kuskure wajen tsara daidaitawa ta atomatik; da fatan za a sake gwadawa daga baya",
+        "SUCCESS": "An yi nasarar daidaitawa ta atomatik",
+        "SCHEDULE": "Jadawalin"
+      }
+    },
+    "PATIENT": {
+      "REFILL_HISTORY": "Cika tarihi",
+      "NEXT_REFILL": "Kwanan wata na gaba",
+      "LAST_REFILL": "Kwanan kwanan wata na ƙarshe",
+      "REFILL_DURATION": "Tsawon cikawa",
+      "REFILL_DAYS": "{{days}} Kwanaki",
+      "DEVOLVE": "Bayar da haƙuri"
     }
   }
 }

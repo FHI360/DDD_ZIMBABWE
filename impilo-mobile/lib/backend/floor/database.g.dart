@@ -103,26 +103,26 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Inventory` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `uniqueId` TEXT NOT NULL, `regimen` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `batchNo` TEXT NOT NULL, `barcode` TEXT NOT NULL, `siteCode` TEXT NOT NULL, `expiryDate` INTEGER NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `InventoryRequest` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `uniqueId` TEXT NOT NULL, `regimen` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `fulfilled` INTEGER NOT NULL, `acknowledged` INTEGER NOT NULL, `siteCode` TEXT NOT NULL, `date` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `InventoryRequest` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `uniqueId` TEXT NOT NULL, `regimen` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `fulfilled` INTEGER NOT NULL, `acknowledged` INTEGER NOT NULL, `siteCode` TEXT NOT NULL, `date` INTEGER NOT NULL, `synced` INTEGER NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Devolve` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `reasonDiscontinued` TEXT, `date` INTEGER NOT NULL, `outletCode` TEXT NOT NULL, `patientId` TEXT NOT NULL, `synced` INTEGER)');
 
         await database.execute(
             'CREATE VIEW IF NOT EXISTS `AssignedRegimen` AS select distinct assignedRegimen, siteCode from patient where serviceDiscontinued = 0');
         await database.execute(
-            'CREATE VIEW IF NOT EXISTS `BarcodeDispense` AS SELECT SUM(quantityDispensed) AS quantity, regimen, barcode, siteCode FROM Refill\n      JOIN patient p ON p.ID = patientId GROUP BY regimen, barcode, siteCode');
+            'CREATE VIEW IF NOT EXISTS `BarcodeDispense` AS SELECT SUM(quantityDispensed) AS quantity, regimen, barcode, siteCode FROM Refill\n      JOIN patient p ON p.uuID = patientId GROUP BY regimen, barcode, siteCode');
         await database.execute(
             'CREATE VIEW IF NOT EXISTS `BarcodeQuantity` AS SELECT SUM(quantity) AS quantity, regimen, barcode, siteCode FROM Inventory\n      GROUP BY regimen, barcode, siteCode');
         await database.execute(
             'CREATE VIEW IF NOT EXISTS `InventoryQuantity` AS select quantity, siteCode, regimen from Inventory');
         await database.execute(
-            'CREATE VIEW IF NOT EXISTS `LastRefill` AS   WITH last_refill AS ( \n      SELECT * FROM (\n            SELECT patientId, date, dateNextRefill, ROW_NUMBER() OVER (PARTITION BY patientId \n            ORDER BY date DESC) rn FROM refill\n      ) r WHERE rn = 1\n  )\n  SELECT siteCode, givenName, familyName, hospitalNo, sex, dateOfBirth, date, \n    dateNextRefill FROM last_refill JOIN patient ON patientId = id ORDER BY givenName, familyName\n');
+            'CREATE VIEW IF NOT EXISTS `LastRefill` AS   WITH last_refill AS ( \n      SELECT * FROM (\n            SELECT patientId, date, dateNextRefill, ROW_NUMBER() OVER (PARTITION BY patientId \n            ORDER BY date DESC) rn FROM refill\n      ) r WHERE rn = 1\n  )\n  SELECT siteCode, givenName, familyName, hospitalNo, sex, dateOfBirth, date, \n    dateNextRefill FROM last_refill JOIN patient ON patientId = uuid ORDER BY givenName, familyName\n');
         await database.execute(
             'CREATE VIEW IF NOT EXISTS `InventoryAvailability` AS SELECT COUNT(quantity) > 0 AS isAvailable, siteCode FROM Inventory \n    GROUP BY siteCode');
         await database.execute(
-            'CREATE VIEW IF NOT EXISTS `EstimatedRefill` AS WITH Estimated AS (\n\tSELECT * FROM (\n\t\tSELECT quantityDispensed, regimen, dateNextRefill, patientId, siteCode,\n\t\t\tROW_NUMBER() OVER(PARTITION BY patientId ORDER BY dateNextRefill DESC) rn \n\t\tFROM Refill JOIN Patient p ON patientId = p.id\t\n\t) e WHERE rn = 1\n)\nSELECT regimen, siteCode, SUM(quantityDispensed) qty, dateNextRefill \n  FROM Estimated GROUP BY regimen, siteCode, dateNextRefill\n');
+            'CREATE VIEW IF NOT EXISTS `EstimatedRefill` AS WITH Estimated AS (\n\tSELECT * FROM (\n\t\tSELECT quantityDispensed, regimen, dateNextRefill, patientId, siteCode,\n\t\t\tROW_NUMBER() OVER(PARTITION BY patientId ORDER BY dateNextRefill DESC) rn \n\t\tFROM Refill JOIN Patient p ON patientId = p.uuid\t\n\t) e WHERE rn = 1\n)\nSELECT regimen, siteCode, SUM(quantityDispensed) qty, dateNextRefill \n  FROM Estimated GROUP BY regimen, siteCode, dateNextRefill\n');
         await database.execute(
-            'CREATE VIEW IF NOT EXISTS `RefillInfo` AS   SELECT givenName, familyName, sex, dateOfBirth, quantityDispensed quantity, \n    hospitalNo, regimen, siteCode, dateNextRefill, date FROM Refill JOIN Patient \n    p ON patientId = p.id ORDER BY givenName, familyName, sex    \n');
+            'CREATE VIEW IF NOT EXISTS `RefillInfo` AS   SELECT givenName, familyName, sex, dateOfBirth, quantityDispensed quantity, \n    hospitalNo, regimen, siteCode, dateNextRefill, date FROM Refill JOIN Patient \n    p ON patientId = p.uuid ORDER BY givenName, familyName, sex    \n');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -691,7 +691,7 @@ class _$RefillDao extends RefillDao {
   }
 
   @override
-  Future<List<Refill>> findByPatient(int patientId) async {
+  Future<List<Refill>> findByPatient(String patientId) async {
     return _queryAdapter.queryList('SELECT * FROM Refill WHERE patientId = ?1',
         mapper: (Map<String, Object?> row) => Refill(
             row['id'] as int?,
@@ -739,8 +739,9 @@ class _$RefillDao extends RefillDao {
   }
 
   @override
-  Future<void> deleteAll() async {
-    await _queryAdapter.queryNoReturn('DELETE Refill Clinic');
+  Future<void> deleteOlderThan(DateTime date) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM Refill WHERE date <= ?1',
+        arguments: [_dateTimeConverter.encode(date)]);
   }
 
   @override
@@ -1033,7 +1034,8 @@ class _$InventoryRequestDao extends InventoryRequestDao {
                   'fulfilled': item.fulfilled ? 1 : 0,
                   'acknowledged': item.acknowledged ? 1 : 0,
                   'siteCode': item.siteCode,
-                  'date': _dateTimeConverter.encode(item.date)
+                  'date': _dateTimeConverter.encode(item.date),
+                  'synced': item.synced ? 1 : 0
                 },
             changeListener),
         _inventoryRequestUpdateAdapter = UpdateAdapter(
@@ -1048,7 +1050,8 @@ class _$InventoryRequestDao extends InventoryRequestDao {
                   'fulfilled': item.fulfilled ? 1 : 0,
                   'acknowledged': item.acknowledged ? 1 : 0,
                   'siteCode': item.siteCode,
-                  'date': _dateTimeConverter.encode(item.date)
+                  'date': _dateTimeConverter.encode(item.date),
+                  'synced': item.synced ? 1 : 0
                 },
             changeListener);
 
@@ -1074,7 +1077,8 @@ class _$InventoryRequestDao extends InventoryRequestDao {
             (row['fulfilled'] as int) != 0,
             (row['acknowledged'] as int) != 0,
             row['siteCode'] as String,
-            _dateTimeConverter.decode(row['date'] as int)),
+            _dateTimeConverter.decode(row['date'] as int),
+            (row['synced'] as int) != 0),
         arguments: [siteCode]);
   }
 
@@ -1085,7 +1089,7 @@ class _$InventoryRequestDao extends InventoryRequestDao {
   ) async {
     return _queryAdapter.queryList(
         'SELECT * FROM InventoryRequest where siteCode = ?1 and regimen = ?2 order by date',
-        mapper: (Map<String, Object?> row) => InventoryRequest(row['id'] as int?, row['uniqueId'] as String, row['regimen'] as String, row['quantity'] as int, (row['fulfilled'] as int) != 0, (row['acknowledged'] as int) != 0, row['siteCode'] as String, _dateTimeConverter.decode(row['date'] as int)),
+        mapper: (Map<String, Object?> row) => InventoryRequest(row['id'] as int?, row['uniqueId'] as String, row['regimen'] as String, row['quantity'] as int, (row['fulfilled'] as int) != 0, (row['acknowledged'] as int) != 0, row['siteCode'] as String, _dateTimeConverter.decode(row['date'] as int), (row['synced'] as int) != 0),
         arguments: [siteCode, regimen]);
   }
 
@@ -1101,7 +1105,8 @@ class _$InventoryRequestDao extends InventoryRequestDao {
             (row['fulfilled'] as int) != 0,
             (row['acknowledged'] as int) != 0,
             row['siteCode'] as String,
-            _dateTimeConverter.decode(row['date'] as int)),
+            _dateTimeConverter.decode(row['date'] as int),
+            (row['synced'] as int) != 0),
         arguments: [id],
         queryableName: 'InventoryRequest',
         isView: false);
@@ -1119,7 +1124,8 @@ class _$InventoryRequestDao extends InventoryRequestDao {
             (row['fulfilled'] as int) != 0,
             (row['acknowledged'] as int) != 0,
             row['siteCode'] as String,
-            _dateTimeConverter.decode(row['date'] as int)),
+            _dateTimeConverter.decode(row['date'] as int),
+            (row['synced'] as int) != 0),
         arguments: [uniqueId],
         queryableName: 'InventoryRequest',
         isView: false);
@@ -1135,7 +1141,7 @@ class _$InventoryRequestDao extends InventoryRequestDao {
   @override
   Future<void> acknowledged(String uniqueId) async {
     await _queryAdapter.queryNoReturn(
-        'Update InventoryRequest set acknowledged = 1 WHERE uniqueId = ?1',
+        'Update InventoryRequest set acknowledged = 1, synced = 0 WHERE uniqueId = ?1',
         arguments: [uniqueId]);
   }
 
@@ -1143,6 +1149,34 @@ class _$InventoryRequestDao extends InventoryRequestDao {
   Future<void> deleteById(int id) async {
     await _queryAdapter
         .queryNoReturn('delete from Inventory where id = ?1', arguments: [id]);
+  }
+
+  @override
+  Future<bool?> hasUnSynced() async {
+    return _queryAdapter.query(
+        'SELECT COUNT(*) > 0 FROM InventoryRequest WHERE synced = 0',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<void> updateAllSynced() async {
+    await _queryAdapter.queryNoReturn('UPDATE InventoryRequest SET synced = 1');
+  }
+
+  @override
+  Future<List<InventoryRequest>> findUnSynced() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM InventoryRequest where synced = 0',
+        mapper: (Map<String, Object?> row) => InventoryRequest(
+            row['id'] as int?,
+            row['uniqueId'] as String,
+            row['regimen'] as String,
+            row['quantity'] as int,
+            (row['fulfilled'] as int) != 0,
+            (row['acknowledged'] as int) != 0,
+            row['siteCode'] as String,
+            _dateTimeConverter.decode(row['date'] as int),
+            (row['synced'] as int) != 0));
   }
 
   @override

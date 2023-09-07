@@ -8,7 +8,7 @@ WITH Estimated AS (
 	SELECT * FROM (
 		SELECT quantityDispensed, regimen, dateNextRefill, patientId, siteCode,
 			ROW_NUMBER() OVER(PARTITION BY patientId ORDER BY dateNextRefill DESC) rn 
-		FROM Refill JOIN Patient p ON patientId = p.id	
+		FROM Refill JOIN Patient p ON patientId = p.uuid	
 	) e WHERE rn = 1
 )
 SELECT regimen, siteCode, SUM(quantityDispensed) qty, dateNextRefill 
@@ -26,7 +26,7 @@ class EstimatedRefill {
 @DatabaseView('''
   SELECT givenName, familyName, sex, dateOfBirth, quantityDispensed quantity, 
     hospitalNo, regimen, siteCode, dateNextRefill, date FROM Refill JOIN Patient 
-    p ON patientId = p.id ORDER BY givenName, familyName, sex    
+    p ON patientId = p.uuid ORDER BY givenName, familyName, sex    
 ''', viewName: 'RefillInfo')
 class RefillInfo {
   final String siteCode;
@@ -55,7 +55,7 @@ class RefillInfo {
 
 @DatabaseView(
     '''SELECT SUM(quantityDispensed) AS quantity, regimen, barcode, siteCode FROM Refill
-      JOIN patient p ON p.ID = patientId GROUP BY regimen, barcode, siteCode''',
+      JOIN patient p ON p.uuID = patientId GROUP BY regimen, barcode, siteCode''',
     viewName: 'BarcodeDispense')
 class BarcodeDispense {
   final int quantity;
@@ -78,7 +78,7 @@ abstract class RefillDao {
   Future<List<Refill>> findUnSynced();
 
   @Query('SELECT * FROM Refill WHERE patientId = :patientId')
-  Future<List<Refill>> findByPatient(int patientId);
+  Future<List<Refill>> findByPatient(String patientId);
 
   @Query('SELECT * FROM Refill WHERE patientId = :patientId AND date = :date')
   Future<List<Refill>> findByPatientAndDate(int patientId, DateTime date);
@@ -89,8 +89,8 @@ abstract class RefillDao {
   @update
   Future<int> updateRecord(Refill refill);
 
-  @Query("DELETE Refill Clinic")
-  Future<void> deleteAll();
+  @Query("DELETE FROM Refill WHERE date <= :date ")
+  Future<void> deleteOlderThan(DateTime date);
 
   @Query('SELECT COUNT(*) > 0 FROM Refill WHERE synced = 0')
   Future<bool?> hasUnSynced();

@@ -1,8 +1,10 @@
 package org.fhi360.plugins.impilo.integration;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.JoinType;
 import com.blazebit.persistence.integration.view.spring.EnableEntityViews;
 import com.blazebit.persistence.view.EntityViewManager;
+import com.blazebit.persistence.view.EntityViewSetting;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.glytching.junit.extension.random.Random;
 import io.github.glytching.junit.extension.random.RandomBeansExtension;
@@ -14,6 +16,7 @@ import io.github.jbella.snl.core.api.config.ContextProvider;
 import io.github.jbella.snl.test.core.TestConfiguration;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.fhi360.plugins.impilo.domain.ImpiloGatewayDomain;
+import org.fhi360.plugins.impilo.domain.entities.Devolve;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.repositories.PatientRepository;
 import org.fhi360.plugins.impilo.services.RandomDataService;
@@ -35,6 +38,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,26 +72,32 @@ public class TestTutorialService {
     @Autowired
     PatientRepository patientRepository;
 
+
     @Test
     public void should_create_service() throws Exception {
         assertNotNull(service);
+
+        var settings1 = EntityViewSetting.create(Patient.View.class);
+        var cb1 = cbf.create(em, Patient.class, "p");
+        evm.applySetting(settings1, cb1).getResultList();
     }
 
     @Test
     @Transactional
     public void testPatient(@Random Patient patient) {
-        var id = patient.getId();
-        //var p = objectMapper.convertValue(patient, Patient.CreateView.class);
-        var p = transactionHandler.runInTransaction(() -> {
-           // evm.save(em, p);
-            return patientRepository.save(patient);
-        });
-        assertEquals(id, p.getId());
+        var settings2 = EntityViewSetting.create(Patient.CreateView.class);
+        //@formatter:off
+        var settings1 = EntityViewSetting.create(Devolve.CreateView.class);
+        var cb1 = cbf.create(em, Devolve.class)
+            .where("patient.organisation.id").eq(UUID.fromString("018a5c7c-6b7c-7fd0-a43c-66c257938552"))
+            .where("synced").eq(false);
+        List<Devolve.CreateView> devolves = evm.applySetting(settings1, cb1).getResultList();
     }
 
     @ComponentScan(basePackageClasses = {
         ImpiloGatewayPluginApp.class, TestConfiguration.class, ContextProvider.class
     })
+    @Import(TransactionHandler.class)
     @EnableEntityViews(basePackageClasses = {CoreDomain.class, ImpiloGatewayDomain.class})
     @EntityScan(basePackageClasses = {CoreDomain.class, ImpiloGatewayDomain.class})
     static class Config {

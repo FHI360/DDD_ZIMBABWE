@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/http/auth_api_provider.dart';
 import 'package:logging/logging.dart';
 import 'package:oktoast/oktoast.dart';
@@ -100,7 +99,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Text(
-                                            'Welcome back,',
+                                            '',
                                             style: FlutterFlowTheme.of(context)
                                                 .subtitle1,
                                           ),
@@ -261,7 +260,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                           .currentState ==
                                                       null ||
                                                   !_model.formKey.currentState!
-                                                      .validate())
+                                                      .validate() ||
+                                                  _model.emailAddressController
+                                                      .text.isEmpty ||
+                                                  _model.passwordController.text
+                                                      .isEmpty)
                                               ? null
                                               : () async {
                                                   if (FFAppState()
@@ -325,7 +328,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 .primaryColor,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
-                                                    .subtitle2,
+                                                    .bodyText2,
                                             elevation: 3.0,
                                             borderSide: BorderSide(
                                               color: Colors.transparent,
@@ -414,15 +417,30 @@ class _LoginWidgetState extends State<LoginWidget> {
                             Spacer(),
                             Row(
                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 8, 0, 0),
-                                  child: Text(
-                                    '2023.1 02-08-2023',
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyText1,
+                                  child: Image.asset(
+                                    'assets/images/pepfar.png',
+                                    width: 72,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 8, 0, 0),
+                                  child: Image.asset(
+                                    'assets/images/usaid.png',
+                                    width: 72,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 8, 0, 0),
+                                  child: Image.asset(
+                                    'assets/images/epic.png',
+                                    width: 72,
                                   ),
                                 ),
                               ],
