@@ -19,6 +19,7 @@ import org.fhi360.plugins.impilo.domain.ImpiloGatewayDomain;
 import org.fhi360.plugins.impilo.domain.entities.Devolve;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.repositories.PatientRepository;
+import org.fhi360.plugins.impilo.services.DevolveService;
 import org.fhi360.plugins.impilo.services.RandomDataService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -71,15 +72,15 @@ public class TestTutorialService {
     TransactionHandler transactionHandler;
     @Autowired
     PatientRepository patientRepository;
+    @Autowired
+    DevolveService devolveService;
 
 
     @Test
     public void should_create_service() throws Exception {
         assertNotNull(service);
 
-        var settings1 = EntityViewSetting.create(Patient.View.class);
-        var cb1 = cbf.create(em, Patient.class, "p");
-        evm.applySetting(settings1, cb1).getResultList();
+        devolveService.list("Vanessa", true, 0, 10);
     }
 
     @Test

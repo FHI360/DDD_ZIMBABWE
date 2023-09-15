@@ -19,4 +19,8 @@ export class SynchronizationService {
     scheduleSync(interval: number) {
         return this.http.post(`${this.resourceUrl}/schedule-sync`, interval);
     }
+
+    syncInterval() {
+        return this.http.get(`${this.resourceUrl}/sync-interval`)
+    }
 }

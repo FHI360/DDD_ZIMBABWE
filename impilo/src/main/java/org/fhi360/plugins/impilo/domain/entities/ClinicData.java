@@ -6,9 +6,11 @@ import com.blazebit.persistence.view.IdMapping;
 import com.blazebit.persistence.view.UpdatableEntityView;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +18,14 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * The ClinicData class represents data collected during a clinic visit, including patient information and various health
+ * measurements.
+ */
 @Entity
 @Getter
 @Setter
+@Table(name = "imp_clinic_data")
 public class ClinicData {
     @NotNull
     LocalDate date;
@@ -59,6 +66,7 @@ public class ClinicData {
 
     @EntityView(ClinicData.class)
     @CreatableEntityView
+    @Schema(name = "ClinicDataCreateView")
     public interface CreateView {
         @IdMapping
         UUID getId();

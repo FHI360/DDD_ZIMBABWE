@@ -6,6 +6,7 @@ import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -15,10 +16,14 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * The Refill class represents a refill of medication for a patient at a specific date, with various attributes and
+ * associations.
+ */
 @Entity
 @Getter
 @Setter
-@ToString(exclude = "patient")
+@Table(name = "imp_refill")
 public class Refill {
     @Id
     @UUIDV7
@@ -41,6 +46,8 @@ public class Refill {
     private Boolean synced = false;
 
     private UUID reference;
+
+    private String batchIssuanceId;
 
     @ManyToOne
     @NotNull
@@ -97,6 +104,10 @@ public class Refill {
         UUID getReference();
 
         void setReference(UUID reference);
+
+        String getBatchIssuanceId();
+
+        void setBatchIssuanceId(String batchIssuanceId);
 
         Patient.IdView getPatient();
 

@@ -64,7 +64,7 @@ webRemotes:
         ngModuleName: StockIssuanceModule
         routePath: stock-issuance
         title: IMPILO.TITLE.STOCK_ISSUANCE
-      - name: DevolveRouting
+      - name: PatientRouting
         routePath: patients
         title: IMPILO.TITLE.PATIENTS
       - name: StockRequestModule

@@ -296,17 +296,18 @@ public class IndicatorsReportService {
            WITH CurrentDevolve AS (
             	SELECT * FROM (
             		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM devolve d JOIN organisation o ON o.id = d.organisation_id
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id =
+                        d.organisation_id
             		WHERE reason_discontinued IS NOT NULL AND o.id = ? AND date BETWEEN ? AND ?
             	) d WHERE rn = 1
             ),
            Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet FROM CurrentDevolve d JOIN patient p ON d.patient_Id = p.id
+            		outlet FROM CurrentDevolve d JOIN imp_patient p ON d.patient_Id = p.id
             ),
            DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet FROM Appointment a)
            SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -322,19 +323,19 @@ public class IndicatorsReportService {
             WITH CurrentDevolve AS (
             	SELECT * FROM (
             		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM devolve d JOIN organisation o ON o.id = d.organisation_id
-                        JOIN patient p ON p.id = d.patient_id JOIN organisation f ON f.id = p.organisation_id
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
+                        JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id = p.organisation_id
             		WHERE reason_discontinued IS NOT NULL AND f.id = ? AND date BETWEEN ? AND ?
             	) d WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet, o.name facility FROM CurrentDevolve d JOIN patient p ON d.patient_Id = p.id JOIN organisation o
-            		ON o.id = p.organisation_id
+            		outlet, o.name facility FROM CurrentDevolve d JOIN imp_patient p ON d.patient_Id = p.id JOIN
+            		fw_organisation o ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT outlet, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -351,19 +352,19 @@ public class IndicatorsReportService {
             WITH CurrentDevolve AS (
             	SELECT * FROM (
             		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM devolve d JOIN organisation o ON o.id = d.organisation_id
-                        JOIN patient p ON p.id = d.patient_id JOIN organisation f ON f.id = p.organisation_id
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
+                        JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id = p.organisation_id
             		WHERE reason_discontinued IS NOT NULL AND date BETWEEN ? AND ?
             	) d WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet, o.name facility FROM CurrentDevolve d JOIN patient p ON d.patient_Id = p.id JOIN organisation o
+            		outlet, o.name facility FROM CurrentDevolve d JOIN imp_patient p ON d.patient_Id = p.id JOIN fw_organisation o
             		ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT outlet, facility, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -380,18 +381,19 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT patient_Id, date, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM Refill d JOIN organisation o ON d.organisation_id = o.id
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON d.organisation_id
+                        = o.id
                     WHERE d.organisation_id = ? AND date_Next_Refill BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-                    outlet, o.name facility FROM Data d JOIN patient p ON d.patient_Id = p.id
-            	JOIN organisation o ON o.id = p.organisation_id
+                    outlet, o.name facility FROM Data d JOIN imp_patient p ON d.patient_Id = p.id
+            	JOIN fw_organisation o ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet FROM Appointment a)
             SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -407,19 +409,19 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT d.patient_Id, date, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM Refill d RIGHT JOIN patient p ON d.patient_id = p.id
-                        JOIN organisation o ON d.organisation_id = o.id WHERE p.organisation_id = ? AND
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_refill d RIGHT JOIN imp_patient p ON d.patient_id
+                        = p.id JOIN fw_organisation o ON d.organisation_id = o.id WHERE p.organisation_id = ? AND
                     date_Next_Refill BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		 outlet, o.name facility FROM Data d JOIN patient p ON d.patient_Id = p.id
-            	JOIN organisation o ON o.id = p.organisation_id
+            		 outlet, o.name facility FROM Data d JOIN imp_patient p ON d.patient_Id = p.id
+            	JOIN fw_organisation o ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT outlet, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss GROUP BY 1 ORDER BY 1
@@ -435,18 +437,18 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT d.patient_id, date, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM Refill d RIGHT JOIN patient p ON d.patient_id = p.id
-                    JOIN organisation o ON d.organisation_id = o.id WHERE date_Next_Refill BETWEEN ? AND ?
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_refill d RIGHT JOIN imp_patient p ON d.patient_id = p.id
+                    JOIN fw_organisation o ON d.organisation_id = o.id WHERE date_Next_Refill BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		 outlet, o.name facility FROM Data d JOIN patient p ON d.patient_Id = p.id
-            	JOIN organisation o ON o.id = p.organisation_id
+            		 outlet, o.name facility FROM Data d JOIN imp_patient p ON d.patient_Id = p.id
+            	JOIN fw_organisation o ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT facility, outlet, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss GROUP BY 1, 2 ORDER BY 2, 1
@@ -463,18 +465,18 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT o.name outlet, d.patient_id, date, ROW_NUMBER() OVER (PARTITION BY d.patient_Id ORDER BY
-                        date DESC, d.id DESC) rn FROM Refill d JOIN organisation o ON o.id = d.organisation_id WHERE
+                        date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id = d.organisation_id WHERE
                     organisation_id = ? AND date BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet, o.name facility FROM Data d JOIN patient p ON d.patient_Id = p.id
-            	JOIN organisation o ON o.id = p.organisation_id
+            		outlet, o.name facility FROM Data d JOIN imp_patient p ON d.patient_Id = p.id
+            	JOIN fw_organisation o ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet FROM Appointment a)
             SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -490,19 +492,19 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT o.name outlet, f.name facility, d.patient_id, date, ROW_NUMBER() OVER
-                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM Refill d JOIN organisation o ON o.id =
-                        d.organisation_id JOIN patient p ON p.id = d.patient_id JOIN organisation f ON f.id =
+                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id =
+                        d.organisation_id JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id =
                     p.organisation_id WHERE f.id = ? AND date BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet FROM Data d JOIN patient p ON d.patient_Id = p.id JOIN organisation o ON
+            		outlet FROM Data d JOIN imp_patient p ON d.patient_Id = p.id JOIN fw_organisation o ON
             		o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet FROM Appointment a)
             SELECT outlet, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss GROUP BY 1 ORDER BY 1
@@ -518,19 +520,19 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT o.name outlet, f.name facility, d.patient_id, date, ROW_NUMBER() OVER
-                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM Refill d JOIN organisation o ON o.id =
-                        d.organisation_id JOIN patient p ON p.id = d.patient_id JOIN organisation f ON f.id =
+                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id =
+                        d.organisation_id JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id =
                     p.organisation_id WHERE date BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet, facility FROM Data d JOIN patient p ON d.patient_Id = p.id JOIN organisation o ON
+            		outlet, facility FROM Data d JOIN imp_patient p ON d.patient_Id = p.id JOIN fw_organisation o ON
             		o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT outlet, facility, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss GROUP BY 1, 2 ORDER BY 2, 1
@@ -546,17 +548,17 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT o.name outlet, d.patient_id, date_Next_Refill date, ROW_NUMBER() OVER (PARTITION BY d.patient_Id ORDER BY
-                        date DESC, d.id DESC) rn FROM Refill d JOIN organisation o ON o.id = d.organisation_id WHERE
+                        date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id = d.organisation_id WHERE
                     organisation_id = ? AND date_Next_Refill BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		 outlet FROM Data d JOIN patient p ON d.patient_Id = p.id JOIN organisation o ON o.id = p.organisation_id
+            		 outlet FROM Data d JOIN imp_patient p ON d.patient_Id = p.id JOIN fw_organisation o ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet FROM Appointment a)
             SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -572,19 +574,19 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT o.name outlet, f.name facility, d.patient_id, date_Next_Refill date, ROW_NUMBER() OVER
-                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM Refill d JOIN organisation o ON o.id =
-                        d.organisation_id JOIN patient p ON p.id = d.patient_id JOIN organisation f ON f.id =
+                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id =
+                        d.organisation_id JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id =
                     p.organisation_id WHERE f.id = ? AND date_Next_Refill BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet, facility FROM Data d JOIN patient p ON d.patient_Id = p.id JOIN organisation o ON
+            		outlet, facility FROM Data d JOIN imp_patient p ON d.patient_Id = p.id JOIN fw_organisation o ON
             		o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT outlet, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -601,19 +603,19 @@ public class IndicatorsReportService {
             WITH Data AS (
                 SELECT * FROM (
                     SELECT o.name outlet, f.name facility, d.patient_id, date_Next_Refill date, ROW_NUMBER() OVER
-                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM Refill d JOIN organisation o ON o.id =
-                        d.organisation_id JOIN patient p ON p.id = d.patient_id JOIN organisation f ON f.id =
+                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id =
+                        d.organisation_id JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id =
                     p.organisation_id WHERE date_Next_Refill BETWEEN ? AND ?
                 ) r WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet, facility FROM Data d JOIN patient p ON d.patient_Id = p.id JOIN organisation o ON
+            		outlet, facility FROM Data d JOIN imp_patient p ON d.patient_Id = p.id JOIN fw_organisation o ON
             		o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT outlet, facility, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -631,17 +633,17 @@ public class IndicatorsReportService {
             WITH CurrentDevolve AS (
             	SELECT * FROM (
             		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM devolve d JOIN organisation o ON o.id = d.organisation_id
-            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND o.id = ? AND date BETWEEN ? AND ?
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
+            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND o.id = ? AND date(date) BETWEEN ? AND ?
             	) d WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet FROM CurrentDevolve d JOIN patient p ON d.patient_Id = p.id
+            		outlet FROM CurrentDevolve d JOIN imp_patient p ON d.patient_Id = p.id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet FROM Appointment a)
             SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -657,19 +659,19 @@ public class IndicatorsReportService {
             WITH CurrentDevolve AS (
             	SELECT * FROM (
             		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM devolve d JOIN organisation o ON o.id = d.organisation_id
-                        JOIN patient p ON p.id = d.patient_id JOIN organisation f ON f.id = p.organisation_id
-            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND f.id = ? AND date BETWEEN ? AND ?
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
+                        JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id = p.organisation_id
+            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND f.id = ? AND date(date) BETWEEN ? AND ?
             	) d WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet, o.name facility FROM CurrentDevolve d JOIN patient p ON d.patient_Id = p.id JOIN organisation o
+            		outlet, o.name facility FROM CurrentDevolve d JOIN imp_patient p ON d.patient_Id = p.id JOIN fw_organisation o
             		ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT outlet, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
@@ -686,19 +688,19 @@ public class IndicatorsReportService {
             WITH CurrentDevolve AS (
             	SELECT * FROM (
             		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM devolve d JOIN organisation o ON o.id = d.organisation_id
-                        JOIN patient p ON p.id = d.patient_id JOIN organisation f ON f.id = p.organisation_id
-            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND date BETWEEN ? AND ?
+                        ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
+                        JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id = p.organisation_id
+            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND date(date) BETWEEN ? AND ?
             	) d WHERE rn = 1
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet, o.name facility FROM CurrentDevolve d JOIN patient p ON d.patient_Id = p.id JOIN organisation o
+            		outlet, o.name facility FROM CurrentDevolve d JOIN imp_patient p ON d.patient_Id = p.id JOIN fw_organisation o
             		ON o.id = p.organisation_id
             ),
             DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'Female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'Male' THEN 1 ELSE 0 END mu,
+                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
                     outlet, facility FROM Appointment a)
             SELECT outlet, facility, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss

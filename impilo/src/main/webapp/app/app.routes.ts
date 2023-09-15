@@ -9,7 +9,7 @@ export const APP_ROUTES: Routes = [
     },
     {
         path: 'site-assignments',
-        loadChildren: () => import('./devolve/devolve.routing')
+        loadChildren: () => import('./patient/patient.routing')
     },
     {
         path: 'stocks',

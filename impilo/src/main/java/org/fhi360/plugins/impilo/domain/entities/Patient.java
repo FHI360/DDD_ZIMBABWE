@@ -6,6 +6,7 @@ import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,9 +16,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The Patient class represents a patient entity with various attributes and a Many-to-One relationship with the
+ * Organisation class.
+ */
 @Entity
 @Getter
 @Setter
+@Table(name = "imp_patient")
 public class Patient {
     @Id
     @UUIDV7

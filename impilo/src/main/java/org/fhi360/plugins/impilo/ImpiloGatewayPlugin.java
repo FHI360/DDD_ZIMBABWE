@@ -8,6 +8,10 @@ import org.pf4j.PluginWrapper;
 
 import java.util.List;
 
+/**
+ * The ImpiloGatewayPlugin class is a Java class that extends JpaSpringBootPlugin and is used to create a Spring Bootstrap
+ * for the Impilo Gateway plugin.
+ */
 public class ImpiloGatewayPlugin extends JpaSpringBootPlugin {
     public ImpiloGatewayPlugin(PluginWrapper wrapper) {
         super(wrapper, List.of(ImpiloGatewayDomain.class));

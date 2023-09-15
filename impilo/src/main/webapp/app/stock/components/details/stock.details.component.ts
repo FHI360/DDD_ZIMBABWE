@@ -47,7 +47,8 @@ export class StockDetailsComponent implements OnInit {
             serialNo: ['', Validators.required],
             batchNo: ['', Validators.required],
             manufactureDate: [],
-            expirationDate: []
+            expirationDate: [],
+            batchIssuanceId: []
         });
     }
 

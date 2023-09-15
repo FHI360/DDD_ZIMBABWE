@@ -53,6 +53,12 @@
                         {{formGroup.getRawValue()['bottles']}}
                     </div>
                     <div class="text-sm font-medium leading-none text-gray-400">
+                        {{'IMPILO.STOCK.LIST_PAGE.BATCH_ISSUANCE_ID' | transloco}}
+                    </div>
+                    <div class="font-semibold leading-none text-gray-800 col-span-2">
+                        {{formGroup.getRawValue()['batchIssuanceId']}}
+                    </div>
+                    <div class="text-sm font-medium leading-none text-gray-400">
                         {{'IMPILO.STOCK.LIST_PAGE.BATCH_NO' | transloco}}
                     </div>
                     <div class="font-semibold leading-none text-gray-800 col-span-2">
@@ -149,6 +155,17 @@
                                 *ngIf="formGroup.controls['bottles'].hasError('min')">
                                 {{'IMPILO.STOCK.DETAIL_PAGE.BOTTLES_MIN' | transloco }}
                             </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>{{'IMPILO.STOCK.DETAIL_PAGE.BATCH_ISSUANCE_ID' | transloco}}</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'batchIssuanceId'"
+                                [spellcheck]="false">
                         </mat-form-field>
                     </div>
                     <div class="mt-8">

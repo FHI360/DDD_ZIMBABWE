@@ -1,12 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {TranslocoModule, TranslocoService} from '@ngneat/transloco';
-import {SynchronizationService} from '../synchronization.service';
-import {FuseAlertComponent, FuseAlertType} from '@mattae/angular-shared';
-import {catchError, EMPTY, finalize, map} from 'rxjs';
-import {NgIf} from '@angular/common';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
+import { SynchronizationService } from '../synchronization.service';
+import { FuseAlertComponent, FuseAlertType } from '@mattae/angular-shared';
+import { catchError, EMPTY, finalize, map } from 'rxjs';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -55,6 +55,9 @@ export class SynchronisationComponent implements OnInit {
     }
 
     ngOnInit() {
+        this._service.syncInterval().subscribe(res=> {
+            this.intervalCtl.patchValue(res);
+        });
     }
 
     syncEHR() {
@@ -113,7 +116,6 @@ export class SynchronisationComponent implements OnInit {
         this.scheduling = true;
         this._service.scheduleSync(this.intervalCtl.value).pipe(
             map(_=> {
-                this.intervalCtl.patchValue(null);
                 this.alert = {
                     type: 'success',
                     message: 'IMPILO.SYNC.SCHEDULE.SUCCESS'

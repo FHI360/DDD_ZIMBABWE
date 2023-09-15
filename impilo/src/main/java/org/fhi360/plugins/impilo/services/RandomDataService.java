@@ -1,17 +1,26 @@
 package org.fhi360.plugins.impilo.services;
 
 import com.blazebit.persistence.view.EntityViewManager;
+import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.domain.Party;
 import io.github.jbella.snl.core.api.services.TransactionHandler;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.datafaker.Faker;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.repositories.PatientRepository;
+import org.fhi360.plugins.impilo.services.models.Name;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -67,7 +76,19 @@ public class RandomDataService {
     }
 
     private void generatePatient() {
-        UUID facilityId = UUID.randomUUID();
+        CSVReader csvReader = null;
+        try {
+            URL url = this.getClass().getClassLoader().getResource("names.csv");
+            assert url != null;
+            csvReader = new CSVReader(new InputStreamReader(url.openStream()));
+        } catch (IOException ignored) {
+        }
+        assert csvReader != null;
+        CsvToBean<Name> cb = new CsvToBeanBuilder<Name>(csvReader)
+                .withType(Name.class)
+                .build();
+        List<Name> names = cb.parse();
+
         List<Organisation> facilities = em.createQuery("select o from Organisation o where o.type = 'FACILITY'")
             .getResultList();
         Random rand = new Random();
@@ -76,9 +97,10 @@ public class RandomDataService {
             "AZT/3TC(300/150mg)+EFV(200mg)", "3TC/FTC(300/300mg)+EFV(600mg)");
         for (int i = 0; i < 200; i++) {
             Patient patient = new Patient();
-            patient.setGivenName(faker.name().firstName());
-            patient.setFamilyName(faker.name().lastName());
-            patient.setSex(faker.gender().binaryTypes());
+            Name name = names.get(i);
+            patient.setGivenName(name.givenName);
+            patient.setFamilyName(name.familyName);
+            patient.setSex(faker.gender().binaryTypes().toLowerCase());
             patient.setDateOfBirth(faker.date().birthday().toLocalDateTime().toLocalDate());
             patient.setHospitalNumber(faker.idNumber().peselNumber());
             patient.setPhoneNumber(faker.phoneNumber().cellPhone());

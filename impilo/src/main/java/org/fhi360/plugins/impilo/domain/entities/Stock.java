@@ -3,9 +3,11 @@ package org.fhi360.plugins.impilo.domain.entities;
 import com.blazebit.persistence.view.*;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +16,14 @@ import org.fhi360.plugins.impilo.domain.providers.StockIssuedSubqueryProvider;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * The Stock class represents a stock item with various properties such as id, date, regimen, bottles, batchNo, serialNo,
+ * expirationDate, manufactureDate, synced, reference, and facility.
+ */
 @Entity
 @Getter
 @Setter
+@Table(name = "imp_stock")
 public class Stock {
     @Id
     @UUIDV7
@@ -37,6 +44,8 @@ public class Stock {
     private LocalDate manufactureDate;
 
     private Boolean synced = false;
+
+    private String batchIssuanceId;
 
     @NotNull
     private UUID reference;
@@ -90,6 +99,10 @@ public class Stock {
         UUID getReference();
 
         void setReference(UUID reference);
+
+        String getBatchIssuanceId();
+
+        void setBatchIssuanceId(String batchIssuanceId);
 
         Boolean getSynced();
 

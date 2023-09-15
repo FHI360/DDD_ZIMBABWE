@@ -14,6 +14,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * The `RefillService` class is a Java service that handles saving refill data for a specific patient identified by a
+ * unique ID.
+ */
 @Service
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -24,6 +28,14 @@ public class RefillService {
     private final CriteriaBuilderFactory cbf;
     private final ObjectMapper objectMapper;
 
+    /**
+     * The `save` function saves a `Refill` object associated with a `Patient` based on a unique ID.
+     *
+     * @param uniqueId The `uniqueId` parameter is a string that represents a unique identifier for a patient.
+     * @param data The "data" parameter is an object of type T, which extends the Refill.CreateView interface.
+     * @return The method returns a boolean value. It returns true if the data is successfully saved, and false if no
+     * result is found for the given uniqueId.
+     */
     @Transactional
     public <T extends Refill.CreateView> boolean save(String uniqueId, T data) {
         var settings = EntityViewSetting.create(Patient.IdView.class);

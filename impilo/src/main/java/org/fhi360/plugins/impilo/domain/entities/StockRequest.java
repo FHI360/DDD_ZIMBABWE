@@ -6,19 +6,23 @@ import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+import org.fhi360.plugins.impilo.domain.providers.StockFulfilledSubqueryProvider;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * The StockRequest class represents a stock request for a specific drug at a particular site.
+ */
 @Entity
 @Getter
 @Setter
-@ToString
+@Table(name = "imp_stock_request")
 public class StockRequest {
     @Id
     @UUIDV7
@@ -92,5 +96,11 @@ public class StockRequest {
     @UpdatableEntityView
     public interface UpdateView extends CreateView {
         void setId(UUID id);
+    }
+
+    @EntityView(StockRequest.class)
+    public interface ListView extends CreateView {
+        @MappingSubquery(StockFulfilledSubqueryProvider.class)
+        Long getFulfilled();
     }
 }

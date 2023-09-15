@@ -55,7 +55,8 @@
                 "ISSUED": "Qty issued",
                 "BALANCE": "Balance",
                 "BATCH_NO": "Batch No",
-                "EXPIRATION_DATE": "Expiration date"
+                "EXPIRATION_DATE": "Expiration date",
+                "BATCH_ISSUANCE_ID": "Batch Issuance ID"
             },
             "DETAIL_PAGE": {
                 "EDIT": "Edit",
@@ -71,7 +72,8 @@
                 "BOTTLES_MIN": "Minimum number of bottles is 1",
                 "BATCH_NO_REQUIRED": "Batch No is required",
                 "SERIAL_NUMBER": "Serial number",
-                "SERIAL_NUMBER_REQUIRED": "Serial number is required"
+                "SERIAL_NUMBER_REQUIRED": "Serial number is required",
+                "BATCH_ISSUANCE_ID": "Batch Issuance ID"
             }
         },
         "STOCK_ISSUANCE": {
@@ -86,7 +88,8 @@
                 "REGIMEN": "ARV Drug",
                 "ISSUED": "Bottles issued",
                 "BATCH_NO": "Batch No",
-                "EXPIRATION_DATE": "Expiration date"
+                "EXPIRATION_DATE": "Expiration date",
+                "ACKNOWLEDGED": "Acknowledged"
             },
             "DETAIL_PAGE": {
                 "EDIT": "Edit",
@@ -129,11 +132,11 @@
                 "NO_DATA": "No stock request data available",
                 "SITE": "OFCAD Site",
                 "ARV_DRUG": "ARV Drug",
-                "ISSUED": "Bottles requested",
                 "SITES": "OFCAD Sites",
                 "ALL": "All OFCAD Sites",
-                "BOTTLES": "Bottles",
-                "ISSUE": "Issue stock"
+                "BOTTLES": "Bottles requested",
+                "ISSUE": "Issue stock",
+                "FULFILLED": "Issued bottles"
             }
         },
         "PATIENT": {

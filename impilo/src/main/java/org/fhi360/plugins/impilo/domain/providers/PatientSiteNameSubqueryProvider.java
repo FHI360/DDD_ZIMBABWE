@@ -4,6 +4,10 @@ import com.blazebit.persistence.SubqueryInitiator;
 import com.blazebit.persistence.view.SubqueryProvider;
 import org.fhi360.plugins.impilo.domain.entities.Devolve;
 
+/**
+ * The PatientSiteNameSubqueryProvider class is used to create a subquery that retrieves the name of the devolve organisation for a
+ * given patient.
+ */
 public class PatientSiteNameSubqueryProvider implements SubqueryProvider {
     @Override
     public <T> T createSubquery(SubqueryInitiator<T> subqueryBuilder) {

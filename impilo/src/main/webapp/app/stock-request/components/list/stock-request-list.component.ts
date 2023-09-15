@@ -55,6 +55,13 @@ export class StocksRequestListComponent implements OnInit, OnDestroy {
             visible: true,
             cssClasses: ['font-medium']
         },
+        {
+            label: 'IMPILO.STOCK_REQUEST.LIST_PAGE.FULFILLED',
+            property: 'fulfilled',
+            type: 'number',
+            visible: true,
+            cssClasses: ['font-medium']
+        },
         {label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.ACTIONS', property: 'actions', type: 'button', visible: true}
     ];
 

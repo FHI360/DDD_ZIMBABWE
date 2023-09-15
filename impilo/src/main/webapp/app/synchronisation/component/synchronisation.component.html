@@ -39,7 +39,7 @@
                             class="mb-4 mt-2">
                             {{alert.message | transloco}}
                         </fuse-alert>
-                        <div class="flex flex-row justify-end pt-4">
+                        <div class="flex flex-row justify-self-start pt-4">
                             <mat-form-field class="w-2/5">
                                 <mat-label> {{'IMPILO.SYNC.SCHEDULE.SYNC_INTERVAL' | transloco}}</mat-label>
                                 <input matInput type="number" [formControl]="intervalCtl">
@@ -53,6 +53,7 @@
                                     *ngIf="intervalCtl.hasError('min')">{{'IMPILO.SYNC.SCHEDULE.INTERVAL_MIN' | transloco}}</mat-error>
                             </mat-form-field>
                         </div>
+                        <div class="border-2 border-accent-800"></div>
                         <div class="pt-10 mx-auto w-2/3">
                             <div class="bg-card p-4">
                                 <div class="flex flex-row justify-around">

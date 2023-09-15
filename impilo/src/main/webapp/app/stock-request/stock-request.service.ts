@@ -11,6 +11,7 @@ export interface StockRequest {
     arvDrug: string;
     site: OrgUnit;
     siteName: string;
+    fulfilled: number;
 }
 
 @Injectable()

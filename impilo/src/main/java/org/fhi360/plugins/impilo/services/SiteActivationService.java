@@ -10,10 +10,14 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.fhi360.plugins.impilo.domain.entities.Devolve;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
-import org.fhi360.plugins.impilo.web.models.ActivationData;
+import org.fhi360.plugins.impilo.services.models.ActivationData;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+/**
+ * The `SiteActivationService` class is a Java service that activates an outlet by retrieving relevant data from the database
+ * and returning it in an `ActivationData` object.
+ */
 @Service
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -23,23 +27,28 @@ public class SiteActivationService {
     private final CriteriaBuilderFactory cbf;
     private final ExtensionService extensionService;
 
+    /**
+     * The `activate()` function retrieves data from the database and returns an `ActivationData` object containing
+     * information about the organization and its associated patients.
+     *
+     * @return The method `activate()` returns an object of type `ActivationData`.
+     */
     public ActivationData activate() {
-        try {
-            Organisation.IdView org = extensionService.getPriorityExtension(AuthenticationServiceExtension.class)
-                .organisation();
-            var settings = EntityViewSetting.create(Organisation.ShortView.class);
-            var cb = cbf.create(em, Organisation.class)
-                .where("id").eq(org.getId());
-            var organisations = evm.applySetting(settings, cb).getResultList();
-            if (organisations.isEmpty()) {
-                return new ActivationData();
-            }
-            var organisation = organisations.get(0);
-            ActivationData data = new ActivationData();
-            data.setSite(organisation.getName());
-            var settings1 = EntityViewSetting.create(Patient.View.class);
-            var cb1 = cbf.create(em, Patient.class, "p");
-            //@formatter:off
+        Organisation.IdView org = extensionService.getPriorityExtension(AuthenticationServiceExtension.class)
+            .organisation();
+        var settings = EntityViewSetting.create(Organisation.ShortView.class);
+        var cb = cbf.create(em, Organisation.class)
+            .where("id").eq(org.getId());
+        var organisations = evm.applySetting(settings, cb).getResultList();
+        if (organisations.isEmpty()) {
+            return new ActivationData();
+        }
+        var organisation = organisations.get(0);
+        ActivationData data = new ActivationData();
+        data.setSite(organisation.getName());
+        var settings1 = EntityViewSetting.create(Patient.View.class);
+        var cb1 = cbf.create(em, Patient.class, "p");
+        //@formatter:off
         cb1.whereExists()
             .from(Devolve.class, "h")
                 .select("1")
@@ -56,12 +65,8 @@ public class SiteActivationService {
                         .end()
             .end();
             //@formatter:on
-            var patients = evm.applySetting(settings1, cb1).getResultList();
-            data.setPatients(patients);
-            return data;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        var patients = evm.applySetting(settings1, cb1).getResultList();
+        data.setPatients(patients);
+        return data;
     }
 }

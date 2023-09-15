@@ -4,7 +4,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet id="2023072304-01" author="mattae">
+    <changeSet id="2023072304-01-1" author="mattae">
+        <preConditions>
+            <not>
+                <tableExists tableName="patient"/>
+            </not>
+        </preConditions>
         <createTable tableName="patient">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -57,11 +62,16 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="patient" baseColumnNames="organisation_id"
-                                 constraintName="fk_patient_organisation_id" referencedTableName="organisation"
+                                 constraintName="fk_patient_organisation_id" referencedTableName="fw_organisation"
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-02" author="mattae">
+    <changeSet id="2023072304-02-1" author="mattae">
+        <preConditions>
+            <not>
+                <tableExists tableName="devolve"/>
+            </not>
+        </preConditions>
         <createTable tableName="devolve">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -85,7 +95,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="devolve" baseColumnNames="organisation_id"
-                                 constraintName="fk_devolve_organisation_id" referencedTableName="organisation"
+                                 constraintName="fk_devolve_organisation_id" referencedTableName="fw_organisation"
                                  referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="devolve" baseColumnNames="patient_id"
@@ -94,6 +104,11 @@
     </changeSet>
 
     <changeSet id="2023072304-03" author="mattae">
+        <preConditions>
+            <not>
+                <tableExists tableName="clinic_data"/>
+            </not>
+        </preConditions>
         <createTable tableName="clinic_data">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -146,7 +161,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="clinic_data" baseColumnNames="organisation_id"
-                                 constraintName="fk_clinic_data_organisation_id" referencedTableName="organisation"
+                                 constraintName="fk_clinic_data_organisation_id" referencedTableName="fw_organisation"
                                  referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="clinic_data" baseColumnNames="patient_id"
@@ -155,6 +170,11 @@
     </changeSet>
 
     <changeSet id="2023072304-04" author="mattae">
+        <preConditions>
+            <not>
+                <tableExists tableName="refill"/>
+            </not>
+        </preConditions>
         <createTable tableName="refill">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -195,7 +215,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="refill" baseColumnNames="organisation_id"
-                                 constraintName="fk_refill_organisation_id" referencedTableName="organisation"
+                                 constraintName="fk_refill_organisation_id" referencedTableName="fw_organisation"
                                  referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="refill" baseColumnNames="patient_id"
@@ -204,6 +224,11 @@
     </changeSet>
 
     <changeSet id="2023072304-05" author="mattae">
+        <preConditions>
+            <not>
+                <tableExists tableName="stock"/>
+            </not>
+        </preConditions>
         <createTable tableName="stock">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -235,7 +260,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="stock" baseColumnNames="facility_id"
-                                 constraintName="fk_stock_facility_id" referencedTableName="organisation"
+                                 constraintName="fk_stock_facility_id" referencedTableName="fw_organisation"
                                  referencedColumnNames="id"/>
     </changeSet>
 
@@ -277,6 +302,11 @@
     </changeSet>
 
     <changeSet id="2023072304-10" author="mattae">
+        <preConditions>
+            <not>
+                <tableExists tableName="stock_request"/>
+            </not>
+        </preConditions>
         <createTable tableName="stock_request">
             <column name="id" type="UUID" defaultValueComputed="uuid_v7()">
                 <constraints primaryKey="true"/>
@@ -302,7 +332,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="stock_request" baseColumnNames="site_id"
-                                 constraintName="fk_stock_request_site_id" referencedTableName="organisation"
+                                 constraintName="fk_stock_request_site_id" referencedTableName="fw_organisation"
                                  referencedColumnNames="id"/>
     </changeSet>
 
@@ -372,5 +402,26 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="202306062304-05" author="mattae">
+        <addColumn tableName="stock">
+            <column name="batch_issuance_id" type="varchar(64)"/>
+        </addColumn>
+        <addColumn tableName="refill">
+            <column name="batch_issuance_id" type="varchar(64)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="202306062304-06" author="mattae">
+        <renameTable oldTableName="clinic_data" newTableName="imp_clinic_data"/>
+        <renameTable oldTableName="devolve" newTableName="imp_devolve"/>
+        <renameTable oldTableName="id_mappings" newTableName="imp_id_mappings"/>
+        <renameTable oldTableName="patient" newTableName="imp_patient"/>
+        <renameTable oldTableName="prescription" newTableName="imp_prescription"/>
+        <renameTable oldTableName="refill" newTableName="imp_refill"/>
+        <renameTable oldTableName="stock" newTableName="imp_stock"/>
+        <renameTable oldTableName="stock_issuance" newTableName="imp_stock_issuance"/>
+        <renameTable oldTableName="stock_request" newTableName="imp_stock_request"/>
     </changeSet>
 </databaseChangeLog>

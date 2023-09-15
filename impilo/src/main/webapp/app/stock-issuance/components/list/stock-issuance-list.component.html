@@ -84,6 +84,21 @@
                                                 mat-cell>{{ row[column.property] | dateTimeToFormat:'dd LLL yyyy' }}</td>
                                         </ng-container>
                                     </ng-container>
+                                    <!-- Bool Columns -->
+                                    <ng-container *ngFor="let column of columns; trackBy: trackByFn">
+                                        <ng-container *ngIf="column.type === 'bool'"
+                                                      [matColumnDef]="column.property">
+                                            <th *matHeaderCellDef class="uppercase" mat-header-cell>
+                                                {{ column.label | transloco }}</th>
+                                            <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+                                                <mat-icon svgIcon="heroicons_outline:x-circle"
+                                                          *ngIf="!row[column.property]"
+                                                          color="accent"></mat-icon>
+                                                <mat-icon svgIcon="heroicons_outline:check-circle"
+                                                          *ngIf="row[column.property]" color="primary"></mat-icon>
+                                            </td>
+                                        </ng-container>
+                                    </ng-container>
                                     <!-- Action Column -->
                                     <ng-container matColumnDef="actions">
                                         <th *matHeaderCellDef mat-header-cell mat-sort-header></th>

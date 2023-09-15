@@ -26,6 +26,7 @@
             {
                 "key": "EHR_SERVER.PASSWORD",
                 "value": "@Password123!",
+                "masked": true,
                 "type": "string"
             },
             {
@@ -42,7 +43,8 @@
             {
                 "key": "CENTRAL_SERVER.PASSWORD",
                 "value": "@Password123!",
-                "type": "string"
+                "type": "string",
+                "masked": true
             }
         ]
     }

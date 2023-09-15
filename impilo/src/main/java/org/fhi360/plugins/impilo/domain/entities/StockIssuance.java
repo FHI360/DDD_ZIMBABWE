@@ -6,18 +6,22 @@ import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * The StockIssuance class represents the issuance of a stock item, including details such as the stock item, quantity,
+ * date, acknowledgement status, batch issuance ID, reference, synchronization status, site, and request.
+ */
 @Entity
 @Getter
 @Setter
-@ToString
+@Table(name = "imp_stock_issuance")
 public class StockIssuance {
     @Id
     @UUIDV7
@@ -99,6 +103,10 @@ public class StockIssuance {
         LocalDate date,
         Boolean acknowledged,
         Stock.View stock,
+        @Mapping("request.reference")
+        UUID requestReference,
+        UUID reference,
+        String batchIssuanceId,
         Organisation.ShortView site) {
     }
 }

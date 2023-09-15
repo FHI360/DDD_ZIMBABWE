@@ -4,6 +4,10 @@ import com.blazebit.persistence.SubqueryInitiator;
 import com.blazebit.persistence.view.SubqueryProvider;
 import org.fhi360.plugins.impilo.domain.entities.Devolve;
 
+/**
+ * The PatientSiteCodeSubqueryProvider class provides a subquery that retrieves the latest devolve organisation ID for a given
+ * patient ID.
+ */
 public class PatientSiteCodeSubqueryProvider implements SubqueryProvider {
     @Override
     public <T> T createSubquery(SubqueryInitiator<T> subqueryBuilder) {

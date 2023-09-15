@@ -4,6 +4,9 @@ import com.blazebit.persistence.SubqueryInitiator;
 import com.blazebit.persistence.view.SubqueryProvider;
 import org.fhi360.plugins.impilo.domain.entities.ClinicData;
 
+/**
+ * The LastClinicDateSubqueryProvider class provides a subquery that retrieves the last clinic date for a given patient.
+ */
 public class LastClinicDateSubqueryProvider implements SubqueryProvider {
     @Override
     public <T> T createSubquery(SubqueryInitiator<T> subqueryBuilder) {

@@ -1,3 +1,7 @@
+/**
+ * The `CentralServerService` class is a service that handles saving and retrieving data from a central server in a
+ * Impilo gateway application.
+ */
 package org.fhi360.plugins.impilo.services;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
@@ -14,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fhi360.plugins.impilo.domain.entities.*;
 import org.fhi360.plugins.impilo.domain.repositories.*;
-import org.fhi360.plugins.impilo.services.model.FacilityData;
-import org.fhi360.plugins.impilo.services.model.ServerData;
+import org.fhi360.plugins.impilo.services.models.FacilityData;
+import org.fhi360.plugins.impilo.services.models.ServerData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -44,6 +48,15 @@ public class CentralServerService {
     private final StockRequestRepository stockRequestRepository;
     private final Map<UUID, FacilityData> acknowledgment = new HashMap<>();
 
+    /**
+     * The `saveData` function saves various data objects to their respective repositories, including patients, devolves,
+     * stocks, stock requests, and stock issuances.
+     *
+     * @param data The `data` parameter is an object of type `ServerData`. It contains various lists of objects such as
+     * facilities, outlets, patients, devolves, stocks, stock requests, and stock issuance. The method performs various
+     * operations on these objects, such as saving or updating them in the corresponding repositories.
+     * @return The method is returning a boolean value of `true`.
+     */
     @Transactional
     public boolean saveData(ServerData data) {
         data.getFacilities().forEach(this::saveOrUpdateOrganisation);
@@ -143,8 +156,17 @@ public class CentralServerService {
         return true;
     }
 
+    /**
+     * The function retrieves facility data based on the facility ID and a list of outlet IDs, and returns the data in a
+     * FacilityData object.
+     *
+     * @param facilityId The facilityId parameter is a UUID (Universally Unique Identifier) that represents the ID of a
+     * facility.
+     * @param outletIds The "outletIds" parameter is a list of UUIDs representing the IDs of outletIds associated with the facility.
+     * @return The method is returning an object of type FacilityData.
+     */
     @Transactional
-    public FacilityData retrieveFacilityData(UUID facilityId, List<UUID> sites) {
+    public FacilityData retrieveFacilityData(UUID facilityId, List<UUID> outletIds) {
         facilityId = mappingRepository.findByRemote(facilityId).map(IdMappings::getLocal).orElse(facilityId);
 
         FacilityData facilityData = new FacilityData();
@@ -200,15 +222,15 @@ public class CentralServerService {
             .toList();
         facilityData.setClinics(clinics);
 
-        if (sites != null && !sites.isEmpty()) {
-            var outletIds = sites.stream()
+        if (outletIds != null && !outletIds.isEmpty()) {
+            var _outletIds = outletIds.stream()
                 .flatMap(id -> mappingRepository.findByRemote(id).stream())
                 .map(IdMappings::getLocal)
                 .toList();
 
             var settings4 = EntityViewSetting.create(StockRequest.UpdateView.class);
             var cb4 = cbf.create(em, StockRequest.class)
-                .where("site.id").in(outletIds)
+                .where("site.id").in(_outletIds)
                 .where("synced").eq(false);
             List<StockRequest.UpdateView> requests = evm.applySetting(settings4, cb4).getResultList().stream()
                 .map(d -> {
@@ -230,6 +252,13 @@ public class CentralServerService {
         return facilityData;
     }
 
+    /**
+     * The `acknowledge` function updates the `synced` flag for various objects and removes the reference from the
+     * acknowledgment map.
+     *
+     * @param reference The "reference" parameter is a UUID (Universally Unique Identifier) that is used to identify a
+     * specific acknowledgment.
+     */
     @Transactional
     public void acknowledge(UUID reference) {
         var data = acknowledgment.get(reference);

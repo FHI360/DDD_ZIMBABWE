@@ -76,6 +76,13 @@ export class StockIssuanceListComponent implements OnInit, OnDestroy {
             visible: true,
             cssClasses: ['font-medium']
         },
+        {
+            label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.ACKNOWLEDGED',
+            property: 'acknowledged',
+            type: 'bool',
+            visible: true,
+            cssClasses: ['font-medium']
+        },
         {label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.ACTIONS', property: 'actions', type: 'button', visible: false}
     ];
 

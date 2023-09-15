@@ -9,6 +9,7 @@ import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +17,14 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * The Devolve class represents a devolve entity with various attributes such as id, date, reasonDiscontinued, synced,
+ * reference, organisation, and patient.
+ */
 @Entity
 @Getter
 @Setter
+@Table(name = "imp_devolve")
 public class Devolve {
     @Id
     @UUIDV7

@@ -9,7 +9,7 @@
     </parent>
     <groupId>org.fhi360.plugins</groupId>
     <artifactId>impilo</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.0</version>
     <name>Impilo Gateway Plugin</name>
     <properties>
         <node.version>v16.17.0</node.version>
@@ -141,7 +141,7 @@
         <dependency>
             <groupId>io.github.jbella.snl</groupId>
             <artifactId>core-api</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.mattae.snl.plugins</groupId>
@@ -151,6 +151,11 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.7.1</version>
         </dependency>
         <dependency>
             <groupId>com.blazebit</groupId>
@@ -192,6 +197,11 @@
             <groupId>com.blazebit</groupId>
             <artifactId>blaze-persistence-integration-spring-data-webmvc</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.javers</groupId>
+            <artifactId>javers-spring-boot-starter-sql</artifactId>
+            <version>7.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -282,6 +292,12 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.opencsv</pattern>
+                                    <shadedPattern>imp.com.opencsv</shadedPattern>
+                                </relocation>
+                            </relocations>
                             <artifactSet>
                                 <includes>
                                     <!-- Random Data generation; remove for production-->
@@ -289,7 +305,26 @@
                                     <include>com.github.javafaker:javafaker</include>
                                     <include>com.github.mifmif:generex</include>
                                     <include>dk.brics.automaton:automaton</include>
+                                    <!-- OpenCSV -->
+                                    <include>com.opencsv:opencsv</include>
+                                    <include>org.apache.commons:commons-text</include>
+                                    <include>commons-beanutils:commons-beanutils</include>
+                                    <include>org.apache.commons:commons-collections4</include>
+                                    <include>commons-logging:commons-logging</include>
+                                    <include>commons-collections:commons-collections:</include>
+                                    <!-- End OpenCSV -->
                                     <!--End-->
+                                    <!-- Javers dependencies -->
+                                    <include>org.javers:javers-spring-boot-starter-sql</include>
+                                    <include>org.javers:javers-spring-jpa</include>
+                                    <include>org.javers:javers-spring</include>
+                                    <include>org.javers:javers-core</include>
+                                    <include>org.javers:javers-persistence-sql</include>
+                                    <include>com.google.code.gson:gson</include>
+                                    <include>org.picocontainer:picocontainer</include>
+                                    <include>org.polyjdbc:polyjdbc</include>
+                                    <include>com.google.guava:guava</include>
+                                    <!-- End -->
                                     <!-- Aspose dependencies -->
                                     <include>com.aspose:aspose-cells</include>
                                     <!-- End -->

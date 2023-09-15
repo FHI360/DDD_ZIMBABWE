@@ -1,0 +1,13 @@
+spring:
+    datasource:
+        username: snl
+        password: snl
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://127.0.0.1:5432/impilo?stringtype=unspecified&?assumeMinServerVersion=9.4
+        hikari:
+            maximum-pool-size: 20
+            auto-commit: false
+            max-lifetime: 80000
+            idle-timeout: 300000
+            leak-detection-threshold: 30000
+        type: com.zaxxer.hikari.HikariDataSource

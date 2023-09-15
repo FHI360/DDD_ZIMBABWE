@@ -8,5 +8,10 @@ spring:
     show-sql: true
     properties:
       hibernate.format_sql: true
+javers:
+  sqlGlobalIdTableName: 'imp_jv_global_id'
+  sqlCommitTableName: 'imp_jv_commit'
+  sqlSnapshotTableName: 'imp_jv_snapshot'
+  sqlCommitPropertyTableName: 'imp_jv_commit_property'
 
 
