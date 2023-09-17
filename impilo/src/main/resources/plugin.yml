@@ -79,5 +79,9 @@ webRemotes:
         title: IMPILO.MENU.SYNC
         authorities:
           - Facility tasks
-permissions:
-  - name: Facility tasks
+roles:
+  - name: Facility admininstrator
+    description: IMPILO.ROLES.FACILITY_ADMIN
+    authority: ROLE_FACILITY_ADMIN
+    permissions:
+      - name: Facility tasks

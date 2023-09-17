@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface StockRepository extends JpaRepository<Stock, UUID> {
 
     Optional<Stock> findByReference(UUID reference);
+
+    Optional<Stock> findByBatchIssuanceId(String batchIssuanceId);
 }

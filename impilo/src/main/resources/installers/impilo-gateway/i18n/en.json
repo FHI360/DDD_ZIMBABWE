@@ -1,5 +1,8 @@
 {
     "IMPILO": {
+        "ROLES": {
+            "FACILITY_ADMIN": "Perform facility-related tasks"
+        },
         "MENU": {
             "PATIENTS": "Patients",
             "STOCKS": "Stocks",
@@ -164,6 +167,19 @@
                 "SUCCESS": "Auto-sync successfully scheduled",
                 "SCHEDULE": "Schedule"
             }
+        },
+        "CONFIGURATION": {
+            "SYNCHRONIZATION": "Impilo Gateway synchronization configuration"
         }
+    },
+    "EHR_SERVER": {
+        "PASSWORD": "E.HR Server password",
+        "USERNAME": "E.HR Server username",
+        "URL": "E.HR Server URL"
+    },
+    "CENTRAL_SERVER": {
+        "PASSWORD": "Central Server password",
+        "USERNAME": "Central Server username",
+        "URL": "Central Server URL"
     }
 }

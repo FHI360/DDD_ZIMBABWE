@@ -130,10 +130,10 @@ public class EHRService {
             //batchIssueId
             Map<String, Object> dispenseDto = new HashMap<>();
             dispenseDto.put("dateCreated", refill.getDate());
-            dispenseDto.put("batchIssueId", "");
             dispenseDto.put("facilityId", refill.getPatient().getFacilityId());
             dispenseDto.put("personId", refill.getPatient().getPersonId());
             dispenseDto.put("quantity", refill.getQtyDispensed() * 30);
+            dispenseDto.put("batchIssueId", refill.getBatchIssuanceId());
             prescriptionRepository.findLastByPatient(refill.getPatient()).ifPresent(prescription -> {
                 dispenseDto.put("frequencyId", prescription.getFrequencyId());
                 dispenseDto.put("medicineId", prescription.getMedicineId());

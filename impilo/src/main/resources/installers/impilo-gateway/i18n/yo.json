@@ -36,7 +36,8 @@
         "ISSUED": "Qty ti jade",
         "BALANCE": "Iwontunwonsi",
         "BATCH_NO": "Ipele No",
-        "EXPIRATION_DATE": "Ojo ipari"
+        "EXPIRATION_DATE": "Ojo ipari",
+        "BATCH_ISSUANCE_ID": "Ipele Ipinfunni ID"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Ojo ipari",
@@ -52,7 +53,8 @@
         "BATCH_NO": "Ipele No",
         "EXPIRATION_DATE_REQUIRED": "Ọjọ ipari ni a nilo",
         "MANUFACTURE_DATE_REQUIRED": "Ọjọ iṣelọpọ ti nilo",
-        "EDIT": "Ṣatunkọ"
+        "EDIT": "Ṣatunkọ",
+        "BATCH_ISSUANCE_ID": "Ipele Ipinfunni ID"
       }
     },
     "STOCK_ISSUANCE": {
@@ -67,7 +69,8 @@
         "REGIMEN": "Oògùn ARV",
         "ISSUED": "Igo ti oniṣowo",
         "BATCH_NO": "Ipele No",
-        "EXPIRATION_DATE": "Ojo ipari"
+        "EXPIRATION_DATE": "Ojo ipari",
+        "ACKNOWLEDGED": "Ti gbawọ"
       },
       "DETAIL_PAGE": {
         "BARCODE": "kooduopo",
@@ -115,8 +118,9 @@
         "SITES": "Awọn aaye OFCAD",
         "ALL": "Gbogbo OFCAD Ojula",
         "ARV_DRUG": "Oògùn ARV",
-        "BOTTLES": "Awọn igo",
-        "ISSUE": "Ọja iṣura"
+        "BOTTLES": "Awọn igo ti a beere",
+        "ISSUE": "Ọja iṣura",
+        "FULFILLED": "Ti oniṣowo igo"
       }
     },
     "REPORT": {
@@ -167,6 +171,22 @@
       "REFILL_DURATION": "Atunkun iye akoko",
       "REFILL_DAYS": "{{days}} Ọjọ",
       "DEVOLVE": "Devolve alaisan"
+    },
+    "ROLES": {
+      "FACILITY_ADMIN": "Ṣe awọn iṣẹ ṣiṣe ti o jọmọ ohun elo"
+    },
+    "CONFIGURATION": {
+      "SYNCHRONIZATION": "Impilo Gateway iṣeto ni amuṣiṣẹpọ"
     }
+  },
+  "EHR_SERVER": {
+    "PASSWORD": "E.HR Server ọrọigbaniwọle",
+    "USERNAME": "E.HR Server orukọ olumulo",
+    "URL": "URL olupin E.HR"
+  },
+  "CENTRAL_SERVER": {
+    "PASSWORD": "Central Server ọrọigbaniwọle",
+    "USERNAME": "Central Server orukọ olumulo",
+    "URL": "Central Server URL"
   }
 }

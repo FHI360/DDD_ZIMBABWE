@@ -36,7 +36,8 @@
         "ISSUED": "Cantidad emitida",
         "BALANCE": "Balance",
         "BATCH_NO": "Lote N º",
-        "EXPIRATION_DATE": "Fecha de caducidad"
+        "EXPIRATION_DATE": "Fecha de caducidad",
+        "BATCH_ISSUANCE_ID": "ID de emisión de lote"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Fecha de caducidad",
@@ -52,7 +53,8 @@
         "BATCH_NO": "Lote N º",
         "EXPIRATION_DATE_REQUIRED": "Se requiere fecha de caducidad",
         "MANUFACTURE_DATE_REQUIRED": "Se requiere la fecha de fabricación",
-        "EDIT": "Editar"
+        "EDIT": "Editar",
+        "BATCH_ISSUANCE_ID": "ID de emisión de lote"
       }
     },
     "STOCK_ISSUANCE": {
@@ -67,7 +69,8 @@
         "REGIMEN": "Medicamento ARV",
         "ISSUED": "Botellas emitidas",
         "BATCH_NO": "Lote N º",
-        "EXPIRATION_DATE": "Fecha de caducidad"
+        "EXPIRATION_DATE": "Fecha de caducidad",
+        "ACKNOWLEDGED": "Admitido"
       },
       "DETAIL_PAGE": {
         "BARCODE": "Código de barras",
@@ -115,8 +118,9 @@
         "SITES": "Sitios OFCAD",
         "ALL": "Todos los sitios OFCAD",
         "ARV_DRUG": "Medicamento ARV",
-        "BOTTLES": "Botellas",
-        "ISSUE": "Emitir acciones"
+        "BOTTLES": "Botellas solicitadas",
+        "ISSUE": "Emitir acciones",
+        "FULFILLED": "botellas emitidas"
       }
     },
     "REPORT": {
@@ -167,6 +171,22 @@
       "REFILL_DURATION": "Duración de la recarga",
       "REFILL_DAYS": "{{days}} días",
       "DEVOLVE": "Devolver paciente"
+    },
+    "ROLES": {
+      "FACILITY_ADMIN": "Realizar tareas relacionadas con las instalaciones."
+    },
+    "CONFIGURATION": {
+      "SYNCHRONIZATION": "Configuración de sincronización de Impilo Gateway"
     }
+  },
+  "EHR_SERVER": {
+    "PASSWORD": "Contraseña del servidor E.HR",
+    "USERNAME": "Nombre de usuario del servidor E.HR",
+    "URL": "URL del servidor E.HR"
+  },
+  "CENTRAL_SERVER": {
+    "PASSWORD": "Contraseña del servidor central",
+    "USERNAME": "Nombre de usuario del servidor central",
+    "URL": "URL del servidor central"
   }
 }

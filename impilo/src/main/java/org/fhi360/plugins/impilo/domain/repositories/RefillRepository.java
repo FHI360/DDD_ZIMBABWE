@@ -21,5 +21,9 @@ public interface RefillRepository extends JpaRepository<Refill, UUID> {
 
     @Modifying
     @Query("UPDATE Refill SET synced = true WHERE synced = false")
-    public void updateSyncStatus();
+    void updateSyncStatus();
+
+    @Modifying
+    @Query("update Refill set synced = true where id = ?1")
+    void updateSyncStatus(UUID id);
 }

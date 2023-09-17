@@ -36,7 +36,8 @@
         "ISSUED": "ewepụtara Qty",
         "BALANCE": "Nhazi",
         "BATCH_NO": "Ogbe Mba",
-        "EXPIRATION_DATE": "Ụbọchị mmebi"
+        "EXPIRATION_DATE": "Ụbọchị mmebi",
+        "BATCH_ISSUANCE_ID": "NJ mbipụta Batch"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Ụbọchị mmebi",
@@ -52,7 +53,8 @@
         "BATCH_NO": "Ogbe Mba",
         "EXPIRATION_DATE_REQUIRED": "Achọrọ ụbọchị nkwubi",
         "MANUFACTURE_DATE_REQUIRED": "Achọrọ ụbọchị nrụpụta",
-        "EDIT": "Dezie"
+        "EDIT": "Dezie",
+        "BATCH_ISSUANCE_ID": "NJ mbipụta Batch"
       }
     },
     "STOCK_ISSUANCE": {
@@ -67,7 +69,8 @@
         "REGIMEN": "Ọgwụ ARV",
         "ISSUED": "Enyere karama",
         "BATCH_NO": "Ogbe Mba",
-        "EXPIRATION_DATE": "Ụbọchị mmebi"
+        "EXPIRATION_DATE": "Ụbọchị mmebi",
+        "ACKNOWLEDGED": "Ekwetara"
       },
       "DETAIL_PAGE": {
         "BARCODE": "Barcode",
@@ -115,8 +118,9 @@
         "SITES": "saịtị OFCAD",
         "ALL": "Saịtị OFCAD niile",
         "ARV_DRUG": "Ọgwụ ARV",
-        "BOTTLES": "Klas",
-        "ISSUE": "Wepụta ngwaahịa"
+        "BOTTLES": "Arịrịọ rịọrọ",
+        "ISSUE": "Wepụta ngwaahịa",
+        "FULFILLED": "Enyere karama"
       }
     },
     "REPORT": {
@@ -167,6 +171,22 @@
       "REFILL_DURATION": "Ogologo oge njuputa",
       "REFILL_DAYS": "{{days}} Ụbọchị",
       "DEVOLVE": "Wepụta onye ọrịa"
+    },
+    "ROLES": {
+      "FACILITY_ADMIN": "Mee ọrụ ndị metụtara akụrụngwa"
+    },
+    "CONFIGURATION": {
+      "SYNCHRONIZATION": "Nhazi mmekọrịta ọnụ ụzọ Impilo"
     }
+  },
+  "EHR_SERVER": {
+    "PASSWORD": "E.HR Server paswọọdụ",
+    "USERNAME": "Aha njirimara E.HR",
+    "URL": "URL nke sava E.HR"
+  },
+  "CENTRAL_SERVER": {
+    "PASSWORD": "Central Server paswọọdụ",
+    "USERNAME": "Central Server aha njirimara",
+    "URL": "URL nke sava etiti"
   }
 }

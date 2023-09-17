@@ -83,12 +83,10 @@ public class StockRequestResource {
      *
      * @param siteId The siteId parameter is of type UUID and represents the unique identifier of a site. It is used to
      * identify a specific site for stock fulfillment.
-     * @param uniqueId The uniqueId parameter is a String that represents a unique identifier for a specific item or
-     * resource.
      * @return The method is returning a List of StockFulfill objects.
      */
-    @GetMapping("/fulfillment/site/{siteId}/unique-id/{uniqueId}")
-    public List<StockFulfill> fulfill(@PathVariable UUID siteId, @PathVariable String uniqueId) {
+    @GetMapping("/fulfillment/site/{siteId}")
+    public List<StockFulfill> fulfill(@PathVariable UUID siteId) {
         return requestService.fulfill(siteId);
     }
 }

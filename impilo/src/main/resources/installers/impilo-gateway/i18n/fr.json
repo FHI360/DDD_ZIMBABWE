@@ -36,7 +36,8 @@
         "ISSUED": "Qté émise",
         "BALANCE": "Équilibre",
         "BATCH_NO": "N ° de lot",
-        "EXPIRATION_DATE": "Date d'expiration"
+        "EXPIRATION_DATE": "Date d'expiration",
+        "BATCH_ISSUANCE_ID": "ID d'émission de lots"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Date d'expiration",
@@ -52,7 +53,8 @@
         "BATCH_NO": "N ° de lot",
         "EXPIRATION_DATE_REQUIRED": "La date d'expiration est requise",
         "MANUFACTURE_DATE_REQUIRED": "La date de fabrication est requise",
-        "EDIT": "Modifier"
+        "EDIT": "Modifier",
+        "BATCH_ISSUANCE_ID": "ID d'émission de lots"
       }
     },
     "STOCK_ISSUANCE": {
@@ -67,7 +69,8 @@
         "REGIMEN": "Médicament ARV",
         "ISSUED": "Bouteilles émises",
         "BATCH_NO": "N ° de lot",
-        "EXPIRATION_DATE": "Date d'expiration"
+        "EXPIRATION_DATE": "Date d'expiration",
+        "ACKNOWLEDGED": "Reconnu"
       },
       "DETAIL_PAGE": {
         "BARCODE": "code à barre",
@@ -115,8 +118,9 @@
         "SITES": "Sites OFCAD",
         "ALL": "Tous les sites OFCAD",
         "ARV_DRUG": "Médicament ARV",
-        "BOTTLES": "Bouteilles",
-        "ISSUE": "Action d'émission"
+        "BOTTLES": "Bouteilles demandées",
+        "ISSUE": "Action d'émission",
+        "FULFILLED": "Bouteilles émises"
       }
     },
     "REPORT": {
@@ -167,6 +171,22 @@
       "REFILL_DURATION": "Durée de recharge",
       "REFILL_DAYS": "{{days}} jours",
       "DEVOLVE": "Dévolution du patient"
+    },
+    "ROLES": {
+      "FACILITY_ADMIN": "Effectuer des tâches liées aux installations"
+    },
+    "CONFIGURATION": {
+      "SYNCHRONIZATION": "Configuration de la synchronisation de la passerelle Impilo"
     }
+  },
+  "EHR_SERVER": {
+    "PASSWORD": "Mot de passe du serveur E.HR",
+    "USERNAME": "Nom d'utilisateur du serveur E.HR",
+    "URL": "URL du serveur E.HR"
+  },
+  "CENTRAL_SERVER": {
+    "PASSWORD": "Mot de passe du serveur central",
+    "USERNAME": "Nom d'utilisateur du serveur central",
+    "URL": "URL du serveur central"
   }
 }

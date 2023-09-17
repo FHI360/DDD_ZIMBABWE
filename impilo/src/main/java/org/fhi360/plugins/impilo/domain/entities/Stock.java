@@ -1,13 +1,11 @@
 package org.fhi360.plugins.impilo.domain.entities;
 
 import com.blazebit.persistence.view.*;
+import com.blazebit.persistence.view.PrePersist;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,7 +48,7 @@ public class Stock {
     @NotNull
     private UUID reference;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Organisation facility;
 
     @EntityView(Stock.class)

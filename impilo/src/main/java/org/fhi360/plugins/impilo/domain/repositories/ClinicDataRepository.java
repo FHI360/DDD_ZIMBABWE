@@ -19,4 +19,8 @@ public interface ClinicDataRepository extends JpaRepository<ClinicData, UUID> {
     void updateSyncStatus();
 
     Optional<ClinicData> findByReference(UUID reference);
+
+    @Modifying
+    @Query("update Refill set synced = true where id = ?1")
+    void updateSyncStatus(UUID id);
 }

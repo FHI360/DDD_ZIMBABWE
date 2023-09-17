@@ -74,6 +74,10 @@ public class StockIssuance {
 
         void setSynced(Boolean synced);
 
+        String getBatchIssuanceId();
+
+        void  setBatchIssuanceId(String batchIssuanceId);
+
         @NotNull
         Stock.IdView getStock();
 

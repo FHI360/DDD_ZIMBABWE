@@ -36,7 +36,8 @@
         "ISSUED": "Kiasi kimetolewa",
         "BALANCE": "Mizani",
         "BATCH_NO": "Kundi Na",
-        "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake"
+        "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
+        "BATCH_ISSUANCE_ID": "Kitambulisho cha Utoaji wa Bechi"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
@@ -52,7 +53,8 @@
         "BATCH_NO": "Kundi Na",
         "EXPIRATION_DATE_REQUIRED": "Tarehe ya mwisho wa matumizi inahitajika",
         "MANUFACTURE_DATE_REQUIRED": "Tarehe ya utengenezaji inahitajika",
-        "EDIT": "Hariri"
+        "EDIT": "Hariri",
+        "BATCH_ISSUANCE_ID": "Kitambulisho cha Utoaji wa Bechi"
       }
     },
     "STOCK_ISSUANCE": {
@@ -67,7 +69,8 @@
         "REGIMEN": "Dawa ya ARV",
         "ISSUED": "Chupa zilizotolewa",
         "BATCH_NO": "Kundi Na",
-        "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake"
+        "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
+        "ACKNOWLEDGED": "Imekubaliwa"
       },
       "DETAIL_PAGE": {
         "BARCODE": "Msimbo pau",
@@ -115,8 +118,9 @@
         "SITES": "Tovuti za OFCAD",
         "ALL": "Tovuti zote za OFCAD",
         "ARV_DRUG": "Dawa ya ARV",
-        "BOTTLES": "Chupa",
-        "ISSUE": "Suala hisa"
+        "BOTTLES": "Chupa zimeombwa",
+        "ISSUE": "Suala hisa",
+        "FULFILLED": "Chupa zilizotolewa"
       }
     },
     "REPORT": {
@@ -167,6 +171,22 @@
       "REFILL_DURATION": "Muda wa kujaza tena",
       "REFILL_DAYS": "Siku {{days}}",
       "DEVOLVE": "Toa mgonjwa"
+    },
+    "ROLES": {
+      "FACILITY_ADMIN": "Fanya kazi zinazohusiana na kituo"
+    },
+    "CONFIGURATION": {
+      "SYNCHRONIZATION": "Usanidi wa ulandanishi wa Impilo Gateway"
     }
+  },
+  "EHR_SERVER": {
+    "PASSWORD": "Nenosiri la Seva ya E.HR",
+    "USERNAME": "Jina la mtumiaji la Seva ya E.HR",
+    "URL": "URL ya Seva ya E.HR"
+  },
+  "CENTRAL_SERVER": {
+    "PASSWORD": "Nenosiri la Seva ya Kati",
+    "USERNAME": "Jina la mtumiaji la Seva ya Kati",
+    "URL": "URL ya Seva ya Kati"
   }
 }

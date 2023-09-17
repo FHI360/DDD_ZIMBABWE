@@ -36,7 +36,8 @@
         "ISSUED": "Qty ya bayar",
         "BALANCE": "Ma'auni",
         "BATCH_NO": "Batch No",
-        "EXPIRATION_DATE": "Ranar karewa"
+        "EXPIRATION_DATE": "Ranar karewa",
+        "BATCH_ISSUANCE_ID": "Batch Issuance ID"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Ranar karewa",
@@ -52,7 +53,8 @@
         "BATCH_NO": "Batch No",
         "EXPIRATION_DATE_REQUIRED": "Ana buƙatar ranar karewa",
         "MANUFACTURE_DATE_REQUIRED": "Ana buƙatar ranar samarwa",
-        "EDIT": "Gyara"
+        "EDIT": "Gyara",
+        "BATCH_ISSUANCE_ID": "Batch Issuance ID"
       }
     },
     "STOCK_ISSUANCE": {
@@ -67,7 +69,8 @@
         "REGIMEN": "Magungunan ARV",
         "ISSUED": "An fitar da kwalabe",
         "BATCH_NO": "Batch No",
-        "EXPIRATION_DATE": "Ranar karewa"
+        "EXPIRATION_DATE": "Ranar karewa",
+        "ACKNOWLEDGED": "An yarda"
       },
       "DETAIL_PAGE": {
         "BARCODE": "Barcode",
@@ -115,8 +118,9 @@
         "SITES": "Shafukan OFCAD",
         "ALL": "Duk Shafukan OFCAD",
         "ARV_DRUG": "Magungunan ARV",
-        "BOTTLES": "kwalabe",
-        "ISSUE": "Bayar da jari"
+        "BOTTLES": "An nemi kwalabe",
+        "ISSUE": "Bayar da jari",
+        "FULFILLED": "kwalaben da aka bayar"
       }
     },
     "REPORT": {
@@ -167,6 +171,22 @@
       "REFILL_DURATION": "Tsawon cikawa",
       "REFILL_DAYS": "{{days}} Kwanaki",
       "DEVOLVE": "Bayar da haƙuri"
+    },
+    "ROLES": {
+      "FACILITY_ADMIN": "Yi ayyuka masu alaƙa da kayan aiki"
+    },
+    "CONFIGURATION": {
+      "SYNCHRONIZATION": "Tsarin aiki tare Ƙofar Impilo"
     }
+  },
+  "EHR_SERVER": {
+    "PASSWORD": "E.HR kalmar sirri",
+    "USERNAME": "Sunan mai amfani na E.HR",
+    "URL": "E.HR uwar garken URL"
+  },
+  "CENTRAL_SERVER": {
+    "PASSWORD": "Kalmar sirri ta uwar garken",
+    "USERNAME": "Sunan mai amfani na tsakiya",
+    "URL": "Babban uwar garken URL"
   }
 }

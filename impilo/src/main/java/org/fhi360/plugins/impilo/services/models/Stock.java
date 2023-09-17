@@ -22,5 +22,5 @@ public class Stock {
 
     private LocalDate manufactureDate;
 
-    private String batchIssuanceId;
+    private String batchIssueId;
 }

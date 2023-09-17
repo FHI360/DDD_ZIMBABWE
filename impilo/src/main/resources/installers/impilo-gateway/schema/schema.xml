@@ -4,8 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet id="2023072304-01-1" author="mattae">
-        <preConditions>
+    <changeSet id="2023072304-01-2" author="mattae">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="patient"/>
             </not>
@@ -66,8 +66,8 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-02-1" author="mattae">
-        <preConditions>
+    <changeSet id="2023072304-02-2" author="mattae">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="devolve"/>
             </not>
@@ -103,8 +103,8 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-03" author="mattae">
-        <preConditions>
+    <changeSet id="2023072304-03-1" author="mattae">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="clinic_data"/>
             </not>
@@ -169,8 +169,8 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-04" author="mattae">
-        <preConditions>
+    <changeSet id="2023072304-04-1" author="mattae">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="refill"/>
             </not>
@@ -223,8 +223,8 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="2023072304-05" author="mattae">
-        <preConditions>
+    <changeSet id="2023072304-05-1" author="mattae">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="stock"/>
             </not>
@@ -301,8 +301,8 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="2023072304-10" author="mattae">
-        <preConditions>
+    <changeSet id="2023072304-10-1" author="mattae">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="stock_request"/>
             </not>
@@ -423,5 +423,9 @@
         <renameTable oldTableName="stock" newTableName="imp_stock"/>
         <renameTable oldTableName="stock_issuance" newTableName="imp_stock_issuance"/>
         <renameTable oldTableName="stock_request" newTableName="imp_stock_request"/>
+    </changeSet>
+
+    <changeSet id="202306062304-07" author="mattae">
+        <dropNotNullConstraint tableName="imp_stock" columnName="manufacture_date"/>
     </changeSet>
 </databaseChangeLog>
