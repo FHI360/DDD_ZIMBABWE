@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/clinic_data.dart';
+import 'package:impilo/backend/floor/entities/inventory.dart';
 import 'package:impilo/backend/floor/entities/refill.dart';
 import 'package:impilo/flutter_flow/internationalization.dart';
 import 'package:impilo/main.dart';
@@ -196,7 +197,8 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                 ),
                                                 child: InkWell(
                                                   onTap: () async {
-                                                    DateTime now = DateTime.now();
+                                                    DateTime now =
+                                                        DateTime.now();
                                                     DateTime min = DateTime(
                                                         now.year - 1,
                                                         now.month,
@@ -206,8 +208,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                       context: context,
                                                       initialDate:
                                                           getCurrentTimestamp,
-                                                      firstDate:
-                                                          min,
+                                                      firstDate: min,
                                                       lastDate:
                                                           getCurrentTimestamp,
                                                     );
@@ -267,7 +268,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                       dateTimeFormat(
                                                                         'yMMMd',
                                                                         _model
-                                                                            .datePicked,
+                                                                            .datePicked1,
                                                                         locale:
                                                                             FFLocalizations.of(context).languageCode,
                                                                       ),
@@ -2979,6 +2980,46 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                       .clinicDao
                                                                       .insertRecord(
                                                                           clinic));
+                                                              var quantity =
+                                                                  double.tryParse(_model
+                                                                          .qtyDispensedController
+                                                                          .text) ??
+                                                                      0;
+                                                              Inventory?
+                                                                  inventory;
+                                                              while (quantity >
+                                                                  0) {
+                                                                inventory = await getNonZeroInventory(_model
+                                                                        .patient
+                                                                        ?.assignedRegimen ??
+                                                                    '');
+                                                                if (inventory !=
+                                                                    null) {
+                                                                  if (inventory
+                                                                          .quantity >=
+                                                                      quantity) {
+                                                                    var balance =
+                                                                        inventory.quantity -
+                                                                            quantity;
+                                                                    database.then((value) => value
+                                                                        .inventoryDao
+                                                                        .updateQuantity(
+                                                                            inventory!.id!,
+                                                                            balance.toInt()));
+                                                                    quantity =
+                                                                        0;
+                                                                  } else {
+                                                                    database.then((value) => value
+                                                                        .inventoryDao
+                                                                        .updateQuantity(
+                                                                            inventory!.id!,
+                                                                            0));
+                                                                    quantity -=
+                                                                        inventory
+                                                                            .quantity;
+                                                                  }
+                                                                }
+                                                              }
                                                               var refill = Refill(
                                                                   null,
                                                                   _model
@@ -3008,51 +3049,14 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                               .adverseIssuesValue),
                                                                   _model
                                                                       .barcode,
+                                                                  inventory!
+                                                                      .batchIssuanceId,
                                                                   false);
                                                               database.then(
                                                                   (value) => value
                                                                       .refillDao
                                                                       .insertRecord(
                                                                           refill));
-                                                              var quantity =
-                                                                  double.tryParse(_model
-                                                                          .qtyDispensedController
-                                                                          .text) ??
-                                                                      0;
-
-                                                              while (quantity >
-                                                                  0) {
-                                                                var inventory =
-                                                                    await getNonZeroInventory(
-                                                                        _model.patient?.assignedRegimen ??
-                                                                            '');
-                                                                if (inventory !=
-                                                                    null) {
-                                                                  if (inventory
-                                                                          .quantity >=
-                                                                      quantity) {
-                                                                    var balance =
-                                                                        inventory.quantity -
-                                                                            quantity;
-                                                                    database.then((value) => value
-                                                                        .inventoryDao
-                                                                        .updateQuantity(
-                                                                            inventory.id!,
-                                                                            balance.toInt()));
-                                                                    quantity =
-                                                                        0;
-                                                                  } else {
-                                                                    database.then((value) => value
-                                                                        .inventoryDao
-                                                                        .updateQuantity(
-                                                                            inventory.id!,
-                                                                            0));
-                                                                    quantity -=
-                                                                        inventory
-                                                                            .quantity;
-                                                                  }
-                                                                }
-                                                              }
                                                               context.pop();
                                                             },
                                                       text: 'Save',

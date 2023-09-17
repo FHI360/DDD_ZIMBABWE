@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/inventory_request.dart';
 import 'package:impilo/main.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -15,8 +14,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'inventory_request_model.dart';
 
 export 'inventory_request_model.dart';
-
-final log = Logger('ExampleLogger');
 
 class InventoryRequestWidget extends StatefulWidget {
   const InventoryRequestWidget({Key? key}) : super(key: key);
@@ -502,11 +499,10 @@ class _InventoryRequestWidgetState extends State<InventoryRequestWidget> {
                                                           .textController
                                                           .text) ??
                                                       0,
-                                                  false,
-                                                  false,
                                                   FFAppState().code,
                                                   getCurrentTimestamp,
-                                                  false);
+                                                  false,
+                                                  0);
                                               database.then((value) => value
                                                   .inventoryRequestDao
                                                   .insertRecord(_request));

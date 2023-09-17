@@ -4,11 +4,11 @@ import 'package:impilo/backend/floor/entities/inventory.dart';
 @DatabaseView('''select quantity, siteCode, regimen from Inventory''',
     viewName: 'InventoryQuantity')
 class InventoryQuantity {
+  final int quantity;
   final String siteCode;
   final String regimen;
-  final int quantity;
 
-  InventoryQuantity(this.siteCode, this.regimen, this.quantity);
+  InventoryQuantity(this.quantity, this.siteCode, this.regimen);
 }
 
 @DatabaseView(
@@ -68,6 +68,11 @@ abstract class InventoryDao {
   ''')
   Future<BarcodeQuantity?> barcodeQuantity(String siteCode, String regimen, String barcode);
 
+  @Query('''
+  SELECT SUM(quantity) FROM Inventory WHERE siteCode = :siteCode AND uniqueId = :uniqueId
+  ''')
+  Future<int?> issuedQuantity(String siteCode, String uniqueId);
+
   @Query(
       '''SELECT * FROM Inventory WHERE siteCode = :siteCode and regimen = :regimen 
           and quantity > 0 order by expiryDate limit 1''')
@@ -84,6 +89,15 @@ abstract class InventoryDao {
   @update
   Future<void> updateRecord(Inventory inventory);
 
-  @Query("delete from Inventory where id = :id")
-  Future<void> deleteById(int id);
+  @Query('UPDATE Inventory SET acknowledged = 1 WHERE reference = :reference')
+  Future<void> acknowledge(String reference);
+
+  @Query('SELECT COUNT(*) > 0 FROM Inventory WHERE synced = 0')
+  Future<bool?> hasUnSynced();
+
+  @Query('SELECT * FROM Inventory WHERE synced = 0')
+  Future<List<Inventory>> findUnSynced();
+
+  @Query("UPDATE Inventory SET synced = 1 WHERE acknowledged = 1")
+  Future<void> updateAllSynced();
 }

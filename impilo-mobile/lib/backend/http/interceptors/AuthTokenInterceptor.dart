@@ -49,64 +49,44 @@ class AuthTokenInterceptor extends Interceptor {
       return super.onError(err, handler);
     }
 
-    final _database = await database;
-
     try {
-      final response = await api.post(
-        '/api/refresh-token',
-        data: {
-          'refreshToken': refreshToken,
-        },
+      final headers = requestOptions.headers;
+
+      headers[skipHeader] = true;
+
+      final finalResponse = await api.request(
+        requestOptions.path,
+        cancelToken: requestOptions.cancelToken,
+        data: requestOptions.data,
+        onReceiveProgress: requestOptions.onReceiveProgress,
+        onSendProgress: requestOptions.onSendProgress,
+        queryParameters: requestOptions.queryParameters,
         options: Options(
-          headers: {
-            skipHeader: true,
-          },
+          method: requestOptions.method,
+          headers: headers,
         ),
       );
 
-
-      FFAppState().refreshToken = response.data['refreshToken'];
-      FFAppState().accessToken = response.data['accessToken'];
-
-      try {
-        final headers = requestOptions.headers;
-
-        headers[skipHeader] = true;
-
-        final finalResponse = await api.request(
-          requestOptions.path,
-          cancelToken: requestOptions.cancelToken,
-          data: requestOptions.data,
-          onReceiveProgress: requestOptions.onReceiveProgress,
-          onSendProgress: requestOptions.onSendProgress,
-          queryParameters: requestOptions.queryParameters,
-          options: Options(
-            method: requestOptions.method,
-            headers: headers,
-          ),
+      return handler.resolve(finalResponse);
+    } on DioError catch (e) {
+      return handler.next(e);
+    } catch (e) {
+      if (router.location != '/login') {
+        showToast(
+          'Session expired, signing out',
+          duration: Duration(seconds: 5),
+          position: ToastPosition.bottom,
+          backgroundColor: Colors.red,
+          radius: 3.0,
+          textStyle: TextStyle(fontSize: 15.0),
         );
 
-        return handler.resolve(finalResponse);
-      } on DioError catch (e) {
-        return handler.next(e);
-      } catch (e) {
-        return super.onError(err, handler);
+        FFAppState().refreshToken = '';
+        FFAppState().accessToken = '';
+        FFAppState().code = '';
+
+        router.pushNamed("login");
       }
-    } catch (e) {
-      showToast(
-        'Session expired, signing out',
-        duration: Duration(seconds: 5),
-        position: ToastPosition.bottom,
-        backgroundColor: Colors.red,
-        radius: 3.0,
-        textStyle: TextStyle(fontSize: 15.0),
-      );
-
-      FFAppState().refreshToken = '';
-      FFAppState().accessToken = '';
-      FFAppState().code = '';
-
-      router.pushNamed("loginPage");
       return super.onError(err, handler);
     }
   }

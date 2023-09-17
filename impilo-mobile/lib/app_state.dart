@@ -19,6 +19,7 @@ class FFAppState extends ChangeNotifier {
     _code = await secureStorage.getString('ff_code') ?? _code;
     _baseUrl = await secureStorage.getString('ff_baseUrl') ?? _baseUrl;
     _name = await secureStorage.getString('ff_name') ?? _name;
+    _outlet = await secureStorage.getBool('ff_outlet') ?? _outlet;
     _accessToken = await secureStorage.getString('ff_accessToken') ?? _accessToken;
     _refreshToken = await secureStorage.getString('ff_refreshToken') ?? _refreshToken;
     _regimens = await secureStorage.getStringList('ff_regimens') ?? _regimens;
@@ -47,6 +48,13 @@ class FFAppState extends ChangeNotifier {
   set baseUrl(String _value) {
     _baseUrl = _value;
     secureStorage.setString('ff_baseUrl', _value);
+  }
+
+  bool _outlet = false;
+  bool get outlet => _outlet;
+  set outlet(bool _value) {
+    _outlet = _value;
+    secureStorage.setBool('ff_outlet', _value);
   }
 
   String _accessToken = '';

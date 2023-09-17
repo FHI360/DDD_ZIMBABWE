@@ -8,14 +8,13 @@ class InventoryRequest {
   final String uniqueId;
   final String regimen;
   final int quantity;
-  final bool fulfilled;
-  final bool acknowledged;
+  int quantityFulfilled = 0;
   final String siteCode;
   final DateTime date;
   final bool synced;
 
-  InventoryRequest(this.id, this.uniqueId, this.regimen, this.quantity, this.fulfilled,
-      this.acknowledged, this.siteCode, this.date, this.synced);
+  InventoryRequest(this.id, this.uniqueId, this.regimen, this.quantity,
+      this.siteCode, this.date, this.synced, this.quantityFulfilled);
 
   Map<String, dynamic> toJson() {
     return {
@@ -26,7 +25,4 @@ class InventoryRequest {
       'uniqueId': uniqueId
     };
   }
-
-  /*@override
-  List<Object?> get props => [uniqueId];*/
 }

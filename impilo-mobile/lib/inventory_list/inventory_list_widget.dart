@@ -1,4 +1,5 @@
 import 'package:impilo/backend/floor/entities/inventory.dart';
+import 'package:impilo/flutter_flow/flutter_flow_widgets.dart';
 import 'package:impilo/main.dart';
 
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -277,6 +278,75 @@ class _InventoryListWidgetState extends State<InventoryListWidget> {
                                                   ),
                                                 ],
                                               ),
+                                              if (!listViewInventoryRow
+                                                  .acknowledged)
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(50, 0, 0, 0),
+                                                  child: FFButtonWidget(
+                                                    onPressed: listViewInventoryRow
+                                                                .acknowledged ==
+                                                            true
+                                                        ? null
+                                                        : () async {
+                                                            var _database =
+                                                                await database;
+                                                            _database
+                                                                .inventoryDao
+                                                                .acknowledge(
+                                                                    listViewInventoryRow
+                                                                        .reference);
+                                                            setState(() {
+                                                              _model.fullList =
+                                                                  true;
+                                                            });
+                                                          },
+                                                    text: 'Acknowledge',
+                                                    options: FFButtonOptions(
+                                                      width: 110,
+                                                      height: 30,
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0, 0, 0, 0),
+                                                      iconPadding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0, 0, 0, 0),
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryColor,
+                                                      textStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .subtitle2
+                                                              .override(
+                                                                fontFamily: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .subtitle2Family,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .subtitle2Family),
+                                                              ),
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Colors.transparent,
+                                                        width: 1,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
+                                                  ),
+                                                ),
                                             ],
                                           ),
                                         ),

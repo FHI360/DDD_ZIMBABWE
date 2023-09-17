@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/inventory.dart';
 import 'package:impilo/backend/floor/entities/inventory_request.dart';
 import 'package:impilo/backend/http/Inventory_service.dart';
 import 'package:impilo/main.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '/components/inventory_request_widget.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'inventory_request_list_model.dart';
 
 export 'inventory_request_list_model.dart';
@@ -49,6 +48,36 @@ class _InventoryRequestListWidgetState
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  synchronize() async {
+    var inventory = await InventoryService().fulfill(FFAppState().code);
+    var _database = await database;
+    if (inventory != null) {
+      for (var i = 0; i < inventory.length; i++) {
+        var curr = await _database.inventoryDao.findByUniqueIdAndRegimen(
+            inventory[i]['requestReference'], inventory[i]['regimen']);
+        var exists = curr.where((element) => element.reference ==  inventory[i]['reference']).isNotEmpty;
+        if (!exists) {
+          var _inventory = Inventory(
+              null,
+              inventory[i]['requestReference'],
+              inventory[i]['reference'],
+              inventory[i]['regimen'],
+              inventory[i]['bottles'],
+              false,
+              inventory[i]['batchNo'],
+              inventory[i]['barcode'],
+              FFAppState().code,
+              DateTime.parse(inventory[i]['expirationDate']),
+              inventory[i]['batchIssueId']);
+          await _database.inventoryDao.insertRecord(_inventory);
+          await _database.inventoryRequestDao
+              .fulfilled(inventory[i]['bottles'], inventory[i]['requestReference']);
+        }
+      }
+      setState(() {});
+    }
   }
 
   @override
@@ -157,6 +186,35 @@ class _InventoryRequestListWidgetState
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                InkWell(
+                  onTap: () async {},
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment:
+                    MainAxisAlignment.center,
+                    children: [
+                      FlutterFlowIconButton(
+                        borderColor: Colors.transparent,
+                        borderRadius: 30,
+                        borderWidth: 1,
+                        buttonSize: 60,
+                        icon: Icon(
+                          Icons.refresh_rounded,
+                          color:
+                          FlutterFlowTheme.of(context)
+                              .primaryText,
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          await synchronize();
+                          setState(() {
+                            _model.fullList = true;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
                 if (_model.fullList)
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
@@ -195,12 +253,11 @@ class _InventoryRequestListWidgetState
                                 width: double.infinity,
                                 height: 150,
                                 decoration: BoxDecoration(
-                                  color: !listViewInventoryRequestRow.fulfilled
-                                      ? Colors.amber
-                                      : !listViewInventoryRequestRow
-                                              .acknowledged
-                                          ? Colors.lightGreenAccent
-                                          : Colors.green,
+                                  color: listViewInventoryRequestRow.quantity ==
+                                          listViewInventoryRequestRow
+                                              .quantityFulfilled
+                                      ? Colors.green
+                                      : Colors.amber,
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 4,
@@ -269,8 +326,41 @@ class _InventoryRequestListWidgetState
                                                   ),
                                                 ],
                                               ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 0, 5, 0),
+                                                    child: Text(
+                                                      'Quantity fulfilled',
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyText1,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    formatNumber(
+                                                      listViewInventoryRequestRow
+                                                          .quantityFulfilled,
+                                                      formatType:
+                                                          FormatType.custom,
+                                                      format: '#,##0',
+                                                      locale: '',
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1,
+                                                  ),
+                                                ],
+                                              ),
                                               if (listViewInventoryRequestRow
-                                                  .fulfilled)
+                                                      .quantityFulfilled ==
+                                                  listViewInventoryRequestRow
+                                                      .quantity)
                                                 Padding(
                                                   padding: EdgeInsetsDirectional
                                                       .fromSTEB(0, 30, 0, 0),
@@ -296,157 +386,11 @@ class _InventoryRequestListWidgetState
                                                                     context)
                                                                 .bodyText1,
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(50, 0,
-                                                                    0, 0),
-                                                        child: FFButtonWidget(
-                                                          onPressed:
-                                                              listViewInventoryRequestRow
-                                                                          .acknowledged ==
-                                                                      true
-                                                                  ? null
-                                                                  : () async {
-                                                                      var _database =
-                                                                          await database;
-                                                                      _database
-                                                                          .inventoryRequestDao
-                                                                          .acknowledged(
-                                                                              listViewInventoryRequestRow.uniqueId);
-                                                                    },
-                                                          text: 'Acknowledge',
-                                                          options:
-                                                              FFButtonOptions(
-                                                            width: 110,
-                                                            height: 30,
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0,
-                                                                        0,
-                                                                        0,
-                                                                        0),
-                                                            iconPadding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0,
-                                                                        0,
-                                                                        0,
-                                                                        0),
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
-                                                            textStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .subtitle2
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .subtitle2Family,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w300,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).subtitle2Family),
-                                                                    ),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: Colors
-                                                                  .transparent,
-                                                              width: 1,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8),
-                                                          ),
-                                                        ),
-                                                      ),
                                                     ],
                                                   ),
                                                 ),
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () async {},
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            FlutterFlowIconButton(
-                                              borderColor: Colors.transparent,
-                                              borderRadius: 30,
-                                              borderWidth: 1,
-                                              buttonSize: 60,
-                                              icon: Icon(
-                                                Icons.refresh_rounded,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                size: 30,
-                                              ),
-                                              onPressed: () async {
-                                                var inventory =
-                                                    await InventoryService()
-                                                        .fulfill(
-                                                            FFAppState().code,
-                                                            listViewInventoryRequestRow
-                                                                .uniqueId);
-                                                var _database = await database;
-                                                if (inventory != null) {
-                                                  for (var i = 0;
-                                                      i < inventory.length;
-                                                      i++) {
-                                                    var curr = await _database
-                                                        .inventoryDao
-                                                        .findByUniqueIdAndRegimen(
-                                                            listViewInventoryRequestRow
-                                                                .uniqueId,
-                                                            listViewInventoryRequestRow
-                                                                .regimen);
-                                                    if (curr.isEmpty) {
-                                                      var _inventory = Inventory(
-                                                          null,
-                                                          listViewInventoryRequestRow
-                                                              .uniqueId,
-                                                          listViewInventoryRequestRow
-                                                              .regimen,
-                                                          inventory[i]
-                                                              ['bottles'],
-                                                          inventory[i]
-                                                              ['batchNo'],
-                                                          inventory[i]
-                                                              ['barcode'],
-                                                          FFAppState().code,
-                                                          DateTime.parse(inventory[
-                                                                  i][
-                                                              'expirationDate']));
-                                                      _database.inventoryDao
-                                                          .insertRecord(
-                                                              _inventory);
-                                                      _database
-                                                          .inventoryRequestDao
-                                                          .fulfilled(
-                                                              listViewInventoryRequestRow
-                                                                  .uniqueId);
-                                                    }
-                                                  }
-                                                  setState(() {});
-                                                }
-
-                                                setState(() {});
-                                              },
-                                            ),
-                                          ],
                                         ),
                                       ),
                                     ],

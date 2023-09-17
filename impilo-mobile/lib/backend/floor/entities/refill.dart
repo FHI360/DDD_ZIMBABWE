@@ -15,6 +15,7 @@ class Refill {
   bool? missedDoses;
   bool? adverseIssues;
   String? barcode;
+  String? batchIssuanceId;
 
   Refill(
       this.id,
@@ -27,6 +28,7 @@ class Refill {
       this.missedDoses,
       this.adverseIssues,
       this.barcode,
+      this.batchIssuanceId,
       this.synced);
 
   Map<String, dynamic> toJson() {
@@ -37,6 +39,7 @@ class Refill {
       'missedDoses': missedDoses,
       'adverseIssues': adverseIssues,
       'regimen': regimen,
+      'batchIssuanceId': 'batchIssuanceId',
       'qtyPrescribed': quantityPrescribed,
       'qtyDispensed': quantityDispensed,
       'organisation': {'id': FFAppState().code}

@@ -14,13 +14,13 @@ abstract class InventoryRequestDao {
   Stream<InventoryRequest?> findById(int id);
 
   @Query('SELECT * FROM InventoryRequest WHERE uniqueId = :uniqueId')
-  Stream<InventoryRequest?> findByUniqueId(String uniqueId);
+  Future<List<InventoryRequest>> findByUniqueId(String uniqueId);
 
-  @Query('Update InventoryRequest set fulfilled = 1 WHERE uniqueId = :uniqueId')
-  Future<void> fulfilled(String uniqueId);
-
-  @Query('Update InventoryRequest set acknowledged = 1, synced = 0 WHERE uniqueId = :uniqueId')
-  Future<void> acknowledged(String uniqueId);
+  @Query('''
+  Update InventoryRequest SET quantityFulfilled = quantityFulfilled  + :bottles 
+    WHERE uniqueId = :uniqueId
+  ''')
+  Future<void> fulfilled(int bottles, String uniqueId);
 
   @insert
   Future<int> insertRecord(InventoryRequest inventory);

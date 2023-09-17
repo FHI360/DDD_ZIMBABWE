@@ -99,11 +99,11 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Patient` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `givenName` TEXT NOT NULL, `familyName` TEXT NOT NULL, `hospitalNo` TEXT NOT NULL, `uniqueId` TEXT NOT NULL, `dateOfBirth` INTEGER NOT NULL, `sex` TEXT NOT NULL, `phoneNumber` TEXT NOT NULL, `assignedRegimen` TEXT NOT NULL, `facility` TEXT NOT NULL, `siteCode` TEXT NOT NULL, `address` TEXT NOT NULL, `lastClinicVisit` INTEGER NOT NULL, `lastRefillDate` INTEGER NOT NULL, `nextAppointmentDate` INTEGER NOT NULL, `nextRefillDate` INTEGER NOT NULL, `serviceDiscontinued` INTEGER NOT NULL, `reasonDiscontinued` TEXT NOT NULL, `dateDiscontinued` INTEGER NOT NULL, `uuid` TEXT NOT NULL, `synced` INTEGER NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Refill` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` INTEGER NOT NULL, `regimen` TEXT NOT NULL, `patientId` TEXT NOT NULL, `quantityPrescribed` INTEGER NOT NULL, `quantityDispensed` INTEGER NOT NULL, `dateNextRefill` INTEGER NOT NULL, `synced` INTEGER NOT NULL, `missedDoses` INTEGER, `adverseIssues` INTEGER, `barcode` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `Refill` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` INTEGER NOT NULL, `regimen` TEXT NOT NULL, `patientId` TEXT NOT NULL, `quantityPrescribed` INTEGER NOT NULL, `quantityDispensed` INTEGER NOT NULL, `dateNextRefill` INTEGER NOT NULL, `synced` INTEGER NOT NULL, `missedDoses` INTEGER, `adverseIssues` INTEGER, `barcode` TEXT, `batchIssuanceId` TEXT)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Inventory` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `uniqueId` TEXT NOT NULL, `regimen` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `batchNo` TEXT NOT NULL, `barcode` TEXT NOT NULL, `siteCode` TEXT NOT NULL, `expiryDate` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Inventory` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `uniqueId` TEXT NOT NULL, `reference` TEXT NOT NULL, `regimen` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `batchNo` TEXT NOT NULL, `barcode` TEXT NOT NULL, `siteCode` TEXT NOT NULL, `expiryDate` INTEGER NOT NULL, `batchIssuanceId` TEXT NOT NULL, `acknowledged` INTEGER NOT NULL, `synced` INTEGER NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `InventoryRequest` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `uniqueId` TEXT NOT NULL, `regimen` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `fulfilled` INTEGER NOT NULL, `acknowledged` INTEGER NOT NULL, `siteCode` TEXT NOT NULL, `date` INTEGER NOT NULL, `synced` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `InventoryRequest` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `uniqueId` TEXT NOT NULL, `regimen` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `quantityFulfilled` INTEGER NOT NULL, `siteCode` TEXT NOT NULL, `date` INTEGER NOT NULL, `synced` INTEGER NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Devolve` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `reasonDiscontinued` TEXT, `date` INTEGER NOT NULL, `outletCode` TEXT NOT NULL, `patientId` TEXT NOT NULL, `synced` INTEGER)');
 
@@ -587,7 +587,8 @@ class _$RefillDao extends RefillDao {
                   'adverseIssues': item.adverseIssues == null
                       ? null
                       : (item.adverseIssues! ? 1 : 0),
-                  'barcode': item.barcode
+                  'barcode': item.barcode,
+                  'batchIssuanceId': item.batchIssuanceId
                 },
             changeListener),
         _refillUpdateAdapter = UpdateAdapter(
@@ -610,7 +611,8 @@ class _$RefillDao extends RefillDao {
                   'adverseIssues': item.adverseIssues == null
                       ? null
                       : (item.adverseIssues! ? 1 : 0),
-                  'barcode': item.barcode
+                  'barcode': item.barcode,
+                  'batchIssuanceId': item.batchIssuanceId
                 },
             changeListener);
 
@@ -642,6 +644,7 @@ class _$RefillDao extends RefillDao {
                 ? null
                 : (row['adverseIssues'] as int) != 0,
             row['barcode'] as String?,
+            row['batchIssuanceId'] as String?,
             (row['synced'] as int) != 0));
   }
 
@@ -663,6 +666,7 @@ class _$RefillDao extends RefillDao {
                 ? null
                 : (row['adverseIssues'] as int) != 0,
             row['barcode'] as String?,
+            row['batchIssuanceId'] as String?,
             (row['synced'] as int) != 0),
         arguments: [id],
         queryableName: 'Refill',
@@ -687,6 +691,7 @@ class _$RefillDao extends RefillDao {
                 ? null
                 : (row['adverseIssues'] as int) != 0,
             row['barcode'] as String?,
+            row['batchIssuanceId'] as String?,
             (row['synced'] as int) != 0));
   }
 
@@ -708,6 +713,7 @@ class _$RefillDao extends RefillDao {
                 ? null
                 : (row['adverseIssues'] as int) != 0,
             row['barcode'] as String?,
+            row['batchIssuanceId'] as String?,
             (row['synced'] as int) != 0),
         arguments: [patientId]);
   }
@@ -734,6 +740,7 @@ class _$RefillDao extends RefillDao {
                 ? null
                 : (row['adverseIssues'] as int) != 0,
             row['barcode'] as String?,
+            row['batchIssuanceId'] as String?,
             (row['synced'] as int) != 0),
         arguments: [patientId, _dateTimeConverter.encode(date)]);
   }
@@ -829,12 +836,16 @@ class _$InventoryDao extends InventoryDao {
             (Inventory item) => <String, Object?>{
                   'id': item.id,
                   'uniqueId': item.uniqueId,
+                  'reference': item.reference,
                   'regimen': item.regimen,
                   'quantity': item.quantity,
                   'batchNo': item.batchNo,
                   'barcode': item.barcode,
                   'siteCode': item.siteCode,
-                  'expiryDate': _dateTimeConverter.encode(item.expiryDate)
+                  'expiryDate': _dateTimeConverter.encode(item.expiryDate),
+                  'batchIssuanceId': item.batchIssuanceId,
+                  'acknowledged': item.acknowledged ? 1 : 0,
+                  'synced': item.synced ? 1 : 0
                 },
             changeListener),
         _inventoryUpdateAdapter = UpdateAdapter(
@@ -844,12 +855,16 @@ class _$InventoryDao extends InventoryDao {
             (Inventory item) => <String, Object?>{
                   'id': item.id,
                   'uniqueId': item.uniqueId,
+                  'reference': item.reference,
                   'regimen': item.regimen,
                   'quantity': item.quantity,
                   'batchNo': item.batchNo,
                   'barcode': item.barcode,
                   'siteCode': item.siteCode,
-                  'expiryDate': _dateTimeConverter.encode(item.expiryDate)
+                  'expiryDate': _dateTimeConverter.encode(item.expiryDate),
+                  'batchIssuanceId': item.batchIssuanceId,
+                  'acknowledged': item.acknowledged ? 1 : 0,
+                  'synced': item.synced ? 1 : 0
                 },
             changeListener);
 
@@ -870,12 +885,15 @@ class _$InventoryDao extends InventoryDao {
         mapper: (Map<String, Object?> row) => Inventory(
             row['id'] as int?,
             row['uniqueId'] as String,
+            row['reference'] as String,
             row['regimen'] as String,
             row['quantity'] as int,
+            (row['acknowledged'] as int) != 0,
             row['batchNo'] as String,
             row['barcode'] as String,
             row['siteCode'] as String,
-            _dateTimeConverter.decode(row['expiryDate'] as int)),
+            _dateTimeConverter.decode(row['expiryDate'] as int),
+            row['batchIssuanceId'] as String),
         arguments: [siteCode]);
   }
 
@@ -886,7 +904,7 @@ class _$InventoryDao extends InventoryDao {
   ) async {
     return _queryAdapter.queryList(
         'SELECT * FROM Inventory where siteCode = ?1 and regimen = ?2 order by expiryDate',
-        mapper: (Map<String, Object?> row) => Inventory(row['id'] as int?, row['uniqueId'] as String, row['regimen'] as String, row['quantity'] as int, row['batchNo'] as String, row['barcode'] as String, row['siteCode'] as String, _dateTimeConverter.decode(row['expiryDate'] as int)),
+        mapper: (Map<String, Object?> row) => Inventory(row['id'] as int?, row['uniqueId'] as String, row['reference'] as String, row['regimen'] as String, row['quantity'] as int, (row['acknowledged'] as int) != 0, row['batchNo'] as String, row['barcode'] as String, row['siteCode'] as String, _dateTimeConverter.decode(row['expiryDate'] as int), row['batchIssuanceId'] as String),
         arguments: [siteCode, regimen]);
   }
 
@@ -896,12 +914,15 @@ class _$InventoryDao extends InventoryDao {
         mapper: (Map<String, Object?> row) => Inventory(
             row['id'] as int?,
             row['uniqueId'] as String,
+            row['reference'] as String,
             row['regimen'] as String,
             row['quantity'] as int,
+            (row['acknowledged'] as int) != 0,
             row['batchNo'] as String,
             row['barcode'] as String,
             row['siteCode'] as String,
-            _dateTimeConverter.decode(row['expiryDate'] as int)),
+            _dateTimeConverter.decode(row['expiryDate'] as int),
+            row['batchIssuanceId'] as String),
         arguments: [id],
         queryableName: 'Inventory',
         isView: false);
@@ -914,12 +935,15 @@ class _$InventoryDao extends InventoryDao {
         mapper: (Map<String, Object?> row) => Inventory(
             row['id'] as int?,
             row['uniqueId'] as String,
+            row['reference'] as String,
             row['regimen'] as String,
             row['quantity'] as int,
+            (row['acknowledged'] as int) != 0,
             row['batchNo'] as String,
             row['barcode'] as String,
             row['siteCode'] as String,
-            _dateTimeConverter.decode(row['expiryDate'] as int)),
+            _dateTimeConverter.decode(row['expiryDate'] as int),
+            row['batchIssuanceId'] as String),
         arguments: [uniqueId],
         queryableName: 'Inventory',
         isView: false);
@@ -935,12 +959,15 @@ class _$InventoryDao extends InventoryDao {
         mapper: (Map<String, Object?> row) => Inventory(
             row['id'] as int?,
             row['uniqueId'] as String,
+            row['reference'] as String,
             row['regimen'] as String,
             row['quantity'] as int,
+            (row['acknowledged'] as int) != 0,
             row['batchNo'] as String,
             row['barcode'] as String,
             row['siteCode'] as String,
-            _dateTimeConverter.decode(row['expiryDate'] as int)),
+            _dateTimeConverter.decode(row['expiryDate'] as int),
+            row['batchIssuanceId'] as String),
         arguments: [uniqueId, regimen]);
   }
 
@@ -976,13 +1003,24 @@ class _$InventoryDao extends InventoryDao {
   }
 
   @override
+  Future<int?> issuedQuantity(
+    String siteCode,
+    String uniqueId,
+  ) async {
+    return _queryAdapter.query(
+        'SELECT SUM(quantity) FROM Inventory WHERE siteCode = ?1 AND uniqueId = ?2',
+        mapper: (Map<String, Object?> row) => row.values.first as int,
+        arguments: [siteCode, uniqueId]);
+  }
+
+  @override
   Future<Inventory?> getNonZeroInventory(
     String siteCode,
     String regimen,
   ) async {
     return _queryAdapter.query(
         'SELECT * FROM Inventory WHERE siteCode = ?1 and regimen = ?2            and quantity > 0 order by expiryDate limit 1',
-        mapper: (Map<String, Object?> row) => Inventory(row['id'] as int?, row['uniqueId'] as String, row['regimen'] as String, row['quantity'] as int, row['batchNo'] as String, row['barcode'] as String, row['siteCode'] as String, _dateTimeConverter.decode(row['expiryDate'] as int)),
+        mapper: (Map<String, Object?> row) => Inventory(row['id'] as int?, row['uniqueId'] as String, row['reference'] as String, row['regimen'] as String, row['quantity'] as int, (row['acknowledged'] as int) != 0, row['batchNo'] as String, row['barcode'] as String, row['siteCode'] as String, _dateTimeConverter.decode(row['expiryDate'] as int), row['batchIssuanceId'] as String),
         arguments: [siteCode, regimen]);
   }
 
@@ -994,16 +1032,47 @@ class _$InventoryDao extends InventoryDao {
     return _queryAdapter.queryList(
         'select * from InventoryQuantity where siteCode = ?1 and regimen = ?2',
         mapper: (Map<String, Object?> row) => InventoryQuantity(
+            row['quantity'] as int,
             row['siteCode'] as String,
-            row['regimen'] as String,
-            row['quantity'] as int),
+            row['regimen'] as String),
         arguments: [siteCode, regimen]);
   }
 
   @override
-  Future<void> deleteById(int id) async {
-    await _queryAdapter
-        .queryNoReturn('delete from Inventory where id = ?1', arguments: [id]);
+  Future<void> acknowledge(String reference) async {
+    await _queryAdapter.queryNoReturn(
+        'UPDATE Inventory SET acknowledged = 1 WHERE reference = ?1',
+        arguments: [reference]);
+  }
+
+  @override
+  Future<bool?> hasUnSynced() async {
+    return _queryAdapter.query(
+        'SELECT COUNT(*) > 0 FROM Inventory WHERE synced = 0',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<List<Inventory>> findUnSynced() async {
+    return _queryAdapter.queryList('SELECT * FROM Inventory WHERE synced = 0',
+        mapper: (Map<String, Object?> row) => Inventory(
+            row['id'] as int?,
+            row['uniqueId'] as String,
+            row['reference'] as String,
+            row['regimen'] as String,
+            row['quantity'] as int,
+            (row['acknowledged'] as int) != 0,
+            row['batchNo'] as String,
+            row['barcode'] as String,
+            row['siteCode'] as String,
+            _dateTimeConverter.decode(row['expiryDate'] as int),
+            row['batchIssuanceId'] as String));
+  }
+
+  @override
+  Future<void> updateAllSynced() async {
+    await _queryAdapter.queryNoReturn(
+        'UPDATE Inventory SET synced = 1 WHERE acknowledged = 1');
   }
 
   @override
@@ -1031,8 +1100,7 @@ class _$InventoryRequestDao extends InventoryRequestDao {
                   'uniqueId': item.uniqueId,
                   'regimen': item.regimen,
                   'quantity': item.quantity,
-                  'fulfilled': item.fulfilled ? 1 : 0,
-                  'acknowledged': item.acknowledged ? 1 : 0,
+                  'quantityFulfilled': item.quantityFulfilled,
                   'siteCode': item.siteCode,
                   'date': _dateTimeConverter.encode(item.date),
                   'synced': item.synced ? 1 : 0
@@ -1047,8 +1115,7 @@ class _$InventoryRequestDao extends InventoryRequestDao {
                   'uniqueId': item.uniqueId,
                   'regimen': item.regimen,
                   'quantity': item.quantity,
-                  'fulfilled': item.fulfilled ? 1 : 0,
-                  'acknowledged': item.acknowledged ? 1 : 0,
+                  'quantityFulfilled': item.quantityFulfilled,
                   'siteCode': item.siteCode,
                   'date': _dateTimeConverter.encode(item.date),
                   'synced': item.synced ? 1 : 0
@@ -1074,11 +1141,10 @@ class _$InventoryRequestDao extends InventoryRequestDao {
             row['uniqueId'] as String,
             row['regimen'] as String,
             row['quantity'] as int,
-            (row['fulfilled'] as int) != 0,
-            (row['acknowledged'] as int) != 0,
             row['siteCode'] as String,
             _dateTimeConverter.decode(row['date'] as int),
-            (row['synced'] as int) != 0),
+            (row['synced'] as int) != 0,
+            row['quantityFulfilled'] as int),
         arguments: [siteCode]);
   }
 
@@ -1089,7 +1155,7 @@ class _$InventoryRequestDao extends InventoryRequestDao {
   ) async {
     return _queryAdapter.queryList(
         'SELECT * FROM InventoryRequest where siteCode = ?1 and regimen = ?2 order by date',
-        mapper: (Map<String, Object?> row) => InventoryRequest(row['id'] as int?, row['uniqueId'] as String, row['regimen'] as String, row['quantity'] as int, (row['fulfilled'] as int) != 0, (row['acknowledged'] as int) != 0, row['siteCode'] as String, _dateTimeConverter.decode(row['date'] as int), (row['synced'] as int) != 0),
+        mapper: (Map<String, Object?> row) => InventoryRequest(row['id'] as int?, row['uniqueId'] as String, row['regimen'] as String, row['quantity'] as int, row['siteCode'] as String, _dateTimeConverter.decode(row['date'] as int), (row['synced'] as int) != 0, row['quantityFulfilled'] as int),
         arguments: [siteCode, regimen]);
   }
 
@@ -1102,47 +1168,39 @@ class _$InventoryRequestDao extends InventoryRequestDao {
             row['uniqueId'] as String,
             row['regimen'] as String,
             row['quantity'] as int,
-            (row['fulfilled'] as int) != 0,
-            (row['acknowledged'] as int) != 0,
             row['siteCode'] as String,
             _dateTimeConverter.decode(row['date'] as int),
-            (row['synced'] as int) != 0),
+            (row['synced'] as int) != 0,
+            row['quantityFulfilled'] as int),
         arguments: [id],
         queryableName: 'InventoryRequest',
         isView: false);
   }
 
   @override
-  Stream<InventoryRequest?> findByUniqueId(String uniqueId) {
-    return _queryAdapter.queryStream(
+  Future<List<InventoryRequest>> findByUniqueId(String uniqueId) async {
+    return _queryAdapter.queryList(
         'SELECT * FROM InventoryRequest WHERE uniqueId = ?1',
         mapper: (Map<String, Object?> row) => InventoryRequest(
             row['id'] as int?,
             row['uniqueId'] as String,
             row['regimen'] as String,
             row['quantity'] as int,
-            (row['fulfilled'] as int) != 0,
-            (row['acknowledged'] as int) != 0,
             row['siteCode'] as String,
             _dateTimeConverter.decode(row['date'] as int),
-            (row['synced'] as int) != 0),
-        arguments: [uniqueId],
-        queryableName: 'InventoryRequest',
-        isView: false);
-  }
-
-  @override
-  Future<void> fulfilled(String uniqueId) async {
-    await _queryAdapter.queryNoReturn(
-        'Update InventoryRequest set fulfilled = 1 WHERE uniqueId = ?1',
+            (row['synced'] as int) != 0,
+            row['quantityFulfilled'] as int),
         arguments: [uniqueId]);
   }
 
   @override
-  Future<void> acknowledged(String uniqueId) async {
+  Future<void> fulfilled(
+    int bottles,
+    String uniqueId,
+  ) async {
     await _queryAdapter.queryNoReturn(
-        'Update InventoryRequest set acknowledged = 1, synced = 0 WHERE uniqueId = ?1',
-        arguments: [uniqueId]);
+        'Update InventoryRequest SET quantityFulfilled = quantityFulfilled  + ?1      WHERE uniqueId = ?2',
+        arguments: [bottles, uniqueId]);
   }
 
   @override
@@ -1172,11 +1230,10 @@ class _$InventoryRequestDao extends InventoryRequestDao {
             row['uniqueId'] as String,
             row['regimen'] as String,
             row['quantity'] as int,
-            (row['fulfilled'] as int) != 0,
-            (row['acknowledged'] as int) != 0,
             row['siteCode'] as String,
             _dateTimeConverter.decode(row['date'] as int),
-            (row['synced'] as int) != 0));
+            (row['synced'] as int) != 0,
+            row['quantityFulfilled'] as int));
   }
 
   @override

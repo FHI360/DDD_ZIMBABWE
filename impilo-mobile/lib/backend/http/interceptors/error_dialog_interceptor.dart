@@ -36,7 +36,7 @@ class ErrorDialogInterceptor extends Interceptor {
       return super.onError(err, handler);
     }
 
-    if (err.response?.statusCode == 403) {
+    if (err.response?.statusCode == 403 && router.location != '/login') {
       showToast(
         'Session expired, signing out',
         duration: Duration(seconds: 5),
@@ -50,6 +50,21 @@ class ErrorDialogInterceptor extends Interceptor {
       FFAppState().code = '';
 
       router.pushNamed("loginPage");
+    }
+    if (err.response?.statusCode == 401) {
+      showToast(
+        'Wrong username or password',
+        duration: Duration(seconds: 5),
+        position: ToastPosition.bottom,
+        backgroundColor: Colors.red,
+        radius: 3.0,
+        textStyle: TextStyle(fontSize: 15.0),
+      );
+      FFAppState().refreshToken = '';
+      FFAppState().accessToken = '';
+      FFAppState().code = '';
+
+      return super.onError(err, handler);
     }
     showToast(
       'An error occurred accessing the backend',

@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:floor/floor.dart';
 
 @entity
@@ -6,16 +5,17 @@ class Inventory {
   @PrimaryKey(autoGenerate: true)
   int? id;
   final String uniqueId;
+  final String reference;
   final String regimen;
   final int quantity;
   final String batchNo;
   final String barcode;
   final String siteCode;
   final DateTime expiryDate;
+  final String batchIssuanceId;
+  bool acknowledged = false;
+  bool synced = false;
 
-  Inventory(this.id, this.uniqueId, this.regimen, this.quantity, this.batchNo,
-      this.barcode, this.siteCode, this.expiryDate);
-
-  /*@override
-  List<Object?> get props => [uniqueId];*/
+  Inventory(this.id, this.uniqueId, this.reference, this.regimen, this.quantity, this.acknowledged,
+      this.batchNo, this.barcode, this.siteCode, this.expiryDate, this.batchIssuanceId);
 }

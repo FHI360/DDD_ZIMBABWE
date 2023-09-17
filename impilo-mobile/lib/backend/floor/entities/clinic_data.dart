@@ -1,4 +1,5 @@
 import 'package:floor/floor.dart';
+import 'package:impilo/app_state.dart';
 
 @Entity(tableName: 'clinic')
 class ClinicData {
@@ -40,6 +41,7 @@ class ClinicData {
     'weight': weight,
     'temperature': temperature,
     'patient': {'id': patientId},
+    'organisation': {'id': FFAppState().code},
     'date': date.toIso8601String().substring(0, 10),
     'coughing': coughing,
     'swelling': swelling,
