@@ -61,7 +61,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                FlutterFlowTheme.of(context).primaryColor,
+                Color(0xFF95A88F),
                 Color(0xFFF5F5F5)
               ],
               stops: [0.0, 1.0],
@@ -85,6 +85,29 @@ class _LoginWidgetState extends State<LoginWidget> {
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
+                            Spacer(),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 8, 20, 0),
+                                  child: Image.asset(
+                                    'assets/images/impilo.png',
+                                    width: 72,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 8, 20, 0),
+                                  child: Image.asset(
+                                    'assets/images/moh.png',
+                                    width: 92,
+                                  ),
+                                ),
+                              ],
+                            ),
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   24.0, 40.0, 24.0, 0.0),
@@ -432,7 +455,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       0, 8, 0, 0),
                                   child: Image.asset(
                                     'assets/images/usaid.png',
-                                    width: 72,
+                                    width: 92,
                                   ),
                                 ),
                                 Padding(
@@ -441,6 +464,22 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   child: Image.asset(
                                     'assets/images/epic.png',
                                     width: 72,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 8, 0, 0),
+                                  child: Image.asset(
+                                    'assets/images/zimttech.png',
+                                    width: 92,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 8, 0, 0),
+                                  child: Image.asset(
+                                    'assets/images/ophid.png',
+                                    width: 92,
                                   ),
                                 ),
                               ],

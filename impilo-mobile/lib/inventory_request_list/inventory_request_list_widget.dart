@@ -120,7 +120,7 @@ class _InventoryRequestListWidgetState
           buttonSize: 60,
           icon: Icon(
             Icons.add,
-            color: FlutterFlowTheme.of(context).primaryText,
+            color: Colors.white,
             size: 30,
           ),
           onPressed: () async {
@@ -170,17 +170,7 @@ class _InventoryRequestListWidgetState
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                FlutterFlowTheme.of(context).primaryColor,
-                Color(0xFFF5F5F5)
-              ],
-              stops: [0, 1],
-              begin: AlignmentDirectional(0, -1),
-              end: AlignmentDirectional(0, 1),
-            ),
-          ),
+          color: Colors.white,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,

@@ -1136,7 +1136,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                              null,
+                                                                          _model.coughingValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1271,7 +1271,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                              null,
+                                                                          _model.feverValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1406,7 +1406,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                              null,
+                                                                          _model.weightLossValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1541,7 +1541,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                              null,
+                                                                          _model.nightSweatValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1676,7 +1676,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                              null,
+                                                                          _model.swellingsValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1811,7 +1811,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                              null,
+                                                                          _model.tbReferValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -2092,7 +2092,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             int>(
                                                                           initialOption:
-                                                                              null,
+                                                                          int.tryParse(_model.qtyPrescribedController!.text),
                                                                           options: [
                                                                             1,
                                                                             2,
@@ -2239,7 +2239,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             int>(
                                                                           initialOption:
-                                                                              null,
+                                                                          int.tryParse(_model.qtyDispensedController!.text),
                                                                           options: [
                                                                             1,
                                                                             2,
@@ -2507,7 +2507,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                              null,
+                                                                          _model.missedDosesValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -2642,7 +2642,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                              null,
+                                                                          _model.adverseIssuesValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'

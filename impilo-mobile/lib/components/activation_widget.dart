@@ -161,7 +161,7 @@ class _ActivationWidgetState extends State<ActivationWidget> {
                           context.pushNamed('patientList');
 
                         },
-                        text: 'Synchronization',
+                        text: 'Synchronize',
                         options: FFButtonOptions(
                           width: 130.0,
                           height: 40.0,

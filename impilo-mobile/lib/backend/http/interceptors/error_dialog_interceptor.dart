@@ -26,7 +26,7 @@ class ErrorDialogInterceptor extends Interceptor {
     if (err.response?.statusCode == 403 &&
         data['path'] == '/api/authenticate') {
       showToast(
-        'Invalid username or password',
+        'Wrong username or password',
         duration: Duration(seconds: 2),
         position: ToastPosition.bottom,
         backgroundColor: Colors.red,
@@ -36,44 +36,47 @@ class ErrorDialogInterceptor extends Interceptor {
       return super.onError(err, handler);
     }
 
-    if (err.response?.statusCode == 403 && router.location != '/login') {
-      showToast(
-        'Session expired, signing out',
-        duration: Duration(seconds: 5),
-        position: ToastPosition.bottom,
-        backgroundColor: Colors.red,
-        radius: 3.0,
-        textStyle: TextStyle(fontSize: 15.0),
-      );
-      FFAppState().refreshToken = '';
-      FFAppState().accessToken = '';
-      FFAppState().code = '';
-
-      router.pushNamed("loginPage");
-    }
     if (err.response?.statusCode == 401) {
+      var body = err.response?.data!;
+      var message = 'Session expired; please sign in again';
+      if (body['detail'] == 'ACCESS.MANAGEMENT.ERRORS.WRONG_CREDENTIALS') {
+        message = 'Wrong username or password';
+      } else if (body['detail'] ==
+          'ACCESS.MANAGEMENT.ERRORS.FAILED_ATTEMPTS_LOCK') {
+        message = 'Your account has been locked due to repeated failed logins; please contact administrator';
+      } else if (body['detail'] ==
+          'ACCESS.MANAGEMENT.ERRORS.ACCOUNT_DISABLED') {
+        message = 'Your account has been locked; please contact administrator';
+      } else if (body['detail'] == 'ACCESS.MANAGEMENT.ERRORS.TOKEN_EXPIRED') {
+        message = 'Session expired; please sign in again';
+      }
       showToast(
-        'Wrong username or password',
-        duration: Duration(seconds: 5),
+        message,
+        duration: Duration(seconds: 15),
         position: ToastPosition.bottom,
         backgroundColor: Colors.red,
-        radius: 3.0,
+        radius: 4.0,
         textStyle: TextStyle(fontSize: 15.0),
       );
       FFAppState().refreshToken = '';
       FFAppState().accessToken = '';
       FFAppState().code = '';
+      FFAppState().name = '';
 
+      router.pushNamed('login');
       return super.onError(err, handler);
     }
-    showToast(
-      'An error occurred accessing the backend',
-      duration: Duration(seconds: 2),
-      position: ToastPosition.bottom,
-      backgroundColor: Colors.redAccent,
-      radius: 1.0,
-      textStyle: TextStyle(fontSize: 15.0),
-    );
+
+    if (data['path'] != '/api/ddd/device-profile') {
+      showToast(
+        'A error occurred processing request; please try again later',
+        duration: Duration(seconds: 2),
+        position: ToastPosition.bottom,
+        backgroundColor: Colors.redAccent,
+        radius: 1.0,
+        textStyle: TextStyle(fontSize: 15.0),
+      );
+    }
     return super.onError(err, handler);
   }
 }

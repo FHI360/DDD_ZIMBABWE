@@ -119,17 +119,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
           child: Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  FlutterFlowTheme.of(context).primaryColor,
-                  Color(0xFFF5F5F5)
-                ],
-                stops: [0, 1],
-                begin: AlignmentDirectional(0, -1),
-                end: AlignmentDirectional(0, 1),
-              ),
-            ),
+            color: Colors.white70,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -582,36 +572,6 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                       child: InkWell(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                              child: Text(
-                                'Refill patient',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyText1Family,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryBtnText,
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey(
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyText1Family),
-                                    ),
-                              ),
-                            ),
-                            Icon(
-                              Icons.add,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20,
-                            ),
-                          ],
-                        ),
                         onTap: () async {
                           context.pushNamed(
                             'refill',
@@ -623,6 +583,64 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                             }.withoutNulls,
                           );
                         },
+                        child: Container(
+                          height: 32,
+                          constraints: BoxConstraints(
+                            maxHeight: 32,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 4,
+                                color: Colors.green,
+                                offset: Offset(0, 2),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                8, 0, 8, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding:
+                                  EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 12, 0),
+                                  child: Text(
+                                    'Refill patient',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                      fontFamily:
+                                      FlutterFlowTheme.of(
+                                          context)
+                                          .bodyText1Family,
+                                      color: FlutterFlowTheme.of(
+                                          context)
+                                          .primaryBtnText,
+                                      useGoogleFonts: GoogleFonts
+                                          .asMap()
+                                          .containsKey(
+                                          FlutterFlowTheme.of(
+                                              context)
+                                              .bodyText1Family),
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 12,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   Padding(
