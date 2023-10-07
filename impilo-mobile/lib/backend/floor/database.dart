@@ -36,7 +36,8 @@ part 'database.g.dart'; // the generated code will be there
   LastRefill,
   InventoryAvailability,
   EstimatedRefill,
-  RefillInfo
+  RefillInfo,
+  MissedRefill
 ])
 abstract class AppDatabase extends FloorDatabase {
   ClinicDao get clinicDao;

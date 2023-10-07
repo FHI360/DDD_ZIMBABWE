@@ -14,7 +14,7 @@ Future updateStockAvailability(String regimen) async {
         .selectInventoryQuantity(FFAppState().code, regimen)
         .then((qty) {
       qty.forEach((element) {
-        total += element.quantity;
+        total += element.balance;
       });
       FFAppState().regimenQty = total.toInt();
     });

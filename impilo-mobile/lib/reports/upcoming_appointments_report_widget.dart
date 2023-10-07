@@ -5,10 +5,10 @@ import 'package:impilo/custom_code/init_cap.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '../main.dart';
 
-Future<String> missedAppointmentPdf(DateTime start, DateTime end) async {
+Future<String> upcomingAppointmentPdf(DateTime start, DateTime end) async {
   var _database = await database;
-  List<MissedRefill> rows = await _database.patientDao
-      .missedRefill(FFAppState().code, start, end);
+  List<LastRefill> rows = await _database.patientDao
+      .listRefill(FFAppState().code, start, end);
 
   String style = await rootBundle.loadString('assets/css/bootstrap.min.css');
   String content = '''
@@ -19,7 +19,7 @@ Future<String> missedAppointmentPdf(DateTime start, DateTime end) async {
   </div>
   <div class="row">
     <div class="col-12 justify-content-center mb-3">
-      <h2 class="text-center">Missed Appointments between ${dateTimeFormat('yMMMd', start)} and ${dateTimeFormat('yMMMd', end)}</h2>
+      <h2 class="text-center">Upcoming Appointments between ${dateTimeFormat('yMMMd', start)} and ${dateTimeFormat('yMMMd', end)}</h2>
     </div>
   </div>
   <div class="row">
@@ -46,7 +46,7 @@ Future<String> missedAppointmentPdf(DateTime start, DateTime end) async {
         <th scope="row">${i + 1}</th>
         <td class="justify-content-start" colspan="4">${e.givenName} ${e.familyName}</td>
         <td class="justify-content-start" colspan="3">${e.hospitalNo}</td>
-        <td colspan="2">
+        <td class="justify-content-start" colspan="2">
           <span class="d-flex justify-content-end">
             ${dateTimeFormat('yMMMd', e.dateOfBirth)}
           </span>
@@ -63,7 +63,7 @@ Future<String> missedAppointmentPdf(DateTime start, DateTime end) async {
           <span class="d-flex justify-content-end">
             ${dateTimeFormat('yMMMd', e.dateNextRefill)}
           </span>
-         </td>
+        </td>
       </tr>
     ''';
   });

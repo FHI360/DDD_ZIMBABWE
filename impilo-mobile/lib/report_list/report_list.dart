@@ -1,10 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:impilo/reports/estimated_refill_report_widget.dart';
+import 'package:impilo/reports/inventory_forecast_report_widget.dart';
 import 'package:impilo/reports/missed_appointments_report_widget.dart';
+import 'package:impilo/reports/upcoming_appointments_report_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '../reports/refill_info_report_widget.dart';
 import 'report_list_model.dart';
 
-export 'report_list_model.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class ReportListWidget extends StatefulWidget {
   const ReportListWidget({Key? key}) : super(key: key);
@@ -48,6 +49,22 @@ class _ReportListWidgetState extends State<ReportListWidget> {
     super.dispose();
   }
 
+  String generateRandomFileName(String extension) {
+    final random = Random();
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const length =
+        10; // You can adjust the length of the random string as needed.
+
+    // Generate a random string of the specified length
+    final randomString = String.fromCharCodes(Iterable.generate(length,
+        (_) => characters.codeUnitAt(random.nextInt(characters.length))));
+
+    // Combine the random string with the file extension
+    final fileName = '$randomString.$extension';
+
+    return fileName;
+  }
+
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
@@ -74,7 +91,13 @@ class _ReportListWidgetState extends State<ReportListWidget> {
         ),
         title: Text(
           'Reports',
-          style: FlutterFlowTheme.of(context).title3,
+          style: FlutterFlowTheme.of(context).title2.override(
+                fontFamily: FlutterFlowTheme.of(context).title2Family,
+                color: Colors.white,
+                fontSize: 22,
+                useGoogleFonts: GoogleFonts.asMap()
+                    .containsKey(FlutterFlowTheme.of(context).title2Family),
+              ),
         ),
         actions: [],
         centerTitle: true,
@@ -272,13 +295,20 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                                         final _datePicked1Date =
                                                             await showDatePicker(
                                                           context: context,
-                                                          initialDate:
-                                                              DateTime(2022),
+                                                          initialDate: DateTime
+                                                                  .now()
+                                                              .subtract(
+                                                                  Duration(
+                                                                      days: 1)),
                                                           firstDate:
-                                                              DateTime(2022),
+                                                              DateTime(2023),
                                                           lastDate: _model
                                                                   .datePicked2 ??
-                                                              DateTime.now(),
+                                                              DateTime.now()
+                                                                  .subtract(
+                                                                      Duration(
+                                                                          days:
+                                                                              1)),
                                                         );
 
                                                         if (_datePicked1Date !=
@@ -437,15 +467,21 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                                         final _datePicked2Date =
                                                             await showDatePicker(
                                                           context: context,
-                                                          initialDate:
-                                                          _model
-                                                              .datePicked1 ??
-                                                              DateTime(2022),
+                                                          initialDate: _model
+                                                                  .datePicked1 ??
+                                                              DateTime.now()
+                                                                  .subtract(
+                                                                      Duration(
+                                                                          days:
+                                                                              1)),
                                                           firstDate: _model
                                                                   .datePicked1 ??
-                                                              DateTime(2022),
-                                                          lastDate:
-                                                              DateTime.now(),
+                                                              DateTime(2023),
+                                                          lastDate: DateTime
+                                                                  .now()
+                                                              .subtract(
+                                                                  Duration(
+                                                                      days: 1)),
                                                         );
 
                                                         if (_datePicked2Date !=
@@ -489,13 +525,13 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                       ? null
                                       : () async {
                                           var dir =
-                                              await getApplicationDocumentsDirectory();
+                                              await getTemporaryDirectory();
                                           var content =
                                               await missedAppointmentPdf(
                                                   _model.datePicked1!,
                                                   _model.datePicked2!);
-                                          var savedPath =
-                                              path.join(dir.path, "sample.pdf");
+                                          var savedPath = path.join(dir.path,
+                                              generateRandomFileName('pdf'));
                                           await WebcontentConverter
                                               .contentToPDF(
                                                   content: content,
@@ -504,13 +540,8 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                                       width: 16.54),
                                                   savedPath: savedPath);
                                           var file = File(savedPath);
-                                          context.pushNamed(
-                                            'pdfPreview',
-                                            queryParams: {
-                                              'data': base64Encode(
-                                                  file.readAsBytesSync())
-                                            }.withoutNulls,
-                                          );
+                                          context.pushNamed('pdfPreview',
+                                              queryParams: {'path': file.path});
                                         },
                                   text: 'View',
                                   options: FFButtonOptions(
@@ -572,7 +603,453 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         5, 5, 0, 0),
                                     child: Text(
-                                      'Inventory Requirement',
+                                      'Upcoming Appointments Report',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText1Family,
+                                            fontWeight: FontWeight.w600,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1Family),
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 16, 0, 0),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.4,
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border: Border.all(
+                                              width: 1,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  20, 0, 0, 0),
+                                                      child: Text(
+                                                        'Start Date',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1
+                                                                .override(
+                                                                  fontFamily: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1Family,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  fontSize: 12,
+                                                                  useGoogleFonts: GoogleFonts
+                                                                          .asMap()
+                                                                      .containsKey(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyText1Family),
+                                                                ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  20, 4, 0, 0),
+                                                      child: Text(
+                                                        dateTimeFormat('yMMMd',
+                                                            _model.datePicked7),
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText2
+                                                                .override(
+                                                                  fontFamily: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText2Family,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  useGoogleFonts: GoogleFonts
+                                                                          .asMap()
+                                                                      .containsKey(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyText2Family),
+                                                                ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 0, 8, 0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    FlutterFlowIconButton(
+                                                      borderColor:
+                                                          Colors.transparent,
+                                                      borderRadius: 30,
+                                                      buttonSize: 46,
+                                                      icon: Icon(
+                                                        Icons
+                                                            .date_range_outlined,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                        size: 20,
+                                                      ),
+                                                      onPressed: () async {
+                                                        final _datePicked1Date =
+                                                            await showDatePicker(
+                                                          context: context,
+                                                          initialDate:
+                                                              DateTime.now(),
+                                                          firstDate:
+                                                              DateTime.now(),
+                                                          lastDate: _model
+                                                                  .datePicked8 ??
+                                                              DateTime(2050),
+                                                        );
+
+                                                        if (_datePicked1Date !=
+                                                            null) {
+                                                          setState(() {
+                                                            _model.datePicked7 =
+                                                                DateTime(
+                                                              _datePicked1Date
+                                                                  .year,
+                                                              _datePicked1Date
+                                                                  .month,
+                                                              _datePicked1Date
+                                                                  .day,
+                                                            );
+                                                          });
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 16, 0, 0),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.4,
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border: Border.all(
+                                              width: 1,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  20, 0, 0, 0),
+                                                      child: Text(
+                                                        'End Date',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1
+                                                                .override(
+                                                                  fontFamily: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1Family,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  fontSize: 12,
+                                                                  useGoogleFonts: GoogleFonts
+                                                                          .asMap()
+                                                                      .containsKey(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyText1Family),
+                                                                ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  20, 4, 0, 0),
+                                                      child: Text(
+                                                        dateTimeFormat('yMMMd',
+                                                            _model.datePicked8),
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText2
+                                                                .override(
+                                                                  fontFamily: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText2Family,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  useGoogleFonts: GoogleFonts
+                                                                          .asMap()
+                                                                      .containsKey(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyText2Family),
+                                                                ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 0, 8, 0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    FlutterFlowIconButton(
+                                                      borderColor:
+                                                          Colors.transparent,
+                                                      borderRadius: 30,
+                                                      buttonSize: 46,
+                                                      icon: Icon(
+                                                        Icons
+                                                            .date_range_outlined,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                        size: 20,
+                                                      ),
+                                                      onPressed: () async {
+                                                        final _datePicked2Date =
+                                                            await showDatePicker(
+                                                          context: context,
+                                                          initialDate: _model
+                                                                  .datePicked7 ??
+                                                              DateTime.now(),
+                                                          firstDate: _model
+                                                                  .datePicked7 ??
+                                                              DateTime.now(),
+                                                          lastDate:
+                                                              DateTime(2050),
+                                                        );
+
+                                                        if (_datePicked2Date !=
+                                                            null) {
+                                                          setState(() {
+                                                            _model.datePicked8 =
+                                                                DateTime(
+                                                              _datePicked2Date
+                                                                  .year,
+                                                              _datePicked2Date
+                                                                  .month,
+                                                              _datePicked2Date
+                                                                  .day,
+                                                            );
+                                                          });
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                FFButtonWidget(
+                                  onPressed: (_model.datePicked7 == null) ||
+                                          (_model.datePicked8 == null)
+                                      ? null
+                                      : () async {
+                                          var dir =
+                                              await getTemporaryDirectory();
+                                          var content =
+                                              await upcomingAppointmentPdf(
+                                                  _model.datePicked7!,
+                                                  _model.datePicked8!);
+                                          var savedPath = path.join(dir.path,
+                                              generateRandomFileName('pdf'));
+                                          await WebcontentConverter
+                                              .contentToPDF(
+                                                  content: content,
+                                                  format: PaperFormat.inches(
+                                                      height: 11.7,
+                                                      width: 16.54),
+                                                  savedPath: savedPath);
+                                          var file = File(savedPath);
+                                          context.pushNamed('pdfPreview',
+                                              queryParams: {'path': file.path});
+                                        },
+                                  text: 'View',
+                                  options: FFButtonOptions(
+                                    width: 130,
+                                    height: 40,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 0, 0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 0, 0),
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .subtitle2Family,
+                                          color: Colors.white,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .subtitle2Family),
+                                        ),
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                    child: Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Divider(
+                                thickness: 2,
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 5, 0, 0),
+                                    child: Text(
+                                      'Inventory Forecast',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -940,26 +1417,25 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                       ? null
                                       : () async {
                                           var dir =
-                                              await getApplicationDocumentsDirectory();
+                                              await getTemporaryDirectory();
                                           var content =
-                                              await estimatedRefillPdf(
+                                              await inventoryForecastPdf(
                                                   _model.datePicked3!,
                                                   _model.datePicked4!);
-                                          var savedPath =
-                                              path.join(dir.path, "sample.pdf");
+                                          var savedPath = path.join(dir.path,
+                                              generateRandomFileName('pdf'));
                                           await WebcontentConverter
                                               .contentToPDF(
                                                   content: content,
-                                                  format: PaperFormat.a4,
+                                                  format: PaperFormat.inches(
+                                                      height: 11.7,
+                                                      width: 16.54),
                                                   savedPath: savedPath);
                                           var file = File(savedPath);
-                                          context.pushNamed(
-                                            'pdfPreview',
-                                            queryParams: {
-                                              'data': base64Encode(
-                                                  file.readAsBytesSync())
-                                            }.withoutNulls,
-                                          );
+
+                                          /// sanitize or query document here
+                                          context.pushNamed('pdfPreview',
+                                              queryParams: {'path': file.path});
                                         },
                                   text: 'View',
                                   options: FFButtonOptions(
@@ -1174,7 +1650,7 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                                             await showDatePicker(
                                                           context: context,
                                                           initialDate:
-                                                              DateTime(2022),
+                                                              DateTime.now(),
                                                           firstDate:
                                                               DateTime(2022),
                                                           lastDate: _model
@@ -1338,10 +1814,9 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                                         final _datePicked6Date =
                                                             await showDatePicker(
                                                           context: context,
-                                                          initialDate:
-                                                          _model
-                                                              .datePicked5 ??
-                                                              DateTime(2022),
+                                                          initialDate: _model
+                                                                  .datePicked5 ??
+                                                              DateTime.now(),
                                                           firstDate: _model
                                                                   .datePicked5 ??
                                                               DateTime(2022),
@@ -1390,12 +1865,12 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                       ? null
                                       : () async {
                                           var dir =
-                                              await getApplicationDocumentsDirectory();
+                                              await getTemporaryDirectory();
                                           var content = await refillInfoPdf(
                                               _model.datePicked5!,
                                               _model.datePicked6!);
-                                          var savedPath =
-                                              path.join(dir.path, "sample.pdf");
+                                          var savedPath = path.join(dir.path,
+                                              generateRandomFileName('pdf'));
                                           await WebcontentConverter
                                               .contentToPDF(
                                                   content: content,
@@ -1404,13 +1879,8 @@ class _ReportListWidgetState extends State<ReportListWidget> {
                                                       width: 16.54),
                                                   savedPath: savedPath);
                                           var file = File(savedPath);
-                                          context.pushNamed(
-                                            'pdfPreview',
-                                            queryParams: {
-                                              'data': base64Encode(
-                                                  file.readAsBytesSync())
-                                            }.withoutNulls,
-                                          );
+                                          context.pushNamed('pdfPreview',
+                                              queryParams: {'path': file.path});
                                         },
                                   text: 'View',
                                   options: FFButtonOptions(

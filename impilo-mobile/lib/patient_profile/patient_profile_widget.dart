@@ -4,7 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/refill.dart';
 import 'package:impilo/main.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 import '/components/discontinue_service_widget.dart';
@@ -16,8 +15,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'patient_profile_model.dart';
 
 export 'patient_profile_model.dart';
-
-final log = Logger('PatientProfile');
 
 class PatientProfileWidget extends StatefulWidget {
   const PatientProfileWidget({
@@ -49,6 +46,13 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
       setState(() {
         _model.patient = patient;
       });
+      var refills = await getRefill(_model.patient?.uuid ?? '');
+
+      if (refills.isNotEmpty) {
+        setState(() {
+          _model.nextRefillDate = refills.first.dateNextRefill;
+        });
+      }
       await actions.updateStockAvailability(
         _model.patient!.assignedRegimen!,
       );
@@ -100,7 +104,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
           },
         ),
         title: Text(
-          'Patient profile',
+          'Patient Profile',
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: FlutterFlowTheme.of(context).title2Family,
                 color: Colors.white,
@@ -286,7 +290,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                   ),
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        5, 30, 0, 0),
+                                        5, 40, 0, 0),
                                     child: Text(
                                       _model.patient?.assignedRegimen ?? '',
                                       style: FlutterFlowTheme.of(context)
@@ -307,90 +311,58 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                 ],
                               ),
                             ),
-                            if (!(_model.patient?.serviceDiscontinued ?? false))
-                              InkWell(
-                                onTap: () async {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    enableDrag: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding:
-                                            MediaQuery.of(context).viewInsets,
-                                        child: DiscontinueServiceWidget(
-                                          patient: _model.patient,
-                                        ),
-                                      );
-                                    },
-                                  ).then((value) => setState(() {
-                                        if (value != null && value ?? false) {
-                                          _model.patient!.serviceDiscontinued =
-                                              true;
-                                        }
-                                      }));
-                                },
-                                child: Container(
-                                  height: 32,
-                                  constraints: BoxConstraints(
-                                    maxHeight: 32,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryColor,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 4,
-                                        color: Color(0x32171717),
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        8, 0, 8, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 12, 0),
-                                          child: Text(
-                                            'Discontinue',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyText1
-                                                .override(
-                                                  fontFamily:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyText1Family,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryBtnText,
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family),
-                                                ),
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.cancel_outlined,
-                                          color: Colors.white,
-                                          size: 12,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                if (!(_model.patient?.serviceDiscontinued ??
+                                    false))
+                                  PopupMenuButton(
+                                      child: Icon(Icons.more_vert),
+                                      onSelected: (value) async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return Padding(
+                                              padding: MediaQuery.of(context)
+                                                  .viewInsets,
+                                              child: DiscontinueServiceWidget(
+                                                patient: _model.patient,
+                                              ),
+                                            );
+                                          },
+                                        ).then((value) => setState(() {
+                                              if (value != null && value ??
+                                                  false) {
+                                                _model.patient!
+                                                    .serviceDiscontinued = true;
+                                              }
+                                            }));
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry>[
+                                            PopupMenuItem(
+                                              value: 'discontinue',
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8.0),
+                                                    child:
+                                                        Icon(Icons.stop_circle),
+                                                  ),
+                                                  Text(
+                                                    'Discontinue',
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ]),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -444,7 +416,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Container(
-                                          width: 120,
+                                          width: 150,
                                           height: 20,
                                           decoration: BoxDecoration(),
                                           child: Text(
@@ -480,7 +452,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Container(
-                                          width: 120,
+                                          width: 150,
                                           height: 20,
                                           decoration: BoxDecoration(),
                                           child: Text(
@@ -522,7 +494,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Container(
-                                          width: 120,
+                                          width: 150,
                                           height: 20,
                                           decoration: BoxDecoration(),
                                           child: Text(
@@ -553,6 +525,43 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                                   ? null
                                                   : _model.patient
                                                       ?.nextAppointmentDate),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1,
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Container(
+                                          width: 150,
+                                          height: 20,
+                                          decoration: BoxDecoration(),
+                                          child: Text(
+                                            'Next Refill Date',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyText1Family,
+                                                  fontWeight: FontWeight.w500,
+                                                  useGoogleFonts: GoogleFonts
+                                                          .asMap()
+                                                      .containsKey(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyText1Family),
+                                                ),
+                                          ),
+                                        ),
+                                        Text(
+                                          dateTimeFormat(
+                                              'yMMMd',
+                                              _model.nextRefillDate == null
+                                                  ? null
+                                                  : _model.nextRefillDate),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1,
                                         ),
@@ -600,36 +609,29 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                8, 0, 8, 0),
+                            padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment:
-                              MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
-                                  padding:
-                                  EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 0, 12, 0),
                                   child: Text(
-                                    'Refill patient',
+                                    'Refill Patient',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
-                                      fontFamily:
-                                      FlutterFlowTheme.of(
-                                          context)
-                                          .bodyText1Family,
-                                      color: FlutterFlowTheme.of(
-                                          context)
-                                          .primaryBtnText,
-                                      useGoogleFonts: GoogleFonts
-                                          .asMap()
-                                          .containsKey(
-                                          FlutterFlowTheme.of(
-                                              context)
-                                              .bodyText1Family),
-                                    ),
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText1Family,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryBtnText,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1Family),
+                                        ),
                                   ),
                                 ),
                                 Icon(
@@ -644,13 +646,13 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                       ),
                     ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(16, 20, 16, 0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Refill history',
+                          'Refill History',
                           style: FlutterFlowTheme.of(context).subtitle2,
                         ),
                       ],
@@ -868,7 +870,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                                                             locale:
                                                                                 '',
                                                                           ) +
-                                                                          ' bottles',
+                                                                          ' bottle(s)',
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyText1
@@ -915,7 +917,7 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                                                                             locale:
                                                                                 '',
                                                                           ) +
-                                                                          ' bottles',
+                                                                          ' bottle(s)',
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyText1

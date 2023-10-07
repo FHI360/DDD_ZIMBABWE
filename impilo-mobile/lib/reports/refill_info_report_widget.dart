@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:impilo/backend/floor/dao/refill_dao.dart';
+import 'package:impilo/custom_code/init_cap.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 import '../main.dart';
@@ -31,7 +32,7 @@ Future<String> refillInfoPdf(DateTime start, DateTime end) async {
             <th scope="col" colspan="2" class="text-center">Date of Birth</th>
             <th scope="col" class="text-center">Sex</th>
             <th scope="col" colspan="4" class="text-center">Regimen</th>
-            <th scope="col" class="text-center">Duration</th>
+            <th scope="col" class="text-center">Qty (bottle(s))</th>
             <th scope="col" colspan="2" class="text-center">Last Refill</th>
             <th scope="col" colspan="2" class="text-center">Next Appointment</th>
         </tr>
@@ -44,17 +45,28 @@ Future<String> refillInfoPdf(DateTime start, DateTime end) async {
         <th scope="row">${i + 1}</th>
         <td class="justify-content-start" colspan="4">${e.givenName} ${e.familyName}</td>
         <td class="justify-content-start" colspan="3">${e.hospitalNo}</td>
-        <td class="justify-content-start" colspan="2">${dateTimeFormat('yMMMd', e.dateOfBirth)}</td>
-        <td class="justify-content-start">${e.sex}</td>
+        <td colspan="2">
+          <span class="d-flex justify-content-end">
+            ${dateTimeFormat('yMMMd', e.dateOfBirth)}
+          </span>
+        </td>
+        <td class="justify-content-start">${capitalizeFirstLetter(e.sex)}</td>
         <td class="justify-content-start" colspan="4">${e.regimen}</td>
-        <td class="justify-content-start">${formatNumber(
-      e.quantity,
-      formatType: FormatType.custom,
-      format: '#,##0',
-      locale: '',
-    )}</td>
-        <td class="justify-content-start" colspan="2">${dateTimeFormat('yMMMd', e.date)}</td>
-        <td class="justify-content-start" colspan="2">${dateTimeFormat('yMMMd', e.dateNextRefill)}</td>
+        <td>
+          <span class="d-flex justify-content-end">
+            ${formatNumber(e.quantity,formatType: FormatType.custom,format: '#,##0')}
+          </span>
+        </td>
+        <td colspan="2">
+          <span class="d-flex justify-content-end">
+            ${dateTimeFormat('yMMMd', e.date)}
+          </span>
+        </td>
+        <td colspan="2">
+          <span class="d-flex justify-content-end">
+            ${dateTimeFormat('yMMMd', e.dateNextRefill)}
+          </span>
+        </td>
       </tr>
     ''';
   });

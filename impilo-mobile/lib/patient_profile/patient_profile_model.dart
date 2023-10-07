@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 class PatientProfileModel extends FlutterFlowModel {
   /// Initialization and disposal methods.
   Patient? patient;
+  DateTime? nextRefillDate;
 
   void initState(BuildContext context) {}
 

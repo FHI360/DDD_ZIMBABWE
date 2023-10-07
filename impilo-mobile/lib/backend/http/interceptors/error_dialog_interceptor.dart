@@ -11,6 +11,18 @@ class ErrorDialogInterceptor extends Interceptor {
 
   @override
   onError(DioError err, ErrorInterceptorHandler handler) async {
+
+    if(err.response == null) {
+      showToast(
+        'A error occurred communicating with server; please check your connection',
+        duration: Duration(seconds: 2),
+        position: ToastPosition.bottom,
+        backgroundColor: Colors.redAccent,
+        radius: 1.0,
+        textStyle: TextStyle(fontSize: 15.0),
+      );
+      return super.onError(err, handler);
+    }
     final data = err.response?.data;
 
     final refreshToken = FFAppState().refreshToken;

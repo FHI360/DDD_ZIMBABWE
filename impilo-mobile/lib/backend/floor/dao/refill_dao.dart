@@ -6,12 +6,12 @@ import '../entities/devolve.dart';
 @DatabaseView('''
 WITH Estimated AS (
 	SELECT * FROM (
-		SELECT quantityDispensed, regimen, dateNextRefill, patientId, siteCode,
+		SELECT quantityPrescribed, regimen, dateNextRefill, patientId, siteCode,
 			ROW_NUMBER() OVER(PARTITION BY patientId ORDER BY dateNextRefill DESC) rn 
 		FROM Refill JOIN Patient p ON patientId = p.uuid	
 	) e WHERE rn = 1
 )
-SELECT regimen, siteCode, SUM(quantityDispensed) qty, dateNextRefill 
+SELECT regimen, siteCode, SUM(quantityPrescribed) qty, dateNextRefill 
   FROM Estimated GROUP BY regimen, siteCode, dateNextRefill
 ''', viewName: 'EstimatedRefill')
 class EstimatedRefill {
@@ -77,7 +77,7 @@ abstract class RefillDao {
   @Query('SELECT * FROM Refill where synced = false')
   Future<List<Refill>> findUnSynced();
 
-  @Query('SELECT * FROM Refill WHERE patientId = :patientId')
+  @Query('SELECT * FROM Refill WHERE patientId = :patientId ORDER BY date DESC LIMIT 3')
   Future<List<Refill>> findByPatient(String patientId);
 
   @Query('SELECT * FROM Refill WHERE patientId = :patientId AND date = :date')
@@ -119,6 +119,9 @@ abstract class RefillDao {
   ''')
   Future<BarcodeDispense?> barcodeQuantity(
       String siteCode, String regimen, String barcode);
+
+  @Query("delete from Refill")
+  Future<void> deleteAll();
 }
 
 

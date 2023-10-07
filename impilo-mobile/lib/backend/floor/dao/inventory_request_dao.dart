@@ -39,4 +39,7 @@ abstract class InventoryRequestDao {
 
   @Query('SELECT * FROM InventoryRequest where synced = 0')
   Future<List<InventoryRequest>> findUnSynced();
+
+  @Query("delete from InventoryRequest")
+  Future<void> deleteAll();
 }
