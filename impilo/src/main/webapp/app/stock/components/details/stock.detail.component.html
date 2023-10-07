@@ -27,7 +27,7 @@
                             (click)="toggleEditMode(true)">
                             <mat-icon
                                 class="icon-size-5"
-                                [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                                [svgIcon]="'heroicons_outline:pencil-square'"></mat-icon>
                             <span class="ml-2">{{'IMPILO.STOCK.DETAIL_PAGE.EDIT' | transloco}}</span>
                         </button>
                     </div>
@@ -38,7 +38,7 @@
                         {{'IMPILO.STOCK.LIST_PAGE.DATE' | transloco}}
                     </div>
                     <div class="font-semibold leading-none text-gray-800 col-span-2">
-                        {{formGroup.getRawValue()['date'] | dateTimeToFormat:'dd LLL yyyy' : langKey}}
+                        {{formGroup.getRawValue()['date'] | dateTimeToFormat:'dd LLL yyyy HH:mm' : langKey}}
                     </div>
                     <div class="text-sm font-medium leading-none text-gray-400">
                         {{'IMPILO.STOCK.LIST_PAGE.REGIMEN' | transloco}}

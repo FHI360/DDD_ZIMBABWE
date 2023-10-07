@@ -13,6 +13,7 @@ export interface StockIssuance {
     expirationDate?: DateTime;
     regimen?: string;
     issued?: number;
+    balance?: number;
     acknowledged?: boolean;
     site?: OrgUnit;
     facility?: OrgUnit;
@@ -91,7 +92,7 @@ export class StockIssuanceService {
 
     convertFromClient(stock: StockIssuance) {
         return Object.assign({}, stock, {
-            date: !!stock.date ? stock.date.toISODate() : null
+            date: !!stock.date ? stock.date.toISO({includeOffset: false}) : null
         });
     }
 

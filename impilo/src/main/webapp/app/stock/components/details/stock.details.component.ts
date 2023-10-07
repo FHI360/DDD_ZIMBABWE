@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { StockListComponent } from '../list/stock-list.component';
 import { catchError, EMPTY, map } from 'rxjs';
-import { StockService } from '../../stock.service';
+import { Stock, StockService } from '../../stock.service';
 import { DateTime } from 'luxon';
 import { FuseAlertType } from '@mattae/angular-shared';
 import { TranslocoService } from '@ngneat/transloco';
@@ -33,7 +33,7 @@ export class StockDetailsComponent implements OnInit {
     constructor(private _stockService: StockService,
                 private _activatedRoute: ActivatedRoute,
                 private _changeDetectorRef: ChangeDetectorRef,
-                private fb: UntypedFormBuilder,
+                private fb: FormBuilder,
                 private _router: Router,
                 private _dateAdapter: DateAdapter<any>,
                 private _translocoService: TranslocoService,
@@ -46,9 +46,9 @@ export class StockDetailsComponent implements OnInit {
             bottles: [null, Validators.required],
             serialNo: ['', Validators.required],
             batchNo: ['', Validators.required],
-            manufactureDate: [],
-            expirationDate: [],
-            batchIssuanceId: []
+            manufactureDate: [null, Validators.required],
+            expirationDate: [null, Validators.required],
+            batchIssuanceId: ['', Validators.required]
         });
     }
 
@@ -106,7 +106,6 @@ export class StockDetailsComponent implements OnInit {
             this._stockService.update(stock).pipe(
                 map(res => {
                     this.editMode = false;
-                    this.formGroup.patchValue(res);
                     this._changeDetectorRef.markForCheck();
                 }),
                 catchError(err => {

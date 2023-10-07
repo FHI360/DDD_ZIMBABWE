@@ -12,7 +12,8 @@ import java.util.UUID;
 
 @Repository
 public interface ClinicDataRepository extends JpaRepository<ClinicData, UUID> {
-    List<ClinicData> findBySyncedIsFalse();
+    @Query("select r from ClinicData r where true = ?1 or r.synced = false ")
+    List<ClinicData> findForSync(boolean all);
 
     @Modifying
     @Query("UPDATE ClinicData SET synced = true WHERE synced = false")

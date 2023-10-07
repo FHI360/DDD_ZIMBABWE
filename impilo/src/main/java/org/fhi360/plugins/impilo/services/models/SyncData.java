@@ -21,4 +21,5 @@ public class SyncData {
     private List<Devolve> devolves;
     private List<InventoryRequest> requests;
     private List<UUID> acknowledgements;
+    private List<Inventory> inventories;
 }

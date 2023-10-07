@@ -158,6 +158,8 @@ public class Patient {
                        LocalDate lastClinicVisit,
                        @MappingSubquery(DateOfNextRefillSubqueryProvider.class)
                        LocalDate nextRefillDate,
+                       @MappingSubquery(PatientPrescribedQuantityProvide.class)
+                       Integer prescribedQty,
                        @MappingSubquery(PatientSiteCodeSubqueryProvider.class)
                        UUID siteCode,
                        @MappingSubquery(PatientSiteNameSubqueryProvider.class)

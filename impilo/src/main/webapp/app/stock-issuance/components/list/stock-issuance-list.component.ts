@@ -30,7 +30,7 @@ export class StockIssuanceListComponent implements OnInit, OnDestroy {
         {
             label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.DATE',
             property: 'date',
-            type: 'date',
+            type: 'datetime',
             visible: true,
             cssClasses: ['font-medium']
         },
@@ -58,6 +58,13 @@ export class StockIssuanceListComponent implements OnInit, OnDestroy {
         {
             label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.ISSUED',
             property: 'bottles',
+            type: 'number',
+            visible: true,
+            cssClasses: ['font-medium']
+        },
+        {
+            label: 'IMPILO.STOCK_ISSUANCE.LIST_PAGE.BALANCE',
+            property: 'balance',
             type: 'number',
             visible: true,
             cssClasses: ['font-medium']
@@ -170,7 +177,7 @@ export class StockIssuanceListComponent implements OnInit, OnDestroy {
 
 
     listStockIssuance(keyword?: any): void {
-        this._stockIssuanceService.list(keyword).subscribe(res => {
+        this._stockIssuanceService.list(keyword, this.paginator.pageIndex, this.paginator.pageSize).subscribe(res => {
             this.dataSource.data = res.data;
             this.paginator.length = res.totalSize;
 

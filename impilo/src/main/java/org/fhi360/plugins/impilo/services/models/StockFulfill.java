@@ -10,11 +10,13 @@ import java.util.UUID;
 @Setter
 public class StockFulfill {
     String regimen;
-    Long bottles;
+    Integer bottles;
+    Integer balance;
     String batchNo;
     String barcode;
     LocalDate expirationDate;
     UUID reference;
     UUID requestReference;
     String batchIssueId;
+    Boolean acknowledged;
 }

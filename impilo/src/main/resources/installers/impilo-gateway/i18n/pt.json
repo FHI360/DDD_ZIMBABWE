@@ -3,11 +3,11 @@
     "MENU": {
       "PATIENTS": "Pacientes",
       "STOCKS": "Ações",
-      "STOCK_ISSUANCE": "emissão de ações",
+      "STOCK_ISSUANCE": "Emissão de ações",
       "STOCK_REQUEST": "Solicitação de ações",
       "REPORTS": {
         "TITLE": "Relatórios",
-        "INDICATORS": "Relatório de indicadores"
+        "INDICATORS": "Relatório de Indicadores"
       },
       "SYNC": "Sincronização"
     },
@@ -16,8 +16,8 @@
       "STOCK": "Detalhes do estoque",
       "ADD_STOCK": "Adicionar detalhes do estoque",
       "STOCK_ISSUANCE_LIST": "Lista de emissão de ações",
-      "STOCK_ISSUANCE": "Detalhes da emissão de ações",
-      "ADD_STOCK_ISSUANCE": "Emissão de ações recorde",
+      "STOCK_ISSUANCE": "Detalhes de emissão de ações",
+      "ADD_STOCK_ISSUANCE": "Emissão de ações recordes",
       "PATIENTS": "Pacientes",
       "STOCK_REQUEST": "Solicitação de ações",
       "REPORTS": "Relatório de Indicadores do OFCAD",
@@ -28,7 +28,7 @@
         "TITLE": "Lista de ações",
         "ADD": "Adicionar estoque",
         "SEARCH": "Procurar...",
-        "DATE": "Data gravada",
+        "DATE": "Data de gravação",
         "NO_DATA": "Nenhum dado de estoque disponível",
         "FACILITY": "Estabelecimento de saúde",
         "REGIMEN": "Medicamento ARV",
@@ -37,7 +37,8 @@
         "BALANCE": "Equilíbrio",
         "BATCH_NO": "Lote N º",
         "EXPIRATION_DATE": "Data de validade",
-        "BATCH_ISSUANCE_ID": "ID de emissão de lote"
+        "BATCH_ISSUANCE_ID": "ID de emissão de lote",
+        "SEARCH_HINT": "Pesquise por regime, número de lote ou número de série"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Data de validade",
@@ -60,7 +61,7 @@
     "STOCK_ISSUANCE": {
       "LIST_PAGE": {
         "TITLE": "Lista de emissão de ações",
-        "ADD": "Emitir ações",
+        "ADD": "Emitir estoque",
         "SEARCH": "Procurar...",
         "DATE": "Data de emissão",
         "NO_DATA": "Não há dados de emissão de ações disponíveis",
@@ -70,7 +71,9 @@
         "ISSUED": "Garrafas emitidas",
         "BATCH_NO": "Lote N º",
         "EXPIRATION_DATE": "Data de validade",
-        "ACKNOWLEDGED": "Reconhecido"
+        "ACKNOWLEDGED": "Reconhecido",
+        "SEARCH_HINT": "Pesquise por regime, número de lote ou número de série",
+        "BALANCE": "Saldo de estoque"
       },
       "DETAIL_PAGE": {
         "BARCODE": "código de barras",
@@ -86,7 +89,7 @@
         "SITE_REQUIRED": "O site do OFCAD é obrigatório",
         "STOCK": "entrada de estoque",
         "STOCK_REQUIRED": "Entrada de estoque é necessária",
-        "BALANCE": "saldo de estoque",
+        "BALANCE": "Saldo de estoque",
         "EDIT": "Editar"
       }
     },
@@ -95,21 +98,22 @@
       "FAMILY_NAME": "Sobrenome",
       "ASSIGNED_REGIMEN": "Medicamento ARV atribuído",
       "SEX": "Sexo",
-      "HOSPITAL_NUMBER": "número do hospital",
+      "HOSPITAL_NUMBER": "Número do Hospital",
       "UNIQUE_ID": "Identificador único",
       "SITE": "Local OFCAD",
       "DEVOLVED": "Devolvido",
-      "NOT_DEVOLVED": "Não descentralizado",
+      "NOT_DEVOLVED": "Não Devoluído",
       "ALL": "Todos os pacientes",
       "SEARCH": "Procurar...",
       "NO_DATA": "Nenhum dado do paciente disponível",
       "TITLE": "Pacientes",
       "FACILITY": "Instalação",
-      "ACTIONS": ""
+      "ACTIONS": "",
+      "SEARCH_HINT": "Pesquise por nomes ou número de hospital"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
-        "TITLE": "lista de pedidos de estoque",
+        "TITLE": "Lista de Solicitação de Estoque",
         "DATE": "Data requerida",
         "NO_DATA": "Nenhum dado de solicitação de estoque disponível",
         "SITE": "Local OFCAD",

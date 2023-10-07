@@ -27,7 +27,13 @@ export class StockListComponent implements OnInit, OnDestroy {
     orgType: string;
 
     columns: any[] = [
-        {label: 'IMPILO.STOCK.LIST_PAGE.DATE', property: 'date', type: 'date', visible: true, cssClasses: ['font-medium']},
+        {
+            label: 'IMPILO.STOCK.LIST_PAGE.DATE',
+            property: 'date',
+            type: 'datetime',
+            visible: true,
+            cssClasses: ['font-medium']
+        },
         {
             label: 'IMPILO.STOCK.LIST_PAGE.FACILITY',
             property: 'facility',
@@ -122,6 +128,7 @@ export class StockListComponent implements OnInit, OnDestroy {
         this._activatedRoute.data.subscribe(({stocks}) => {
             this.dataSource.data = stocks.data;
             this.paginator.length = stocks.totalSize;
+
             this._changeDetectorRef.markForCheck();
         });
 
@@ -165,7 +172,7 @@ export class StockListComponent implements OnInit, OnDestroy {
 
 
     listStock(keyword?: any): void {
-        this._stockService.list(keyword).subscribe(res => {
+        this._stockService.list(keyword, this.paginator.pageIndex, this.paginator.pageSize).subscribe(res => {
             this.dataSource.data = res.data;
             this.paginator.length = res.totalSize;
 

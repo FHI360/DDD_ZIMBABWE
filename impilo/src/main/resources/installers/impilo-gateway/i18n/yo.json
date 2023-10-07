@@ -3,47 +3,48 @@
     "MENU": {
       "PATIENTS": "Awọn alaisan",
       "STOCKS": "Ọjà",
-      "STOCK_ISSUANCE": "Ipinfunni awọn ọja",
-      "STOCK_REQUEST": "Akojopo ìbéèrè",
+      "STOCK_ISSUANCE": "Iṣura Iṣura",
+      "STOCK_REQUEST": "Ibeere iṣura",
       "REPORTS": {
         "TITLE": "Iroyin",
-        "INDICATORS": "Iroyin afihan"
+        "INDICATORS": "Atọka Iroyin"
       },
       "SYNC": "Amuṣiṣẹpọ"
     },
     "TITLE": {
       "STOCKS": "Ọjà",
-      "STOCK": "Awọn alaye iṣura",
-      "ADD_STOCK": "Ṣafikun awọn alaye Iṣura",
-      "STOCK_ISSUANCE_LIST": "Akojọ ipinfunni iṣura",
-      "STOCK_ISSUANCE": "Awọn alaye ipinfunni iṣura",
-      "ADD_STOCK_ISSUANCE": "Igbasilẹ ipinfunni iṣura",
+      "STOCK": "Iṣura Awọn alaye",
+      "ADD_STOCK": "Fi Awọn alaye Iṣura",
+      "STOCK_ISSUANCE_LIST": "Iṣura ipinfunni Akojọ",
+      "STOCK_ISSUANCE": "Awọn alaye Iṣura Iṣura",
+      "ADD_STOCK_ISSUANCE": "Igbasilẹ Iṣura Ipinfunni",
       "PATIENTS": "Awọn alaisan",
-      "STOCK_REQUEST": "Akojopo ìbéèrè",
+      "STOCK_REQUEST": "Ibeere iṣura",
       "REPORTS": "OFCAD Ifi Iroyin",
-      "PATIENT_DETAILS": "Awọn alaye alaisan"
+      "PATIENT_DETAILS": "Awọn alaye Alaisan"
     },
     "STOCK": {
       "LIST_PAGE": {
-        "TITLE": "Akojọ iṣura",
-        "ADD": "Fi ọja kun",
+        "TITLE": "Iṣura Akojọ",
+        "ADD": "Fi Iṣura",
         "SEARCH": "Wa...",
-        "DATE": "Ọjọ ti o gbasilẹ",
+        "DATE": "Ọjọ Gbigbasilẹ",
         "NO_DATA": "Ko si data ọja to wa",
-        "FACILITY": "Ilera ohun elo",
+        "FACILITY": "Ilera Ilera",
         "REGIMEN": "Oògùn ARV",
         "BOTTLES": "Iṣura akọkọ",
-        "ISSUED": "Qty ti jade",
+        "ISSUED": "Qty Ti jade",
         "BALANCE": "Iwontunwonsi",
         "BATCH_NO": "Ipele No",
         "EXPIRATION_DATE": "Ojo ipari",
-        "BATCH_ISSUANCE_ID": "Ipele Ipinfunni ID"
+        "BATCH_ISSUANCE_ID": "Ipele Ipinfunni ID",
+        "SEARCH_HINT": "Ṣewadii nipasẹ ilana ijọba, nọmba ipele tabi nọmba ni tẹlentẹle"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Ojo ipari",
         "EXPIRATION_DATE_MIN": "Ọjọ ipari ti o kere julọ jẹ loni",
         "MANUFACTURE_DATE": "Ọjọ iṣelọpọ",
-        "MANUFACTURE_DATE_MAX": "O pọju ọjọ ManUFacture jẹ loni",
+        "MANUFACTURE_DATE_MAX": "Ọjọ iṣelọpọ ti o pọju jẹ loni",
         "REGIMEN_REQUIRED": "Oògùn ARV nilo",
         "BOTTLES_REQUIRED": "Nọmba awọn igo ni a nilo",
         "BOTTLES_MIN": "Nọmba ti o kere ju ti awọn igo jẹ 1",
@@ -59,25 +60,27 @@
     },
     "STOCK_ISSUANCE": {
       "LIST_PAGE": {
-        "TITLE": "Akojọ ipinfunni iṣura",
-        "ADD": "Ọja iṣura",
+        "TITLE": "Iṣura ipinfunni Akojọ",
+        "ADD": "Iṣura Iṣura",
         "SEARCH": "Wa...",
         "DATE": "Ọjọ ti a jade",
         "NO_DATA": "Ko si data oro ọja to wa",
-        "FACILITY": "Ilera ohun elo",
+        "FACILITY": "Ilera Ilera",
         "SITE": "Aaye OFCAD",
         "REGIMEN": "Oògùn ARV",
-        "ISSUED": "Igo ti oniṣowo",
+        "ISSUED": "Awọn igo Ti a gbejade",
         "BATCH_NO": "Ipele No",
         "EXPIRATION_DATE": "Ojo ipari",
-        "ACKNOWLEDGED": "Ti gbawọ"
+        "ACKNOWLEDGED": "Ti gbawọ",
+        "SEARCH_HINT": "Ṣewadii nipasẹ ilana ijọba, nọmba ipele tabi nọmba ni tẹlentẹle",
+        "BALANCE": "Iṣura Iwontunws.funfun"
       },
       "DETAIL_PAGE": {
         "BARCODE": "kooduopo",
         "EXPIRATION_DATE": "Ojo ipari",
         "EXPIRATION_DATE_MIN": "Ọjọ ipari ti o kere julọ jẹ loni",
-        "MANUFACTURE_DATE": "ManUFacture ọjọ",
-        "MANUFACTURE_DATE_MAX": "O pọju ọjọ ManUFacture jẹ loni",
+        "MANUFACTURE_DATE": "Ọjọ iṣelọpọ",
+        "MANUFACTURE_DATE_MAX": "Ọjọ iṣelọpọ ti o pọju jẹ loni",
         "ISSUED": "Igo ti oniṣowo",
         "ISSUED_REQUIRED": "Nọmba awọn igo ni a nilo",
         "ISSUED_MIN": "Nọmba ti o kere ju ti awọn igo jẹ 1",
@@ -86,7 +89,7 @@
         "SITE_REQUIRED": "OFCAD Aaye wa ni ti beere",
         "STOCK": "Iṣura titẹsi",
         "STOCK_REQUIRED": "Ti beere fun titẹsi iṣura",
-        "BALANCE": "Iwontunws.funfun iṣura",
+        "BALANCE": "Iṣura Iwontunws.funfun",
         "EDIT": "Ṣatunkọ"
       }
     },
@@ -95,21 +98,22 @@
       "FAMILY_NAME": "Oruko idile",
       "ASSIGNED_REGIMEN": "Oògùn ARV ti a sọtọ",
       "SEX": "Ibalopo",
-      "HOSPITAL_NUMBER": "Nọmba ile iwosan",
+      "HOSPITAL_NUMBER": "Nọmba Ile-iwosan",
       "UNIQUE_ID": "Oto idamo",
       "SITE": "Aaye OFCAD",
       "DEVOLVED": "Iyasọtọ",
-      "NOT_DEVOLVED": "Ko ṣe iyasọtọ",
+      "NOT_DEVOLVED": "Ko Ifiranṣẹ",
       "ALL": "Gbogbo awọn alaisan",
       "SEARCH": "Wa...",
       "NO_DATA": "Ko si data alaisan ti o wa",
       "TITLE": "Awọn alaisan",
       "FACILITY": "Ohun elo",
-      "ACTIONS": ""
+      "ACTIONS": "",
+      "SEARCH_HINT": "Ṣewadii nipasẹ awọn orukọ tabi nọmba ile-iwosan"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
-        "TITLE": "Iṣura Ibeere akojọ",
+        "TITLE": "Iṣura ìbéèrè Akojọ",
         "DATE": "Ọjọ ti a beere",
         "NO_DATA": "Ko si data ibeere ọja to wa",
         "SITE": "Aaye OFCAD",
@@ -165,10 +169,10 @@
       }
     },
     "PATIENT": {
-      "REFILL_HISTORY": "Ṣatunkun itan",
-      "NEXT_REFILL": "Nigbamii ti ṣatunkun ọjọ",
-      "LAST_REFILL": "Ọjọ ipari ti o kẹhin",
-      "REFILL_DURATION": "Atunkun iye akoko",
+      "REFILL_HISTORY": "Ṣatunkun Itan",
+      "NEXT_REFILL": "Next Ọjọ Atunkun",
+      "LAST_REFILL": "Kẹhin Ṣatunkun Ọjọ",
+      "REFILL_DURATION": "Atunkun Duration",
       "REFILL_DAYS": "{{days}} Ọjọ",
       "DEVOLVE": "Devolve alaisan"
     },

@@ -428,4 +428,27 @@
     <changeSet id="202306062304-07" author="mattae">
         <dropNotNullConstraint tableName="imp_stock" columnName="manufacture_date"/>
     </changeSet>
+
+    <changeSet id="202310031404-01" author="mattae">
+        <modifyDataType tableName="imp_stock" columnName="date" newDataType="timestamp"/>
+        <modifyDataType tableName="imp_stock_request" columnName="date" newDataType="timestamp"/>
+        <modifyDataType tableName="imp_stock_issuance" columnName="date" newDataType="timestamp"/>
+    </changeSet>
+
+    <changeSet id="202310051206-01" author="mattae">
+        <addColumn tableName="imp_stock_issuance">
+            <column name="balance" type="int" defaultValueComputed="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="202310051206-02" author="mattae">
+        <addColumn tableName="imp_prescription">
+            <column name="prescribed_qty" type="int" defaultValueComputed="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

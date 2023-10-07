@@ -74,6 +74,15 @@ public class MobileSyncService {
             });
         }
 
+        if (data.getInventories() != null) {
+            data.getInventories().forEach(inventory -> {
+                stockIssuanceRepository.findByReference(inventory.getReference()).ifPresent(stockIssuance -> {
+                    stockIssuance.setBalance(inventory.getBalance());
+                    stockIssuanceRepository.save(stockIssuance);
+                });
+            });
+        }
+
         return true;
     }
 }

@@ -2,14 +2,13 @@ package org.fhi360.plugins.impilo.services;
 
 import com.aspose.cells.*;
 import com.blazebit.persistence.view.EntityViewManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mattae.snl.plugins.security.extensions.AuthenticationServiceExtension;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.services.ExtensionService;
 import jakarta.persistence.EntityManager;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class IndicatorsReportService {
     private final EntityManager em;
     private final EntityViewManager evm;
@@ -47,7 +47,7 @@ public class IndicatorsReportService {
             case "ot" -> value = data.get(facility).get(outlet).get(targetGroup).get(0).ot;
         }
 
-        return value;
+        return value != null ? value: 0;
     }
 
     public static Long getValue(Map<String, Map<String, List<DataElement>>> data,
@@ -65,7 +65,7 @@ public class IndicatorsReportService {
             case "ot" -> value = data.get(outlet).get(targetGroup).get(0).ot;
         }
 
-        return value;
+        return value != null ? value: 0;
     }
 
     public static Long getValue(Map<String, List<DataElement>> data,
@@ -80,7 +80,7 @@ public class IndicatorsReportService {
             case "ot" -> value = data.get(targetGroup).get(0).ot;
         }
 
-        return value;
+        return value != null ? value: 0;
     }
 
     public ByteArrayOutputStream generateReport(LocalDate startDate, LocalDate endDate) throws Exception {
@@ -295,11 +295,10 @@ public class IndicatorsReportService {
         String query = """
            WITH CurrentDevolve AS (
             	SELECT * FROM (
-            		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
+            		SELECT o.id, date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
                         ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id =
-                        d.organisation_id
-            		WHERE reason_discontinued IS NOT NULL AND o.id = ? AND date BETWEEN ? AND ?
-            	) d WHERE rn = 1
+                        d.organisation_id WHERE reason_discontinued IS NOT NULL AND date(date) BETWEEN ? AND ?
+            	) d WHERE rn = 1 AND id = ?
             ),
            Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -313,7 +312,7 @@ public class IndicatorsReportService {
            SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , start, end, orgId);
         return result.stream()
             .collect(Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup)));
     }
@@ -322,11 +321,11 @@ public class IndicatorsReportService {
         String query = """
             WITH CurrentDevolve AS (
             	SELECT * FROM (
-            		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
+            		SELECT f.id, date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
                         ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
                         JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id = p.organisation_id
-            		WHERE reason_discontinued IS NOT NULL AND f.id = ? AND date BETWEEN ? AND ?
-            	) d WHERE rn = 1
+            		WHERE reason_discontinued IS NOT NULL AND date(date) BETWEEN ? AND ?
+            	) d WHERE rn = 1 AND id = ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -342,7 +341,7 @@ public class IndicatorsReportService {
             GROUP BY 1 ORDER BY 1
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , start, end, orgId);
         return result.stream()
             .collect(Collectors.groupingBy(r -> r.outlet, Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup))));
     }
@@ -354,7 +353,7 @@ public class IndicatorsReportService {
             		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
                         ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
                         JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id = p.organisation_id
-            		WHERE reason_discontinued IS NOT NULL AND date BETWEEN ? AND ?
+            		WHERE reason_discontinued IS NOT NULL AND date(date) BETWEEN ? AND ?
             	) d WHERE rn = 1
             ),
             Appointment AS (
@@ -380,11 +379,10 @@ public class IndicatorsReportService {
         String query = """
             WITH Data AS (
                 SELECT * FROM (
-                    SELECT patient_Id, date, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
+                    SELECT o.id, patient_Id, date, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
                         ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON d.organisation_id
-                        = o.id
-                    WHERE d.organisation_id = ? AND date_Next_Refill BETWEEN ? AND ?
-                ) r WHERE rn = 1
+                        = o.id WHERE date_Next_Refill BETWEEN ? AND ?
+                ) r WHERE rn = 1 AND id = ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -399,7 +397,7 @@ public class IndicatorsReportService {
             SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , start, end, orgId);
         return result.stream()
             .collect(Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup)));
     }
@@ -408,11 +406,10 @@ public class IndicatorsReportService {
         String query = """
             WITH Data AS (
                 SELECT * FROM (
-                    SELECT d.patient_Id, date, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
+                    SELECT o.id, d.patient_Id, date, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
                         ORDER BY date DESC, d.id DESC) rn FROM imp_refill d RIGHT JOIN imp_patient p ON d.patient_id
-                        = p.id JOIN fw_organisation o ON d.organisation_id = o.id WHERE p.organisation_id = ? AND
-                    date_Next_Refill BETWEEN ? AND ?
-                ) r WHERE rn = 1
+                        = p.id JOIN fw_organisation o ON d.organisation_id = o.id WHERE date_Next_Refill BETWEEN ? AND ?
+                ) r WHERE rn = 1 AND id = ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -427,7 +424,7 @@ public class IndicatorsReportService {
             SELECT outlet, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss GROUP BY 1 ORDER BY 1
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , start, end, orgId);
         return result.stream()
             .collect(Collectors.groupingBy(r -> r.outlet, Collectors.groupingBy(a -> a.targetGroup)));
     }
@@ -464,10 +461,10 @@ public class IndicatorsReportService {
         String query = """
             WITH Data AS (
                 SELECT * FROM (
-                    SELECT o.name outlet, d.patient_id, date, ROW_NUMBER() OVER (PARTITION BY d.patient_Id ORDER BY
+                    SELECT o.id, o.name outlet, d.patient_id, date, ROW_NUMBER() OVER (PARTITION BY d.patient_Id ORDER BY
                         date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id = d.organisation_id WHERE
-                    organisation_id = ? AND date BETWEEN ? AND ?
-                ) r WHERE rn = 1
+                    date BETWEEN ? AND ?
+                ) r WHERE rn = 1 AND id = ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -482,7 +479,7 @@ public class IndicatorsReportService {
             SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , start, end, orgId);
         return result.stream()
             .collect(Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup)));
     }
@@ -491,11 +488,11 @@ public class IndicatorsReportService {
         String query = """
             WITH Data AS (
                 SELECT * FROM (
-                    SELECT o.name outlet, f.name facility, d.patient_id, date, ROW_NUMBER() OVER
-                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id =
-                        d.organisation_id JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id =
-                    p.organisation_id WHERE f.id = ? AND date BETWEEN ? AND ?
-                ) r WHERE rn = 1
+                    SELECT f.id, o.name outlet, f.name facility, d.patient_id, date, ROW_NUMBER() OVER
+                        (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o
+                        ON o.id = d.organisation_id JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id =
+                    p.organisation_id WHERE date BETWEEN ? AND ?
+                ) r WHERE rn = 1 AND id = ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -510,7 +507,7 @@ public class IndicatorsReportService {
             SELECT outlet, SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss GROUP BY 1 ORDER BY 1
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , start, end, orgId);
         return result.stream()
             .collect(Collectors.groupingBy(r -> r.outlet, Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup))));
     }
@@ -547,10 +544,10 @@ public class IndicatorsReportService {
         String query = """
             WITH Data AS (
                 SELECT * FROM (
-                    SELECT o.name outlet, d.patient_id, date_Next_Refill date, ROW_NUMBER() OVER (PARTITION BY d.patient_Id ORDER BY
-                        date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id = d.organisation_id WHERE
-                    organisation_id = ? AND date_Next_Refill BETWEEN ? AND ?
-                ) r WHERE rn = 1
+                    SELECT o.id, o.name outlet, d.patient_id, date_Next_Refill date, ROW_NUMBER() OVER
+                    (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o
+                    ON o.id = d.organisation_id WHERE date <= ?
+                ) r WHERE rn = 1 AND id = ? AND date BETWEEN ? AND ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -564,7 +561,7 @@ public class IndicatorsReportService {
             SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , end, orgId, start, end);
         return result.stream()
             .collect(Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup)));
     }
@@ -573,11 +570,11 @@ public class IndicatorsReportService {
         String query = """
             WITH Data AS (
                 SELECT * FROM (
-                    SELECT o.name outlet, f.name facility, d.patient_id, date_Next_Refill date, ROW_NUMBER() OVER
+                    SELECT f.id, o.name outlet, f.name facility, d.patient_id, date_Next_Refill date, ROW_NUMBER() OVER
                         (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id =
                         d.organisation_id JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id =
-                    p.organisation_id WHERE f.id = ? AND date_Next_Refill BETWEEN ? AND ?
-                ) r WHERE rn = 1
+                    p.organisation_id WHERE date <= ?
+                ) r WHERE id = ? AND rn = 1 AND date BETWEEN ? AND ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -593,7 +590,7 @@ public class IndicatorsReportService {
             GROUP BY 1 ORDER BY 1
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , end, orgId, start, end);
         return result.stream()
             .collect(Collectors.groupingBy(r -> r.outlet, Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup))));
     }
@@ -605,8 +602,8 @@ public class IndicatorsReportService {
                     SELECT o.name outlet, f.name facility, d.patient_id, date_Next_Refill date, ROW_NUMBER() OVER
                         (PARTITION BY d.patient_Id ORDER BY date DESC, d.id DESC) rn FROM imp_refill d JOIN fw_organisation o ON o.id =
                         d.organisation_id JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id =
-                    p.organisation_id WHERE date_Next_Refill BETWEEN ? AND ?
-                ) r WHERE rn = 1
+                    p.organisation_id WHERE date <= ?
+                ) r WHERE rn = 1 AND date BETWEEN ? AND ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -622,7 +619,7 @@ public class IndicatorsReportService {
             GROUP BY 1, 2 ORDER BY 2, 1
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , start, end);
+            , end, start, end);
         return result.stream()
             .collect(Collectors.groupingBy(r -> r.facility, Collectors.groupingBy(r -> r.outlet,
                 Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup)))));
@@ -632,10 +629,10 @@ public class IndicatorsReportService {
         String query = """
             WITH CurrentDevolve AS (
             	SELECT * FROM (
-            		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
+            		SELECT o.id. date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
                         ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
-            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND o.id = ? AND date(date) BETWEEN ? AND ?
-            	) d WHERE rn = 1
+            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND date(date) BETWEEN ? AND ?
+            	) d WHERE rn = 1 AND id = ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -649,7 +646,7 @@ public class IndicatorsReportService {
             SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , start, end, orgId);
         return result.stream()
             .collect(Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup)));
     }
@@ -658,11 +655,11 @@ public class IndicatorsReportService {
         String query = """
             WITH CurrentDevolve AS (
             	SELECT * FROM (
-            		SELECT date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
+            		SELECT f.id, date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
                         ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id = d.organisation_id
                         JOIN imp_patient p ON p.id = d.patient_id JOIN fw_organisation f ON f.id = p.organisation_id
-            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND f.id = ? AND date(date) BETWEEN ? AND ?
-            	) d WHERE rn = 1
+            		WHERE (reason_discontinued IS NULL OR reason_discontinued = '') AND date(date) BETWEEN ? AND ?
+            	) d WHERE rn = 1 AND id = ?
             ),
             Appointment AS (
             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
@@ -678,7 +675,7 @@ public class IndicatorsReportService {
             GROUP BY 1 ORDER BY 1
             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
-            , orgId, start, end);
+            , start, end, orgId);
         return result.stream()
             .collect(Collectors.groupingBy(r -> r.outlet, Collectors.groupingBy(r -> StringUtils.trimToEmpty(r.targetGroup))));
     }
@@ -764,6 +761,7 @@ public class IndicatorsReportService {
         return rowOffset;
     }
 
+    @SneakyThrows
     private int buildDisaggregations(Worksheet sheet,
                                      int rowOffset,
                                      int columnOffset,
@@ -771,7 +769,7 @@ public class IndicatorsReportService {
                                      String outlet,
                                      Collection<String> targetGroups,
                                      Map<String, Object> data) {
-
+LOG.info("Data: {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(data));
         int headerRow = rowOffset;
         sheet.getCells().insertRow(rowOffset);
         sheet.getCells().insertRow(++rowOffset);
@@ -814,12 +812,13 @@ public class IndicatorsReportService {
             cell = row.get(headerColumn + 2);
             cell.setValue("Total >15");
             sheet.getCells().merge(headerRow, headerColumn, 1, 3);
-            List<String> reportTypes = List.of("appointments", "missedAppointments", "refills", "devolves", "discontinues");
+            List<String> reportTypes = List.of("missedAppointments", "appointments", "refills", "devolves", "discontinues");
             for (String type : reportTypes) {
                 Object dataElement = data.get(type);
                 long fu = 0;
                 long mu = 0;
                 long ot = 0;
+                LOG.info("Facility: {}, Outlet: {}", facility, outlet);
                 if (dataElement != null) {
                     if (facility != null && outlet != null) {
                         fu = getValue((Map<String, Map<String, Map<String, List<DataElement>>>>) dataElement, facility, outlet, targetGroup, "fu");

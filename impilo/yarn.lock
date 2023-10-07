@@ -288,6 +288,13 @@
     ora "5.4.1"
     rxjs "7.8.1"
 
+"@angular-material-components/datetime-picker@^16.0.1":
+  version "16.0.1"
+  resolved "https://registry.yarnpkg.com/@angular-material-components/datetime-picker/-/datetime-picker-16.0.1.tgz#f6813332066ab1aed69f1adb7e00d844099c8a34"
+  integrity sha512-dbkwWiC8qL7NVlMclb1hvuZvuP2l1nvfnnmijEc/zGsoWeoLNDXn/+z/UQtMcbUphcwCzFt9CfHhhpGUGgQLgw==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular-material-extensions/password-strength@^12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@angular-material-extensions/password-strength/-/password-strength-12.1.0.tgz#c9462c89dc37f733d4482d56dffdf7e90c034cf4"

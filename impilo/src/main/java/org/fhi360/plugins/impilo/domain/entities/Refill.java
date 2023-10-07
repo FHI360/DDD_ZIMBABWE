@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+import org.fhi360.plugins.impilo.domain.providers.RefillBarcodeSubqueryProvider;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -132,6 +132,15 @@ public class Refill {
     @EntityView(Refill.class)
     public record ListView(LocalDate date, LocalDate dateNextRefill, String regimen, Integer qtyDispensed,
                            Integer qtyPrescribed) {
+
+    }
+
+    @EntityView(Refill.class)
+    public record SyncView(LocalDate date, LocalDate dateNextRefill, String regimen, Integer qtyDispensed,
+                           Integer qtyPrescribed, Patient.IdView patient, String batchIssuanceId,
+                           Boolean missedDose, Boolean adverseIssues,
+                           @MappingSubquery(RefillBarcodeSubqueryProvider.class)
+                           String barcode) {
 
     }
 }

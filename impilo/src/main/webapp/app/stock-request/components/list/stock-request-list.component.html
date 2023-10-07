@@ -75,6 +75,16 @@
                                                 mat-cell>{{ row[column.property] | number }}</td>
                                         </ng-container>
                                     </ng-container>
+                                    <!-- Datetime Columns -->
+                                    <ng-container *ngFor="let column of columns; trackBy: trackByFn">
+                                        <ng-container *ngIf="column.type === 'datetime'"
+                                                      [matColumnDef]="column.property">
+                                            <th *matHeaderCellDef class="uppercase" mat-header-cell>
+                                                {{ column.label | transloco }}</th>
+                                            <td *matCellDef="let row" [ngClass]="column.cssClasses"
+                                                mat-cell>{{ row[column.property] | dateTimeToFormat:'dd LLL yyyy HH:mm' }}</td>
+                                        </ng-container>
+                                    </ng-container>
                                     <!-- Date Columns -->
                                     <ng-container *ngFor="let column of columns; trackBy: trackByFn">
                                         <ng-container *ngIf="column.type === 'date'"
@@ -93,6 +103,7 @@
                                                     [matMenuTriggerData]="{ request: row }"
                                                     [matMenuTriggerFor]="actionsMenu"
                                                     mat-icon-button
+                                                    *ngIf="orgType === 'FACILITY' && (row['fulfilled'] < row['bottles'])"
                                                     type="button">
                                                 <mat-icon svgIcon="mat_outline:more_vert"></mat-icon>
                                             </button>
@@ -128,10 +139,8 @@
 
 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
     <ng-template let-request="request" matMenuContent>
-        <button (click)="issueStock(request.id)" mat-menu-item
-                [disabled]="false"
-        *ngIf="orgType === 'FACILITY'">
-            <mat-icon svgIcon="mat:delete"></mat-icon>
+        <button (click)="issueStock(request.id)" mat-menu-item>
+            <mat-icon svgIcon="heroicons_outline:arrow-up-on-square-stack"></mat-icon>
             <span>{{'IMPILO.STOCK_REQUEST.LIST_PAGE.ISSUE' | transloco}}</span>
         </button>
     </ng-template>

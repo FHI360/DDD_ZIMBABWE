@@ -8,6 +8,7 @@ import { FuseAlertType } from '@mattae/angular-shared';
 import { StockIssuanceService } from '../../stock-issuance.service';
 import { StockIssuanceListComponent } from '../list/stock-issuance-list.component';
 import { OrgUnit, Stock } from '../../../stock/stock.service';
+import { StockRequest } from '../../../stock-request/stock-request.service';
 
 @Component({
     selector: 'stock-details',
@@ -24,11 +25,13 @@ export class StockIssuanceDetailsComponent implements OnInit {
     showAlert = false;
     ofcadSites: OrgUnit[] = [];
     stocks: Stock[] = [];
+    filteredStocks: Stock[] = [];
     selectedStock: Stock;
     alert: { type: FuseAlertType; message: string } = {
         type: 'success',
         message: ''
     };
+    request: StockRequest;
 
     orgType: string;
 
@@ -45,7 +48,8 @@ export class StockIssuanceDetailsComponent implements OnInit {
             bottles: [null, Validators.required],
             site: [{disabled: true, value: null}, Validators.required],
             stock: [null, Validators.required],
-            request: [null, Validators.required]
+            request: [null, Validators.required],
+            balance: []
         });
     }
 
@@ -56,6 +60,8 @@ export class StockIssuanceDetailsComponent implements OnInit {
         this._activatedRoute.data.subscribe(({issuance, request}) => {
             if (issuance) {
                 this.formGroup.patchValue(issuance);
+
+                this.stockSelected();
             } else {
                 this.editMode = true;
                 this.site = {}
@@ -65,6 +71,11 @@ export class StockIssuanceDetailsComponent implements OnInit {
                         site: request.site
                     };
                     this.formGroup.patchValue(issuance);
+                    this.request = request;
+
+                    const ctl = this.formGroup.get('bottles');
+                    ctl.addValidators(Validators.max(request.bottles));
+                    ctl.updateValueAndValidity();
                 }
             }
 
@@ -86,8 +97,13 @@ export class StockIssuanceDetailsComponent implements OnInit {
     }
 
     stockSelected() {
-        this.selectedStock = this.stocks?.find(stock => stock?.id === this.formGroup.value['stock']['id']);
+        if (this.request) {
+            this.filteredStocks = this.stocks.filter(s=> s.regimen === this.request.arvDrug);
+        }
+        this.selectedStock = this.stocks?.find(stock => stock?.id === this.formGroup.value.stock?.id);
         this.selectedStock.balance = this.selectedStock.bottles - (this.selectedStock.issued || 0);
+
+        this._changeDetectorRef.markForCheck();
     }
 
     closeDrawer(): Promise<MatDrawerToggleResult> {
@@ -129,6 +145,7 @@ export class StockIssuanceDetailsComponent implements OnInit {
             if (!issuance.date) {
                 issuance.date = DateTime.now();
             }
+            issuance.balance = issuance.bottles;
             this._stockService.save(issuance).pipe(
                 map(res => {
                     this.editMode = false;

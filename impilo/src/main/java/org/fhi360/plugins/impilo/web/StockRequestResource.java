@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,7 +53,7 @@ public class StockRequestResource {
      */
     @PostMapping("/request/site/{siteId}/date/{date}/unique-id/{uniqueId}")
     public boolean requestStock(@PathVariable UUID siteId, @PathVariable UUID uniqueId,
-                                @PathVariable LocalDate date, @Valid @RequestBody ARVRequest request) {
+                                @PathVariable LocalDateTime date, @Valid @RequestBody ARVRequest request) {
         return requestService.saveRequest(date, siteId, uniqueId, request);
     }
 
@@ -66,7 +67,7 @@ public class StockRequestResource {
      * ARV drug name. It is an optional parameter, meaning it is not required to be provided in the request.
      * @param start The "start" parameter is used to specify the starting index of the list of stock requests to be
      * returned. It is an optional parameter and has a default value of 0 if not provided.
-     * @param pageSite The "pageSite" parameter is used to specify the number of items to be displayed per page in the
+     * @param pageSize The "pageSite" parameter is used to specify the number of items to be displayed per page in the
      * list. It has a default value of 10, but you can override it by providing a different value in the request.
      * @return The method is returning a PagedResult object of type StockRequest.CreateView.
      */
@@ -74,8 +75,8 @@ public class StockRequestResource {
     public PagedResult<StockRequest.ListView> list(@RequestParam(required = false) UUID siteId,
                                                      @RequestParam(required = false) String arvDrug,
                                                      @RequestParam(required = false, defaultValue = "0") int start,
-                                                     @RequestParam(required = false, defaultValue = "10") int pageSite) {
-        return requestService.list(siteId, arvDrug, start, pageSite);
+                                                     @RequestParam(required = false, defaultValue = "10") int pageSize) {
+        return requestService.list(siteId, arvDrug, start, pageSize);
     }
 
     /**

@@ -1,6 +1,7 @@
 [
     {
         "category": "CORE.CONFIGURATION.SYSTEM_CONFIGURATIONS",
+        "order": 2,
         "data": [
             {
                 "key": "APP_TITLE",
@@ -45,6 +46,42 @@
                 "value": "@Password123!",
                 "type": "string",
                 "masked": true
+            }
+        ]
+    },
+    {
+        "category": "SPRINGDOC.OPEN_API.CONFIGURATION",
+        "order": 2,
+        "data": [
+            {
+                "key": "SPRINGDOC.OPEN_API.TITLE",
+                "type": "string",
+                "value": "Impilo Desktop REST API"
+            },
+            {
+                "key": "SPRINGDOC.OPEN_API.DESCRIPTION",
+                "value": "API description of endpoint found in the base application and available plugins.",
+                "type": "string"
+            },
+            {
+                "key": "SPRINGDOC.OPEN_API.VERSION",
+                "value": "1.0",
+                "type": "string"
+            },
+            {
+                "key": "SPRINGDOC.OPEN_API.NAME",
+                "type": "string",
+                "value": "Matthew Edor"
+            },
+            {
+                "key": "SPRINGDOC.OPEN_API.EMAIL",
+                "type": "string",
+                "value": "medor@fhi360.org"
+            },
+            {
+                "key": "SPRINGDOC.OPEN_API.WEBSITE",
+                "type": "string",
+                "value": "https://fhi360.org"
             }
         ]
     }

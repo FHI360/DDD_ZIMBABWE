@@ -4,7 +4,7 @@
       "PATIENTS": "Les patients",
       "STOCKS": "Actions",
       "STOCK_ISSUANCE": "Émission d'actions",
-      "STOCK_REQUEST": "Demande de stock",
+      "STOCK_REQUEST": "Demande de stocks",
       "REPORTS": {
         "TITLE": "Rapports",
         "INDICATORS": "Rapport sur les indicateurs"
@@ -14,10 +14,10 @@
     "TITLE": {
       "STOCKS": "Actions",
       "STOCK": "Détails des stocks",
-      "ADD_STOCK": "Ajouter des détails sur Stock",
-      "STOCK_ISSUANCE_LIST": "Liste des émissions d'actions",
+      "ADD_STOCK": "Ajouter des détails sur les stocks",
+      "STOCK_ISSUANCE_LIST": "Liste d'émission d'actions",
       "STOCK_ISSUANCE": "Détails de l'émission d'actions",
-      "ADD_STOCK_ISSUANCE": "Record d'émissions d'actions",
+      "ADD_STOCK_ISSUANCE": "Émission d’actions record",
       "PATIENTS": "Les patients",
       "STOCK_REQUEST": "Demande de stocks",
       "REPORTS": "Rapport sur les indicateurs de l'OFCAD",
@@ -37,7 +37,8 @@
         "BALANCE": "Équilibre",
         "BATCH_NO": "N ° de lot",
         "EXPIRATION_DATE": "Date d'expiration",
-        "BATCH_ISSUANCE_ID": "ID d'émission de lots"
+        "BATCH_ISSUANCE_ID": "ID d'émission de lots",
+        "SEARCH_HINT": "Recherche par régime, numéro de lot ou numéro de série"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Date d'expiration",
@@ -59,10 +60,10 @@
     },
     "STOCK_ISSUANCE": {
       "LIST_PAGE": {
-        "TITLE": "Liste des émissions d'actions",
-        "ADD": "Action d'émission",
+        "TITLE": "Liste d'émission d'actions",
+        "ADD": "Émettre des actions",
         "SEARCH": "Recherche...",
-        "DATE": "Date d'émission",
+        "DATE": "Date de délivrance",
         "NO_DATA": "Aucune donnée d'émission d'actions disponible",
         "FACILITY": "Établissement de santé",
         "SITE": "Site de l'OFCAD",
@@ -70,7 +71,9 @@
         "ISSUED": "Bouteilles émises",
         "BATCH_NO": "N ° de lot",
         "EXPIRATION_DATE": "Date d'expiration",
-        "ACKNOWLEDGED": "Reconnu"
+        "ACKNOWLEDGED": "Reconnu",
+        "SEARCH_HINT": "Recherche par régime, numéro de lot ou numéro de série",
+        "BALANCE": "Solde des stocks"
       },
       "DETAIL_PAGE": {
         "BARCODE": "code à barre",
@@ -99,13 +102,14 @@
       "UNIQUE_ID": "Identifiant unique",
       "SITE": "Site de l'OFCAD",
       "DEVOLVED": "Déconcentré",
-      "NOT_DEVOLVED": "Non dévolu",
+      "NOT_DEVOLVED": "Non délégué",
       "ALL": "Tous les patients",
       "SEARCH": "Recherche...",
       "NO_DATA": "Aucune donnée disponible sur les patients",
       "TITLE": "Les patients",
       "FACILITY": "Facilité",
-      "ACTIONS": ""
+      "ACTIONS": "",
+      "SEARCH_HINT": "Recherche par nom ou numéro d'hôpital"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
@@ -165,7 +169,7 @@
       }
     },
     "PATIENT": {
-      "REFILL_HISTORY": "Historique des recharges",
+      "REFILL_HISTORY": "Historique de recharge",
       "NEXT_REFILL": "Prochaine date de recharge",
       "LAST_REFILL": "Date de la dernière recharge",
       "REFILL_DURATION": "Durée de recharge",

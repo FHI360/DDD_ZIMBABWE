@@ -120,7 +120,8 @@ public class StockIssuanceService {
             }
         }
 
-        cb.orderByAsc("stock.regimen")
+        cb.orderByDesc("date")
+            .orderByAsc("stock.regimen")
             .orderByAsc("stock.batchNo")
             .orderByAsc("id");
 

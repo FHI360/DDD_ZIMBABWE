@@ -30,6 +30,8 @@ public class Prescription {
 
     private String frequencyId;
 
+    private Integer prescribedQty;
+
     private LocalDateTime time;
 
     @ManyToOne

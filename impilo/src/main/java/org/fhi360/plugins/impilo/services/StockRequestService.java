@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +70,7 @@ public class StockRequestService {
      * an exception occurs, it will return false.
      */
     @Transactional
-    public boolean saveRequest(LocalDate date, UUID siteId, UUID requestId, ARVRequest request) {
+    public boolean saveRequest(LocalDateTime date, UUID siteId, UUID requestId, ARVRequest request) {
         var settings = EntityViewSetting.create(Organisation.ShortView.class);
         var cb = cbf.create(em, Organisation.class)
             .where("id").eq(siteId);
@@ -114,7 +115,7 @@ public class StockRequestService {
             cb.where("arvDrug").eq(arvDrug);
         }
 
-        cb.orderByAsc("date").orderByAsc("id");
+        cb.orderByDesc("date").orderByAsc("id");
 
         var result = evm.applySetting(settings, cb).getResultList();
         return new PagedResult<>(result, result.getTotalSize(), result.getTotalPages());
@@ -141,10 +142,12 @@ public class StockRequestService {
             fulfill.setBarcode(i.stock().batchNo());
             fulfill.setExpirationDate(i.stock().expirationDate());
             fulfill.setBottles(i.bottles());
+            fulfill.setBalance(i.balance());
             fulfill.setRegimen(i.stock().regimen());
             fulfill.setReference(i.reference());
             fulfill.setRequestReference(i.requestReference());
             fulfill.setBatchIssueId(i.batchIssuanceId());
+            fulfill.setAcknowledged(i.acknowledged());
 
             result.add(fulfill);
         });
