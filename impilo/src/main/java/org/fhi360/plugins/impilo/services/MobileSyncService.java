@@ -69,6 +69,7 @@ public class MobileSyncService {
             data.getAcknowledgements().forEach(reference -> {
                 stockIssuanceRepository.findByReference(reference).ifPresent(i -> {
                     i.setAcknowledged(true);
+                    i.setSynced(false);
                     stockIssuanceRepository.save(i);
                 });
             });
@@ -78,6 +79,7 @@ public class MobileSyncService {
             data.getInventories().forEach(inventory -> {
                 stockIssuanceRepository.findByReference(inventory.getReference()).ifPresent(stockIssuance -> {
                     stockIssuance.setBalance(inventory.getBalance());
+                    stockIssuance.setSynced(false);
                     stockIssuanceRepository.save(stockIssuance);
                 });
             });

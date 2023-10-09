@@ -16,13 +16,9 @@ import io.github.jbella.snl.core.api.services.TransactionHandler;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.*;
-import org.fhi360.plugins.impilo.domain.repositories.ClinicDataRepository;
-import org.fhi360.plugins.impilo.domain.repositories.DevolveRepository;
-import org.fhi360.plugins.impilo.domain.repositories.RefillRepository;
-import org.fhi360.plugins.impilo.domain.repositories.StockRequestRepository;
+import org.fhi360.plugins.impilo.domain.repositories.*;
 import org.fhi360.plugins.impilo.services.models.FacilityData;
 import org.fhi360.plugins.impilo.services.models.ServerData;
 import org.springframework.beans.BeanUtils;
@@ -48,7 +44,6 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class FacilityServerService {
     private final static String CATEGORY = "IMPILO.FACILITY.AUTO_SYNC";
     private final static String KEY = "SYNC_INTERVAL";
@@ -61,6 +56,8 @@ public class FacilityServerService {
     private final ClinicDataRepository clinicDataRepository;
     private final DevolveRepository devolveRepository;
     private final StockRequestRepository stockRequestRepository;
+    private final StockIssuanceRepository stockIssuanceRepository;
+    private final IdMappingRepository mappingRepository;
     private final ConfigurationService configurationService;
     private final ExtensionService extensionService;
     private final TaskScheduler taskScheduler;
@@ -73,8 +70,8 @@ public class FacilityServerService {
      * The function "synchronize" pushes server data and retrieves facility data.
      */
     public void synchronize() throws Exception {
-        pushServerData();
         retrieveFacilityData();
+        pushServerData();
     }
 
     /**
@@ -105,7 +102,7 @@ public class FacilityServerService {
     public Long getCurrentAutoSyncInterval() {
         try {
             return Long.parseLong(preferenceService.getPreference(CATEGORY, KEY)
-                    .map(Preference::getValue).orElse("0"));
+                .map(Preference::getValue).orElse("0"));
         } catch (Exception e) {
             return 0L;
         }
@@ -113,8 +110,10 @@ public class FacilityServerService {
 
     @PostConstruct
     public void init() {
-        final long TEN_MINUTES = TimeUnit.MINUTES.toSeconds(10);
-        scheduleTask(TEN_MINUTES);
+        if(preferenceService.getPreference(CATEGORY, KEY).isEmpty()) {
+            final long TEN_MINUTES = TimeUnit.MINUTES.toSeconds(10);
+            scheduleTask(TEN_MINUTES);
+        }
     }
 
     /**
@@ -127,19 +126,19 @@ public class FacilityServerService {
 
         var settings1 = EntityViewSetting.create(Organisation.IdView.class);
         var cb1 = cbf.create(em, Organisation.class)
-                .where("type").eq("OUTLET");
+            .where("type").eq("OUTLET");
         var outlets = evm.applySetting(settings1, cb1).getResultList();
         var ids = outlets.stream()
-                .map(v -> "outletIds=" + v.getId())
-                .collect(Collectors.joining("&"));
+            .map(v -> "outletIds=" + v.getId())
+            .collect(Collectors.joining("&"));
 
         var token = authenticate();
         var request = HttpRequest.newBuilder()
-                .GET()
-                .uri(new URI(BASE_URL + "/api/impilo/server-sync/facility-data/" + facilityId + "?" + ids))
-                .header("Authorization", token)
-                .header("Content-Type", "application/json")
-                .build();
+            .GET()
+            .uri(new URI(BASE_URL + "/api/impilo/server-sync/facility-data/" + facilityId + "?" + ids))
+            .header("Authorization", token)
+            .header("Content-Type", "application/json")
+            .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
             throw new RuntimeException(response.body());
@@ -149,44 +148,55 @@ public class FacilityServerService {
         boolean success = transactionHandler.runInTransaction(() -> {
             try {
                 var clinics = facilityData.getClinics().stream()
-                        .map(c -> {
-                            var _clinic = objectMapper.convertValue(c, ClinicData.class);
-                            var clinic = clinicDataRepository.findByReference(c.getReference()).orElse(_clinic);
-                            BeanUtils.copyProperties(_clinic, clinic, "id");
-                            return clinic;
-                        })
-                        .toList();
+                    .map(c -> {
+                        var _clinic = objectMapper.convertValue(c, ClinicData.class);
+                        var clinic = clinicDataRepository.findByReference(c.getReference()).orElse(_clinic);
+                        BeanUtils.copyProperties(_clinic, clinic, "id");
+                        return clinic;
+                    })
+                    .toList();
                 clinicDataRepository.saveAll(clinics);
 
                 var refills = facilityData.getRefills().stream()
-                        .map(r -> {
-                            var _refill = objectMapper.convertValue(r, Refill.class);
-                            var refill = refillRepository.findByReference(r.getReference()).orElse(_refill);
-                            BeanUtils.copyProperties(_refill, refill, "id");
-                            return refill;
-                        })
-                        .toList();
+                    .map(r -> {
+                        var _refill = objectMapper.convertValue(r, Refill.class);
+                        var refill = refillRepository.findByReference(r.getReference()).orElse(_refill);
+                        BeanUtils.copyProperties(_refill, refill, "id");
+                        return refill;
+                    })
+                    .toList();
                 refillRepository.saveAll(refills);
 
                 var devolves = facilityData.getDevolves().stream()
-                        .map(d -> {
-                            var _ds = objectMapper.convertValue(d, Devolve.class);
-                            var ds = devolveRepository.findByReference(d.getReference()).orElse(_ds);
-                            BeanUtils.copyProperties(_ds, ds, "id");
-                            return ds;
-                        })
-                        .toList();
+                    .map(d -> {
+                        var _ds = objectMapper.convertValue(d, Devolve.class);
+                        var ds = devolveRepository.findByReference(d.getReference()).orElse(_ds);
+                        BeanUtils.copyProperties(_ds, ds, "id");
+                        return ds;
+                    })
+                    .toList();
                 devolveRepository.saveAll(devolves);
 
-                var requests = facilityData.getStockRequest().stream()
-                        .map(r -> {
-                            var _req = objectMapper.convertValue(r, StockRequest.class);
-                            var req = stockRequestRepository.findByReference(r.getReference()).orElse(_req);
-                            BeanUtils.copyProperties(_req, req, "id");
-                            return req;
-                        })
-                        .toList();
-                stockRequestRepository.saveAll(requests);
+                facilityData.getStockRequest()
+                    .forEach(r -> {
+                        var _req = objectMapper.convertValue(r, StockRequest.class);
+                        var req = stockRequestRepository.findByReference(r.getReference()).orElse(_req);
+                        BeanUtils.copyProperties(_req, req, "id");
+                        req = stockRequestRepository.save(req);
+
+                        IdMappings mappings = mappingRepository.findByRemote(r.getId()).orElse(new IdMappings());
+                        mappings.setLocal(req.getId());
+                        mappings.setRemote(r.getId());
+                        mappingRepository.save(mappings);
+                    });
+
+                facilityData.getStockIssuance().forEach(issuance-> {
+                    stockIssuanceRepository.findByReference(issuance.getReference()).ifPresent(_issuance-> {
+                        _issuance.setAcknowledged(issuance.getAcknowledged());
+                        _issuance.setBalance(issuance.getBalance());
+                        stockIssuanceRepository.save(_issuance);
+                    });
+                });
             } catch (Exception e) {
                 return false;
             }
@@ -196,11 +206,11 @@ public class FacilityServerService {
 
             try {
                 request = HttpRequest.newBuilder()
-                        .GET()
-                        .uri(new URI(BASE_URL + "/api/impilo/server-sync/acknowledge/" + facilityData.getReference()))
-                        .header("Authorization", token)
-                        .header("Content-Type", "application/json")
-                        .build();
+                    .GET()
+                    .uri(new URI(BASE_URL + "/api/impilo/server-sync/acknowledge/" + facilityData.getReference()))
+                    .header("Authorization", token)
+                    .header("Content-Type", "application/json")
+                    .build();
                 httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             } catch (Exception ignored) {
             }
@@ -217,13 +227,13 @@ public class FacilityServerService {
 
         var settings1 = EntityViewSetting.create(Organisation.UpdateView.class);
         var cb1 = cbf.create(em, Organisation.class)
-                .where("type").eq("OUTLET");
+            .where("type").eq("OUTLET");
         var outlets = evm.applySetting(settings1, cb1).getResultList();
         data.setOutlets(outlets);
 
         settings1 = EntityViewSetting.create(Organisation.UpdateView.class);
         cb1 = cbf.create(em, Organisation.class)
-                .where("type").eq("FACILITY");
+            .where("type").eq("FACILITY");
         var facilities = evm.applySetting(settings1, cb1).getResultList();
         data.setFacilities(facilities);
 
@@ -239,14 +249,22 @@ public class FacilityServerService {
 
         var settings3 = EntityViewSetting.create(Devolve.CreateView.class);
         var cb3 = cbf.create(em, Devolve.class)
-                .where("synced").eq(false);
+            .where("synced").eq(false);
         var devolves = evm.applySetting(settings3, cb3).getResultList();
         data.setDevolves(devolves);
 
         var settings4 = EntityViewSetting.create(StockIssuance.CreateView.class);
         var cb4 = cbf.create(em, StockIssuance.class)
-                .where("synced").eq(false);
-        var issuance = evm.applySetting(settings4, cb4).getResultList();
+            .where("synced").eq(false);
+        var issuance = evm.applySetting(settings4, cb4).getResultList().stream()
+            .map(i -> {
+                var _issuance = evm.create(StockIssuance.CreateView.class);
+                mappingRepository.findByLocal(i.getRequest().getId()).ifPresent(mapping -> {
+                    _issuance.setRequest(getStockRequestIdView(mapping.getRemote()));
+                });
+                BeanUtils.copyProperties(i, _issuance, "request");
+                return _issuance;
+            }).collect(Collectors.toList());
         data.setStockIssuance(issuance);
 
         var settings5 = EntityViewSetting.create(Stock.CreateView.class);
@@ -259,13 +277,23 @@ public class FacilityServerService {
         var requests = evm.applySetting(settings6, cb6).getResultList();
         data.setStockRequests(requests);
 
+        //@formatter:off
+        var settings7 = EntityViewSetting.create(Prescription.CreateView.class);
+        var cb7 = cbf.create(em, Prescription.class, "p")
+            .joinOn(Devolve.class, "d", JoinType.INNER)
+                .onExpression("d.patient.id = p.patient.id")
+            .end();
+        var prescriptions = evm.applySetting(settings7, cb7).getResultList();
+        //@formatter:on
+        data.setPrescriptions(prescriptions);
+
         var token = authenticate();
         var request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(data)))
-                .uri(new URI(BASE_URL + "/api/impilo/server-sync/server-data"))
-                .header("Authorization", token)
-                .header("Content-Type", "application/json")
-                .build();
+            .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(data)))
+            .uri(new URI(BASE_URL + "/api/impilo/server-sync/server-data"))
+            .header("Authorization", token)
+            .header("Content-Type", "application/json")
+            .build();
         var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
             throw new RuntimeException(response.body());
@@ -275,18 +303,18 @@ public class FacilityServerService {
     private String authenticate() throws Exception {
         BASE_URL = getBaseUrl();
         String username = configurationService.getValueAsStringForKey("IMPILO.CONFIGURATION.SYNCHRONIZATION", "CENTRAL_SERVER.USERNAME")
-                .orElse("");
+            .orElse("");
         String password = configurationService.getValueAsStringForKey("IMPILO.CONFIGURATION.SYNCHRONIZATION", "CENTRAL_SERVER.PASSWORD")
-                .orElse("");
+            .orElse("");
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("username", username);
         requestBody.put("password", password);
         var request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
-                .uri(new URI(BASE_URL + "/api/authenticate"))
-                .header("Authorization", "")
-                .header("Content-Type", "application/json")
-                .build();
+            .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
+            .uri(new URI(BASE_URL + "/api/authenticate"))
+            .header("Authorization", "")
+            .header("Content-Type", "application/json")
+            .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         JsonNode body = objectMapper.readTree(response.body());
         if (response.statusCode() != 200) {
@@ -297,7 +325,13 @@ public class FacilityServerService {
 
     private String getBaseUrl() {
         return configurationService
-                .getValueAsStringForKey("IMPILO.CONFIGURATION.SYNCHRONIZATION", "CENTRAL_SERVER.URL").orElse("");
+            .getValueAsStringForKey("IMPILO.CONFIGURATION.SYNCHRONIZATION", "CENTRAL_SERVER.URL").orElse("");
     }
 
+    private StockRequest.IdView getStockRequestIdView(UUID id) {
+        StockRequest.UpdateView view = evm.create(StockRequest.UpdateView.class);
+        view.setId(id);
+
+        return evm.convert(view, StockRequest.IdView.class);
+    }
 }

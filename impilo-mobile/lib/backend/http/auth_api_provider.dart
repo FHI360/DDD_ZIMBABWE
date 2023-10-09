@@ -22,8 +22,8 @@ class AuthAPIProvider {
       ),
     );
 
-    FFAppState().code = response.data['organisation']['id'];
-    FFAppState().name = response.data['organisation']['name'];
-    FFAppState().outlet = response.data['organisation']['type'] == 'OUTLET';
+    FFAppState().code = response.data['organisation']?['id'];
+    FFAppState().name = response.data['organisation']?['name'];
+    FFAppState().outlet = response.data['organisation']?['type'] == 'OUTLET';
   }
 }

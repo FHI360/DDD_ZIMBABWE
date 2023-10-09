@@ -109,7 +109,8 @@
       "TITLE": "Ndị ọrịa",
       "FACILITY": "Ihe owuwu",
       "ACTIONS": "",
-      "SEARCH_HINT": "Chọọ n'aha ma ọ bụ nọmba ụlọ ọgwụ"
+      "SEARCH_HINT": "Chọọ n'aha ma ọ bụ nọmba ụlọ ọgwụ",
+      "FILTER_HINT": "Nyochaa onye ọrịa na ọkwa devolve"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {

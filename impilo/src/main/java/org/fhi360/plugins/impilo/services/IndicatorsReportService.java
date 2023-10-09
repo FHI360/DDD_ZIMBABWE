@@ -8,7 +8,6 @@ import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.services.ExtensionService;
 import jakarta.persistence.EntityManager;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class IndicatorsReportService {
     private final EntityManager em;
     private final EntityViewManager evm;
@@ -47,7 +45,7 @@ public class IndicatorsReportService {
             case "ot" -> value = data.get(facility).get(outlet).get(targetGroup).get(0).ot;
         }
 
-        return value != null ? value: 0;
+        return value != null ? value : 0;
     }
 
     public static Long getValue(Map<String, Map<String, List<DataElement>>> data,
@@ -65,7 +63,7 @@ public class IndicatorsReportService {
             case "ot" -> value = data.get(outlet).get(targetGroup).get(0).ot;
         }
 
-        return value != null ? value: 0;
+        return value != null ? value : 0;
     }
 
     public static Long getValue(Map<String, List<DataElement>> data,
@@ -80,237 +78,232 @@ public class IndicatorsReportService {
             case "ot" -> value = data.get(targetGroup).get(0).ot;
         }
 
-        return value != null ? value: 0;
+        return value != null ? value : 0;
     }
 
     public ByteArrayOutputStream generateReport(LocalDate startDate, LocalDate endDate) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        try {
-            String orgType = "CO";
-            String orgName = "";
-            Organisation.IdView organisation = extensionService.getPriorityExtension(AuthenticationServiceExtension.class)
-                .organisation();
-            if (organisation != null) {
-                Organisation.ShortView organisationShort = evm.find(em, Organisation.ShortView.class, organisation.getId());
-                orgType = organisationShort.getType();
-                orgName = organisation.getName();
-            }
-            Workbook workbook = new Workbook();
-            Worksheet sheet = workbook.getWorksheets().get(0);
-            sheet.getCells().insertRow(0);
-            Row row = sheet.getCells().getRows().get(0);
-            Cell cell = row.get(0);
-            cell.setValue(orgName);
-            Style style = cell.getStyle();
-            style.getFont().setBold(true);
-            style.getFont().setSize(15);
-            style.setHorizontalAlignment(TextAlignmentType.CENTER);
-            cell.setStyle(style);
-            sheet.getCells().insertRow(2);
-            row = sheet.getCells().getRows().get(2);
-            int titleIndex = row.getIndex();
-            cell = row.get(0);
-            cell.setValue("Summary Report");
-            style = cell.getStyle();
-            style.getFont().setBold(true);
-            style.getFont().setSize(14);
-            style.setHorizontalAlignment(TextAlignmentType.CENTER);
-            cell.setStyle(style);
-            sheet.getCells().insertRow(row.getIndex() + 1);
-            row = sheet.getCells().getRows().get(row.getIndex() + 1);
-            cell = row.get(0);
-            cell.setValue("From");
-            style = cell.getStyle();
-            style.getFont().setBold(true);
-            style.getFont().setSize(12);
-            cell.setStyle(style);
-            cell = row.get(1);
-            cell.setValue(startDate.format(DateTimeFormatter.ISO_DATE));
-            sheet.getCells().insertRow(row.getIndex() + 1);
-            row = sheet.getCells().getRows().get(row.getIndex() + 1);
-            cell = row.get(0);
-            cell.setValue("To");
-            style = cell.getStyle();
-            style.getFont().setBold(true);
-            style.getFont().setSize(12);
-            cell.setStyle(style);
-            cell = row.get(1);
-            cell.setValue(endDate.format(DateTimeFormatter.ISO_DATE));
-            Map<String, Object> data = new HashMap<>();
-            if (Objects.equals(orgType, "CO")) {
-                Map<String, Map<String, Map<String, List<DataElement>>>> missedAppointments = missedAppointmentsCountryView(startDate, endDate);
-                Map<String, Map<String, Map<String, List<DataElement>>>> refills = refillsCountryView(startDate, endDate);
-                Map<String, Map<String, Map<String, List<DataElement>>>> devolves = devolveCountryView(startDate, endDate);
-                Map<String, Map<String, Map<String, List<DataElement>>>> appointments = appointmentCountryView(startDate, endDate);
-                Map<String, Map<String, Map<String, List<DataElement>>>> discontinues = discontinueCountryView(startDate, endDate);
-
-                Set<String> facilities = new HashSet<>();
-                Set<String> outlets = new HashSet<>();
-                Set<String> targetGroups = new HashSet<>();
-
-                missedAppointments.forEach((f, v) -> {
-                    facilities.add(f);
-                    v.forEach((o, v2) -> {
-                        outlets.add(o);
-                        v2.forEach((t, v3) -> {
-                            targetGroups.add(t);
-                        });
-                    });
-                });
-                refills.forEach((f, v) -> {
-                    facilities.add(f);
-                    v.forEach((o, v2) -> {
-                        outlets.add(o);
-                        v2.forEach((t, v3) -> {
-                            targetGroups.add(t);
-                        });
-                    });
-                });
-                devolves.forEach((f, v) -> {
-                    facilities.add(f);
-                    v.forEach((o, v2) -> {
-                        outlets.add(o);
-                        v2.forEach((t, v3) -> {
-                            targetGroups.add(t);
-                        });
-                    });
-                });
-                appointments.forEach((f, v) -> {
-                    facilities.add(f);
-                    v.forEach((o, v2) -> {
-                        outlets.add(o);
-                        v2.forEach((t, v3) -> {
-                            targetGroups.add(t);
-                        });
-                    });
-                });
-                data.put("appointments", appointments);
-                data.put("missedAppointments", missedAppointments);
-                data.put("refills", refills);
-                data.put("devolves", devolves);
-                data.put("discontinues", discontinues);
-                if (!targetGroups.isEmpty()) {
-                    buildFacilities(sheet, row.getIndex() + 2, 1, facilities, outlets, targetGroups, data);
-                } else {
-                    targetGroups.add("");
-                    buildDisaggregations(sheet, row.getIndex() + 1, cell.getColumn() + 1, null, null, targetGroups, data);
-                }
-
-            } else if (Objects.equals(orgType, "FACILITY")) {
-                Map<String, Map<String, List<DataElement>>> missedAppointments = missedAppointmentsFacilityView(organisation.getId(), startDate, endDate);
-                Map<String, Map<String, List<DataElement>>> refills = refillsFacilityView(organisation.getId(), startDate, endDate);
-                Map<String, Map<String, List<DataElement>>> devolves = devolveFacilityView(organisation.getId(), startDate, endDate);
-                Map<String, Map<String, List<DataElement>>> appointments = appointmentFacilityView(organisation.getId(), startDate, endDate);
-                Map<String, Map<String, List<DataElement>>> discontinues = discontinueFacilityView(organisation.getId(), startDate, endDate);
-                Set<String> outlets = new HashSet<>();
-                Set<String> targetGroups = new HashSet<>();
-
-                missedAppointments.forEach((o, v2) -> {
-                    outlets.add(o);
-                    v2.forEach((t, v3) -> {
-                        targetGroups.add(t);
-                    });
-                });
-                refills.forEach((o, v2) -> {
-                    outlets.add(o);
-                    v2.forEach((t, v3) -> {
-                        targetGroups.add(t);
-                    });
-                });
-                devolves.forEach((o, v2) -> {
-                    outlets.add(o);
-                    v2.forEach((t, v3) -> {
-                        targetGroups.add(t);
-                    });
-                });
-                appointments.forEach((o, v2) -> {
-                    outlets.add(o);
-                    v2.forEach((t, v3) -> {
-                        targetGroups.add(t);
-                    });
-                });
-
-                data.put("appointments", appointments);
-                data.put("missedAppointments", missedAppointments);
-                data.put("refills", refills);
-                data.put("devolves", devolves);
-                data.put("discontinues", discontinues);
-                if (!targetGroups.isEmpty()) {
-                    buildOutlets(sheet, row.getIndex() + 1, 1, null, outlets, targetGroups, data);
-                } else {
-                    targetGroups.add("");
-                    buildDisaggregations(sheet, row.getIndex() + 1, cell.getColumn() + 1, null, null, targetGroups, data);
-                }
-            } else if (Objects.equals(orgType, "OUTLET")) {
-                Map<String, List<DataElement>> missedAppointments = missedAppointmentsOutletView(organisation.getId(), startDate, endDate);
-                Map<String, List<DataElement>> refills = refillsOutletView(organisation.getId(), startDate, endDate);
-                Map<String, List<DataElement>> devolves = devolveOutletView(organisation.getId(), startDate, endDate);
-                Map<String, List<DataElement>> appointments = appointmentOutletView(organisation.getId(), startDate, endDate);
-                Map<String, List<DataElement>> discontinues = discontinueOutletView(organisation.getId(), startDate, endDate);
-                Set<String> targetGroups = new HashSet<>();
-
-                missedAppointments.forEach((t, v3) -> {
-                    targetGroups.add(t);
-                });
-                refills.forEach((t, v3) -> {
-                    targetGroups.add(t);
-                });
-                devolves.forEach((t, v3) -> {
-                    targetGroups.add(t);
-                });
-                appointments.forEach((t, v3) -> {
-                    targetGroups.add(t);
-                });
-
-                data.put("appointments", appointments);
-                data.put("missedAppointments", missedAppointments);
-                data.put("refills", refills);
-                data.put("devolves", devolves);
-                data.put("discontinues", discontinues);
-                if (!targetGroups.isEmpty()) {
-                    buildDisaggregations(sheet, row.getIndex() + 1, 1, null, null, targetGroups, data);
-                } else {
-                    targetGroups.add("");
-                    buildDisaggregations(sheet, row.getIndex() + 1, cell.getColumn() + 1, null, null, targetGroups, data);
-                }
-            }
-            sheet.getCells().merge(titleIndex - 2, 0, 1,
-                sheet.getCells().getMaxColumn() + 1);
-            sheet.getCells().merge(titleIndex, 0, 1,
-                sheet.getCells().getMaxColumn() + 1);
-            sheet.setName("Summary Report");
-            sheet.autoFitColumns(0, sheet.getCells().getMaxColumn());
-            workbook.save(baos, SaveFormat.XLSX);
-            baos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+        String orgType = "CO";
+        String orgName = "";
+        Organisation.IdView organisation = extensionService.getPriorityExtension(AuthenticationServiceExtension.class)
+            .organisation();
+        if (organisation != null) {
+            Organisation.ShortView organisationShort = evm.find(em, Organisation.ShortView.class, organisation.getId());
+            orgType = organisationShort.getType();
+            orgName = organisation.getName();
         }
+        Workbook workbook = new Workbook();
+        Worksheet sheet = workbook.getWorksheets().get(0);
+        sheet.getCells().insertRow(0);
+        Row row = sheet.getCells().getRows().get(0);
+        Cell cell = row.get(0);
+        cell.setValue(orgName);
+        Style style = cell.getStyle();
+        style.getFont().setBold(true);
+        style.getFont().setSize(15);
+        style.setHorizontalAlignment(TextAlignmentType.CENTER);
+        cell.setStyle(style);
+        sheet.getCells().insertRow(2);
+        row = sheet.getCells().getRows().get(2);
+        int titleIndex = row.getIndex();
+        cell = row.get(0);
+        cell.setValue("Summary Report");
+        style = cell.getStyle();
+        style.getFont().setBold(true);
+        style.getFont().setSize(14);
+        style.setHorizontalAlignment(TextAlignmentType.CENTER);
+        cell.setStyle(style);
+        sheet.getCells().insertRow(row.getIndex() + 1);
+        row = sheet.getCells().getRows().get(row.getIndex() + 1);
+        cell = row.get(0);
+        cell.setValue("From");
+        style = cell.getStyle();
+        style.getFont().setBold(true);
+        style.getFont().setSize(12);
+        cell.setStyle(style);
+        cell = row.get(1);
+        cell.setValue(startDate.format(DateTimeFormatter.ISO_DATE));
+        sheet.getCells().insertRow(row.getIndex() + 1);
+        row = sheet.getCells().getRows().get(row.getIndex() + 1);
+        cell = row.get(0);
+        cell.setValue("To");
+        style = cell.getStyle();
+        style.getFont().setBold(true);
+        style.getFont().setSize(12);
+        cell.setStyle(style);
+        cell = row.get(1);
+        cell.setValue(endDate.format(DateTimeFormatter.ISO_DATE));
+        Map<String, Object> data = new HashMap<>();
+        if (Objects.equals(orgType, "CO")) {
+            Map<String, Map<String, Map<String, List<DataElement>>>> missedAppointments = missedAppointmentsCountryView(startDate, endDate);
+            Map<String, Map<String, Map<String, List<DataElement>>>> refills = refillsCountryView(startDate, endDate);
+            Map<String, Map<String, Map<String, List<DataElement>>>> devolves = devolveCountryView(startDate, endDate);
+            Map<String, Map<String, Map<String, List<DataElement>>>> appointments = appointmentCountryView(startDate, endDate);
+            Map<String, Map<String, Map<String, List<DataElement>>>> discontinues = discontinueCountryView(startDate, endDate);
+
+            Set<String> facilities = new HashSet<>();
+            Set<String> outlets = new HashSet<>();
+            Set<String> targetGroups = new HashSet<>();
+
+            missedAppointments.forEach((f, v) -> {
+                facilities.add(f);
+                v.forEach((o, v2) -> {
+                    outlets.add(o);
+                    v2.forEach((t, v3) -> {
+                        targetGroups.add(t);
+                    });
+                });
+            });
+            refills.forEach((f, v) -> {
+                facilities.add(f);
+                v.forEach((o, v2) -> {
+                    outlets.add(o);
+                    v2.forEach((t, v3) -> {
+                        targetGroups.add(t);
+                    });
+                });
+            });
+            devolves.forEach((f, v) -> {
+                facilities.add(f);
+                v.forEach((o, v2) -> {
+                    outlets.add(o);
+                    v2.forEach((t, v3) -> {
+                        targetGroups.add(t);
+                    });
+                });
+            });
+            appointments.forEach((f, v) -> {
+                facilities.add(f);
+                v.forEach((o, v2) -> {
+                    outlets.add(o);
+                    v2.forEach((t, v3) -> {
+                        targetGroups.add(t);
+                    });
+                });
+            });
+            data.put("appointments", appointments);
+            data.put("missedAppointments", missedAppointments);
+            data.put("refills", refills);
+            data.put("devolves", devolves);
+            data.put("discontinues", discontinues);
+            if (!targetGroups.isEmpty()) {
+                buildFacilities(sheet, row.getIndex() + 2, 1, facilities, outlets, targetGroups, data);
+            } else {
+                targetGroups.add("");
+                buildDisaggregations(sheet, row.getIndex() + 1, cell.getColumn() + 1, null, null, targetGroups, data);
+            }
+
+        } else if (Objects.equals(orgType, "FACILITY")) {
+            Map<String, Map<String, List<DataElement>>> missedAppointments = missedAppointmentsFacilityView(organisation.getId(), startDate, endDate);
+            Map<String, Map<String, List<DataElement>>> refills = refillsFacilityView(organisation.getId(), startDate, endDate);
+            Map<String, Map<String, List<DataElement>>> devolves = devolveFacilityView(organisation.getId(), startDate, endDate);
+            Map<String, Map<String, List<DataElement>>> appointments = appointmentFacilityView(organisation.getId(), startDate, endDate);
+            Map<String, Map<String, List<DataElement>>> discontinues = discontinueFacilityView(organisation.getId(), startDate, endDate);
+            Set<String> outlets = new HashSet<>();
+            Set<String> targetGroups = new HashSet<>();
+
+            missedAppointments.forEach((o, v2) -> {
+                outlets.add(o);
+                v2.forEach((t, v3) -> {
+                    targetGroups.add(t);
+                });
+            });
+            refills.forEach((o, v2) -> {
+                outlets.add(o);
+                v2.forEach((t, v3) -> {
+                    targetGroups.add(t);
+                });
+            });
+            devolves.forEach((o, v2) -> {
+                outlets.add(o);
+                v2.forEach((t, v3) -> {
+                    targetGroups.add(t);
+                });
+            });
+            appointments.forEach((o, v2) -> {
+                outlets.add(o);
+                v2.forEach((t, v3) -> {
+                    targetGroups.add(t);
+                });
+            });
+
+            data.put("appointments", appointments);
+            data.put("missedAppointments", missedAppointments);
+            data.put("refills", refills);
+            data.put("devolves", devolves);
+            data.put("discontinues", discontinues);
+            if (!targetGroups.isEmpty()) {
+                buildOutlets(sheet, row.getIndex() + 1, 1, null, outlets, targetGroups, data);
+            } else {
+                targetGroups.add("");
+                buildDisaggregations(sheet, row.getIndex() + 1, cell.getColumn() + 1, null, null, targetGroups, data);
+            }
+        } else if (Objects.equals(orgType, "OUTLET")) {
+            Map<String, List<DataElement>> missedAppointments = missedAppointmentsOutletView(organisation.getId(), startDate, endDate);
+            Map<String, List<DataElement>> refills = refillsOutletView(organisation.getId(), startDate, endDate);
+            Map<String, List<DataElement>> devolves = devolveOutletView(organisation.getId(), startDate, endDate);
+            Map<String, List<DataElement>> appointments = appointmentOutletView(organisation.getId(), startDate, endDate);
+            Map<String, List<DataElement>> discontinues = discontinueOutletView(organisation.getId(), startDate, endDate);
+            Set<String> targetGroups = new HashSet<>();
+
+            missedAppointments.forEach((t, v3) -> {
+                targetGroups.add(t);
+            });
+            refills.forEach((t, v3) -> {
+                targetGroups.add(t);
+            });
+            devolves.forEach((t, v3) -> {
+                targetGroups.add(t);
+            });
+            appointments.forEach((t, v3) -> {
+                targetGroups.add(t);
+            });
+
+            data.put("appointments", appointments);
+            data.put("missedAppointments", missedAppointments);
+            data.put("refills", refills);
+            data.put("devolves", devolves);
+            data.put("discontinues", discontinues);
+            if (!targetGroups.isEmpty()) {
+                buildDisaggregations(sheet, row.getIndex() + 1, 1, null, null, targetGroups, data);
+            } else {
+                targetGroups.add("");
+                buildDisaggregations(sheet, row.getIndex() + 1, cell.getColumn() + 1, null, null, targetGroups, data);
+            }
+        }
+        sheet.getCells().merge(titleIndex - 2, 0, 1,
+            sheet.getCells().getMaxColumn() + 1);
+        sheet.getCells().merge(titleIndex, 0, 1,
+            sheet.getCells().getMaxColumn() + 1);
+        sheet.setName("Summary Report");
+        sheet.autoFitColumns(0, sheet.getCells().getMaxColumn());
+        workbook.save(baos, SaveFormat.XLSX);
+        baos.close();
 
         return baos;
     }
 
     public Map<String, List<DataElement>> discontinueOutletView(UUID orgId, LocalDate start, LocalDate end) {
         String query = """
-           WITH CurrentDevolve AS (
-            	SELECT * FROM (
-            		SELECT o.id, date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
-                        ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id =
-                        d.organisation_id WHERE reason_discontinued IS NOT NULL AND date(date) BETWEEN ? AND ?
-            	) d WHERE rn = 1 AND id = ?
-            ),
-           Appointment AS (
-            	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
-            		outlet FROM CurrentDevolve d JOIN imp_patient p ON d.patient_Id = p.id
-            ),
-           DISS AS (
-                SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
-                    CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
-                    CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
-                    outlet FROM Appointment a)
-           SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
-            """;
+            WITH CurrentDevolve AS (
+             	SELECT * FROM (
+             		SELECT o.id, date, d.patient_id, o.name outlet, ROW_NUMBER() OVER (PARTITION BY d.patient_Id
+                         ORDER BY date DESC, d.id DESC) rn FROM imp_devolve d JOIN fw_organisation o ON o.id =
+                         d.organisation_id WHERE reason_discontinued IS NOT NULL AND date(date) BETWEEN ? AND ?
+             	) d WHERE rn = 1 AND id = ?
+             ),
+            Appointment AS (
+             	SELECT sex, CASE WHEN AGE(date, date_of_birth) <  INTERVAL '15 years' THEN 'u' ELSE 'o' END age,
+             		outlet FROM CurrentDevolve d JOIN imp_patient p ON d.patient_Id = p.id
+             ),
+            DISS AS (
+                 SELECT CASE WHEN a.age = 'u' AND sex = 'female' THEN 1 ELSE 0 END fu,
+                     CASE WHEN a.age = 'u' AND sex = 'male' THEN 1 ELSE 0 END mu,
+                     CASE WHEN a.age != 'u' THEN 1 ELSE 0 END ot,
+                     outlet FROM Appointment a)
+            SELECT SUM(fu) fu, SUM(mu) mu, SUM(ot) ot FROM diss
+             """;
         var result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(DataElement.class)
             , start, end, orgId);
         return result.stream()
@@ -769,7 +762,6 @@ public class IndicatorsReportService {
                                      String outlet,
                                      Collection<String> targetGroups,
                                      Map<String, Object> data) {
-LOG.info("Data: {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(data));
         int headerRow = rowOffset;
         sheet.getCells().insertRow(rowOffset);
         sheet.getCells().insertRow(++rowOffset);
@@ -818,7 +810,6 @@ LOG.info("Data: {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeVa
                 long fu = 0;
                 long mu = 0;
                 long ot = 0;
-                LOG.info("Facility: {}, Outlet: {}", facility, outlet);
                 if (dataElement != null) {
                     if (facility != null && outlet != null) {
                         fu = getValue((Map<String, Map<String, Map<String, List<DataElement>>>>) dataElement, facility, outlet, targetGroup, "fu");

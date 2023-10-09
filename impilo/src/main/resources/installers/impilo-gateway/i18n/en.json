@@ -128,6 +128,7 @@
             "ALL": "All patients",
             "SEARCH": "Search...",
             "SEARCH_HINT": "Search by names or hospital number",
+            "FILTER_HINT": "Filter patient on devolve status",
             "NO_DATA": "No patient data available",
             "TITLE": "Patients",
             "ACTIONS": ""

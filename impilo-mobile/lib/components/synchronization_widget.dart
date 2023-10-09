@@ -4,7 +4,6 @@ import 'package:impilo/backend/http/account_service.dart';
 import 'package:impilo/backend/http/sync_service.dart';
 import 'package:provider/provider.dart';
 
-import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -57,10 +56,10 @@ class _ActivationWidgetState extends State<ActivationWidget> {
             maxWidth: 570.0,
           ),
           decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).secondaryText,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(12.0),
             border: Border.all(
-              color: FlutterFlowTheme.of(context).lineColor,
+              color: FlutterFlowTheme.of(context).secondaryText,
             ),
           ),
           child: Padding(
@@ -82,6 +81,7 @@ class _ActivationWidgetState extends State<ActivationWidget> {
                                 fontFamily: 'Roboto',
                                 useGoogleFonts: GoogleFonts.asMap().containsKey(
                                     FlutterFlowTheme.of(context).title2Family),
+                            color: Colors.green
                               ),
                         ),
                       ),

@@ -109,7 +109,8 @@
       "TITLE": "Wagonjwa",
       "FACILITY": "Kituo",
       "ACTIONS": "",
-      "SEARCH_HINT": "Tafuta kwa majina au nambari ya hospitali"
+      "SEARCH_HINT": "Tafuta kwa majina au nambari ya hospitali",
+      "FILTER_HINT": "Chuja mgonjwa juu ya hali ya kusambaza"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {

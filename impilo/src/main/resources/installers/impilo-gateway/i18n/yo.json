@@ -109,7 +109,8 @@
       "TITLE": "Awọn alaisan",
       "FACILITY": "Ohun elo",
       "ACTIONS": "",
-      "SEARCH_HINT": "Ṣewadii nipasẹ awọn orukọ tabi nọmba ile-iwosan"
+      "SEARCH_HINT": "Ṣewadii nipasẹ awọn orukọ tabi nọmba ile-iwosan",
+      "FILTER_HINT": "Àlẹmọ alaisan lori devolve ipo"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {

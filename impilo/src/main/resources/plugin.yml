@@ -85,5 +85,6 @@ roles:
     authority: ROLE_FACILITY_ADMIN
     permissions:
       - name: Facility tasks
-permissions:
   - name: EHR Sync
+    permissions:
+      - name: EHR Sync

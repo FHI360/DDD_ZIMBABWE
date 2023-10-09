@@ -1,5 +1,9 @@
 package org.fhi360.plugins.impilo.domain.entities;
 
+import com.blazebit.persistence.view.CreatableEntityView;
+import com.blazebit.persistence.view.EntityView;
+import com.blazebit.persistence.view.IdMapping;
+import com.blazebit.persistence.view.UpdatableEntityView;
 import io.github.jbella.snl.core.api.id.UUIDV7;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -36,4 +40,38 @@ public class Prescription {
 
     @ManyToOne
     private Patient patient;
+
+    @EntityView(Prescription.class)
+    @UpdatableEntityView
+    @CreatableEntityView
+    public interface CreateView {
+        @IdMapping
+        UUID getId();
+
+        void setId(UUID id);
+
+        String getPrescriptionId();
+
+        void setPrescriptionId(String prescriptionId);
+
+        String getMedicineId();
+
+        void setMedicineId(String medicineId);
+
+        String getFrequencyId();
+
+        void setFrequencyId(String frequencyId);
+
+        Integer getPrescribedQty();
+
+        void setPrescribedQty(Integer prescribedQty);
+
+        LocalDateTime getTime();
+
+        void setTime(LocalDateTime time);
+
+        Patient.IdView getPatient();
+
+        void setPatient(Patient.IdView patient);
+    }
 }

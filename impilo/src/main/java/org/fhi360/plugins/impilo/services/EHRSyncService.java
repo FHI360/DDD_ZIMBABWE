@@ -10,7 +10,6 @@ import io.github.jbella.snl.core.api.services.ExtensionService;
 import io.github.jbella.snl.core.api.services.errors.BadRequestException;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.fhi360.plugins.impilo.domain.entities.ClinicData;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.entities.Prescription;
@@ -29,7 +28,6 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyAuthority('EHR Sync')")
-@Slf4j
 public class EHRSyncService {
     private final PatientRepository patientRepository;
     private final StockRepository stockRepository;

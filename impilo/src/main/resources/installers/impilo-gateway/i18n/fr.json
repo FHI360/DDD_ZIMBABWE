@@ -109,7 +109,8 @@
       "TITLE": "Les patients",
       "FACILITY": "Facilité",
       "ACTIONS": "",
-      "SEARCH_HINT": "Recherche par nom ou numéro d'hôpital"
+      "SEARCH_HINT": "Recherche par nom ou numéro d'hôpital",
+      "FILTER_HINT": "Filtrer le patient selon son statut de dévolution"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {

@@ -1,6 +1,7 @@
 package org.fhi360.plugins.impilo.integration;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.JoinType;
 import com.blazebit.persistence.integration.view.spring.EnableEntityViews;
 import com.blazebit.persistence.view.EntityViewManager;
 import com.blazebit.persistence.view.EntityViewSetting;
@@ -19,6 +20,8 @@ import org.fhi360.plugins.impilo.ImpiloGatewayPluginApp;
 import org.fhi360.plugins.impilo.domain.ImpiloGatewayDomain;
 import org.fhi360.plugins.impilo.domain.entities.Devolve;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
+import org.fhi360.plugins.impilo.domain.entities.Prescription;
+import org.fhi360.plugins.impilo.domain.entities.StockIssuance;
 import org.fhi360.plugins.impilo.domain.repositories.PatientRepository;
 import org.fhi360.plugins.impilo.domain.repositories.RefillRepository;
 import org.fhi360.plugins.impilo.services.DevolveService;
@@ -144,6 +147,13 @@ public class TestTutorialService {
             }).toList();
         data.setStocks(stocks);
 LOG.info("Data: {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(data));
+
+        var settings5 = EntityViewSetting.create(StockIssuance.CreateView.class);
+        var cb5 = cbf.create(em, StockIssuance.class)
+            .where("site.id").in(List.of(UUID.randomUUID()))
+            .where("synced").eq(false);
+        List<StockIssuance.CreateView> issuance = evm.applySetting(settings5, cb5).getResultList();
+
     }
 
     @Test

@@ -7,7 +7,6 @@ import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.services.ConfigurationService;
 import io.github.jbella.snl.core.api.services.ExtensionService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.entities.Prescription;
@@ -35,7 +34,6 @@ import java.util.*;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class EHRService {
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;

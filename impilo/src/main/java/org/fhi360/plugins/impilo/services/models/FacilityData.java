@@ -2,10 +2,7 @@ package org.fhi360.plugins.impilo.services.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.fhi360.plugins.impilo.domain.entities.ClinicData;
-import org.fhi360.plugins.impilo.domain.entities.Devolve;
-import org.fhi360.plugins.impilo.domain.entities.Refill;
-import org.fhi360.plugins.impilo.domain.entities.StockRequest;
+import org.fhi360.plugins.impilo.domain.entities.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +17,7 @@ public class FacilityData {
     private List<Refill.UpdateView> refills;
     private List<ClinicData.UpdateView> clinics;
     private List<StockRequest.UpdateView> stockRequest;
+    private List<StockIssuance.CreateView> stockIssuance;
 
     private UUID reference;
 }

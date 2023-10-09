@@ -7,7 +7,6 @@ import 'package:impilo/backend/floor/entities/inventory_request.dart';
 import 'package:impilo/backend/http/Inventory_service.dart';
 import 'package:impilo/main.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 import '/components/inventory_request_widget.dart';
 import '/custom_code/actions/index.dart' as actions;
@@ -184,35 +183,6 @@ class _InventoryRequestListWidgetState
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () async {},
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
-                    children: [
-                      FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30,
-                        borderWidth: 1,
-                        buttonSize: 60,
-                        icon: Icon(
-                          Icons.refresh_rounded,
-                          color:
-                          FlutterFlowTheme.of(context)
-                              .primaryText,
-                          size: 30,
-                        ),
-                        onPressed: () async {
-                          await synchronize();
-                          setState(() {
-                            _model.fullList = true;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
                 if (_model.fullList)
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),

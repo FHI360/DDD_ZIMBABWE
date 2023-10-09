@@ -106,6 +106,10 @@ public class StockIssuance {
 
         void setRequest(StockRequest.IdView request);
 
+        Boolean getAcknowledged();
+
+        void setAcknowledged(Boolean acknowledged);
+
         @PrePersist
         default void prePersist() {
             setSynced(false);

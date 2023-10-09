@@ -127,9 +127,6 @@ public class CentralServerService {
             }
 
             StockIssuance.CreateView finalIssuance = issuance;
-            mappingRepository.findByRemote(c.getRequest().getId()).ifPresent(mapping -> {
-                finalIssuance.setRequest(getStockRequestIdView(mapping.getLocal()));
-            });
             mappingRepository.findByRemote(c.getSite().getId()).ifPresent(mapping -> {
                 finalIssuance.setSite(getOrganisationIdView(mapping.getLocal()));
             });
@@ -137,12 +134,35 @@ public class CentralServerService {
                 finalIssuance.setStock(getStockIdView(mapping.getLocal()));
             });
 
-            BeanUtils.copyProperties(c, finalIssuance, "id", "request", "site", "stock");
+            BeanUtils.copyProperties(c, finalIssuance, "id", "site", "stock");
             finalIssuance.setSynced(true);
 
-            evm.save(em, issuance);
+            evm.save(em, finalIssuance);
         });
 
+        data.getPrescriptions().forEach(p -> {
+            Prescription.CreateView prescription = evm.create(Prescription.CreateView.class);
+            var ref = new Object() {
+                UUID patientId = null;
+            };
+            mappingRepository.findByRemote(p.getPatient().getId()).ifPresent(mapping -> {
+                ref.patientId = mapping.getLocal();
+            });
+            var settings = EntityViewSetting.create(Prescription.CreateView.class);
+            var cb = cbf.create(em, Prescription.class)
+                .where("prescriptionId").eq(p.getPrescriptionId())
+                .where("patient.id").eq(ref.patientId);
+            try {
+                prescription = evm.applySetting(settings, cb).getSingleResult();
+            } catch (Exception ignored) {
+            }
+            Prescription.CreateView finalPrescription = prescription;
+            mappingRepository.findByRemote(p.getPatient().getId()).ifPresent(mapping -> {
+                finalPrescription.setPatient(getPatientIdView(mapping.getLocal()));
+            });
+            BeanUtils.copyProperties(p, finalPrescription, "id", "patient");
+            evm.save(em, finalPrescription);
+        });
         return true;
     }
 
@@ -233,6 +253,12 @@ public class CentralServerService {
                 })
                 .toList();
             facilityData.setStockRequest(requests);
+
+            var settings5 = EntityViewSetting.create(StockIssuance.CreateView.class);
+            var cb5 = cbf.create(em, StockIssuance.class)
+                .where("site.id").in(_outletIds);
+            List<StockIssuance.CreateView> issuance = evm.applySetting(settings5, cb5).getResultList();
+            facilityData.setStockIssuance(issuance);
         }
 
         UUID reference = UUID.randomUUID();
@@ -342,12 +368,5 @@ public class CentralServerService {
         view.setId(id);
 
         return evm.convert(view, Stock.IdView.class);
-    }
-
-    private StockRequest.IdView getStockRequestIdView(UUID id) {
-        StockRequest.UpdateView view = evm.create(StockRequest.UpdateView.class);
-        view.setId(id);
-
-        return evm.convert(view, StockRequest.IdView.class);
     }
 }

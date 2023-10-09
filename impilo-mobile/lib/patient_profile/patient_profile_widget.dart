@@ -314,8 +314,8 @@ class _PatientProfileWidgetState extends State<PatientProfileWidget> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                if (!(_model.patient?.serviceDiscontinued ??
-                                    false))
+                                if (!((_model.patient?.serviceDiscontinued ??
+                                    false) && FFAppState().outlet))
                                   PopupMenuButton(
                                       child: Icon(Icons.more_vert),
                                       onSelected: (value) async {

@@ -109,7 +109,8 @@
       "TITLE": "Marasa lafiya",
       "FACILITY": "Kayan aiki",
       "ACTIONS": "",
-      "SEARCH_HINT": "Bincika da suna ko lambar asibiti"
+      "SEARCH_HINT": "Bincika da suna ko lambar asibiti",
+      "FILTER_HINT": "Tace majiyyaci akan halin da ake ciki"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {

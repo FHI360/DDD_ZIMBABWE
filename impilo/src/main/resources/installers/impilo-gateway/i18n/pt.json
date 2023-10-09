@@ -109,7 +109,8 @@
       "TITLE": "Pacientes",
       "FACILITY": "Instalação",
       "ACTIONS": "",
-      "SEARCH_HINT": "Pesquise por nomes ou número de hospital"
+      "SEARCH_HINT": "Pesquise por nomes ou número de hospital",
+      "FILTER_HINT": "Filtrar paciente no status de devolução"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {

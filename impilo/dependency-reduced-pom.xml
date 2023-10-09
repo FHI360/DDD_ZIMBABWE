@@ -10,7 +10,7 @@
   <groupId>org.fhi360.plugins</groupId>
   <artifactId>impilo</artifactId>
   <name>Impilo Gateway Plugin</name>
-  <version>1.0.7</version>
+  <version>1.0.9</version>
   <build>
     <plugins>
       <plugin>

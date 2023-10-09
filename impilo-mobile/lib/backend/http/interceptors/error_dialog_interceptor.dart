@@ -25,16 +25,6 @@ class ErrorDialogInterceptor extends Interceptor {
     }
     final data = err.response?.data;
 
-    final refreshToken = FFAppState().refreshToken;
-
-    if (data == null ||
-        !(data is Map) ||
-        err.response?.statusCode == 401 &&
-            (refreshToken != '') &&
-            !err.requestOptions.headers
-                .containsKey(AuthTokenInterceptor.skipHeader)) {
-      return super.onError(err, handler);
-    }
     if (err.response?.statusCode == 403 &&
         data['path'] == '/api/authenticate') {
       showToast(
