@@ -978,7 +978,7 @@ class _SiteHomeWidgetState extends State<SiteHomeWidget> {
                                         .SmoothPageIndicator(
                                       controller: _model.pageViewController ??=
                                           PageController(initialPage: 0),
-                                      count: 4,
+                                      count: 5,
                                       axisDirection: Axis.horizontal,
                                       onDotClicked: (i) {
                                         _model.pageViewController!
