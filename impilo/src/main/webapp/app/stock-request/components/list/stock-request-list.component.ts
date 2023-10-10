@@ -30,7 +30,7 @@ export class StocksRequestListComponent implements OnInit, OnDestroy {
         {
             label: 'IMPILO.STOCK_REQUEST.LIST_PAGE.DATE',
             property: 'date',
-            type: 'date',
+            type: 'datetime',
             visible: true,
             cssClasses: ['font-medium']
         },

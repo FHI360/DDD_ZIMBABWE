@@ -15,7 +15,8 @@ import java.util.UUID;
 public interface RefillRepository extends JpaRepository<Refill, UUID> {
     List<Refill> findByPatient(Patient patient);
 
-    List<Refill> findBySyncedIsFalse();
+    @Query("select r from Refill r where true = ?1 or r.synced = false ")
+    List<Refill> findForSync(boolean all);
 
     Optional<Refill> findByReference(UUID reference);
 

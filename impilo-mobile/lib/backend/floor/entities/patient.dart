@@ -22,6 +22,7 @@ class Patient {
   bool serviceDiscontinued;
   String reasonDiscontinued;
   DateTime dateDiscontinued;
+  int prescribedQty;
   String uuid;
   bool synced;
 
@@ -45,31 +46,36 @@ class Patient {
       this.serviceDiscontinued,
       this.reasonDiscontinued,
       this.dateDiscontinued,
+      this.prescribedQty,
       this.uuid,
       this.synced);
 
-  factory Patient.fromJson(Map<String, dynamic> row) => Patient(
-      null,
-      row['givenName'],
-      row['familyName'],
-      row['hospitalNumber'],
-      row['uniqueId'] ?? '',
-      DateTime.parse(row['dateOfBirth']),
-      row['sex'],
-      row['phoneNumber'],
-      row['assignedRegimen'],
-      row['facility'],
-      row['siteCode'],
-      row['address'],
-      DateTime.tryParse(row['lastClinicVisit'] ?? '') ?? DateTime(1900),
-      DateTime.tryParse(row['lastRefillDate'] ?? '') ?? DateTime(1900),
-      DateTime.tryParse(row['nextAppointmentDate'] ?? '') ?? DateTime(1900),
-      DateTime.tryParse(row['nextRefillDate'] ?? '') ?? DateTime(1900),
-      false,
-      '',
-      DateTime(1970),
-      row['id'],
-      true);
+  factory Patient.fromJson(Map<String, dynamic> row) {
+    double prescribed = (row['prescribedQty'] ?? 0) / 30;
+    return Patient(
+        null,
+        row['givenName'],
+        row['familyName'],
+        row['hospitalNumber'],
+        row['uniqueId'] ?? '',
+        DateTime.parse(row['dateOfBirth']),
+        row['sex'],
+        row['phoneNumber'],
+        row['assignedRegimen'],
+        row['facility'],
+        row['siteCode'],
+        row['address'],
+        DateTime.tryParse(row['lastClinicVisit'] ?? '') ?? DateTime(1900),
+        DateTime.tryParse(row['lastRefillDate'] ?? '') ?? DateTime(1900),
+        DateTime.tryParse(row['nextAppointmentDate'] ?? '') ?? DateTime(1900),
+        DateTime.tryParse(row['nextRefillDate'] ?? '') ?? DateTime(1900),
+        false,
+        '',
+        DateTime(1970),
+        prescribed.toInt(),
+        row['id'],
+        true);
+  }
 
   Map<String, dynamic> toJson() => {
         'id': id,

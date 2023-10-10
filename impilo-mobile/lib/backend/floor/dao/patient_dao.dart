@@ -18,7 +18,7 @@ class AssignedRegimen {
             ORDER BY date DESC) rn FROM refill
       ) r WHERE rn = 1
   )
-  SELECT siteCode, givenName, familyName, hospitalNo, sex, dateOfBirth, date, 
+  SELECT siteCode, givenName, familyName, hospitalNo, sex, dateOfBirth, date, phoneNumber, address,
     dateNextRefill FROM last_refill JOIN patient ON patientId = uuid ORDER BY givenName, familyName
 ''', viewName: 'LastRefill')
 class LastRefill {
@@ -30,9 +30,52 @@ class LastRefill {
   final DateTime date;
   final DateTime dateNextRefill;
   final String hospitalNo;
+  final String address;
+  final String phoneNumber;
 
-  LastRefill(this.siteCode, this.givenName, this.familyName, this.sex,
-      this.dateOfBirth, this.date, this.dateNextRefill, this.hospitalNo);
+  LastRefill(
+      this.siteCode,
+      this.givenName,
+      this.familyName,
+      this.sex,
+      this.dateOfBirth,
+      this.date,
+      this.dateNextRefill,
+      this.hospitalNo,
+      this.address,
+      this.phoneNumber);
+}
+
+@DatabaseView('''
+  WITH data AS ( 
+      SELECT patientId, date, dateNextRefill FROM Refill
+  )
+  SELECT siteCode, givenName, familyName, hospitalNo, sex, dateOfBirth, date, phoneNumber, address,
+    dateNextRefill, patientId FROM data JOIN patient ON patientId = uuid ORDER BY givenName, familyName
+''', viewName: 'MissedRefill')
+class MissedRefill {
+  final String siteCode;
+  final String givenName;
+  final String familyName;
+  final String sex;
+  final DateTime dateOfBirth;
+  final DateTime date;
+  final DateTime dateNextRefill;
+  final String hospitalNo;
+  final String address;
+  final String phoneNumber;
+
+  MissedRefill(
+      this.siteCode,
+      this.givenName,
+      this.familyName,
+      this.sex,
+      this.dateOfBirth,
+      this.date,
+      this.dateNextRefill,
+      this.hospitalNo,
+      this.address,
+      this.phoneNumber);
 }
 
 @dao
@@ -74,7 +117,16 @@ abstract class PatientDao {
   @Query(
       '''SELECT * FROM LastRefill WHERE siteCode = :siteCode AND dateNextRefill 
         BETWEEN :start AND :end''')
-  Future<List<LastRefill>> listMissedRefill(
+  Future<List<LastRefill>> listRefill(
+      String siteCode, DateTime start, DateTime end);
+
+  @Query('''
+        SELECT * FROM (
+          SELECT *, ROW_NUMBER() OVER (PARTITION BY patientId ORDER BY date DESC) rn 
+          FROM MissedRefill WHERE siteCode = :siteCode AND date <= :end
+        ) r WHERE rn = 1 AND dateNextRefill BETWEEN :start AND :end
+  ''')
+  Future<List<MissedRefill>> missedRefill(
       String siteCode, DateTime start, DateTime end);
 
   @Query('''Update Patient set serviceDiscontinued = true, dateDiscontinued = 

@@ -3,47 +3,48 @@
     "MENU": {
       "PATIENTS": "Wagonjwa",
       "STOCKS": "Hisa",
-      "STOCK_ISSUANCE": "Utoaji wa hisa",
-      "STOCK_REQUEST": "Ombi la hisa",
+      "STOCK_ISSUANCE": "Utoaji wa Hisa",
+      "STOCK_REQUEST": "Ombi la Hisa",
       "REPORTS": {
         "TITLE": "Ripoti",
-        "INDICATORS": "Ripoti ya viashiria"
+        "INDICATORS": "Ripoti ya Viashiria"
       },
       "SYNC": "Usawazishaji"
     },
     "TITLE": {
       "STOCKS": "Hisa",
-      "STOCK": "Maelezo ya hisa",
-      "ADD_STOCK": "Ongeza maelezo ya hisa",
-      "STOCK_ISSUANCE_LIST": "Orodha ya utoaji wa hisa",
-      "STOCK_ISSUANCE": "Maelezo ya utoaji wa hisa",
-      "ADD_STOCK_ISSUANCE": "Rekodi utoaji wa hisa",
+      "STOCK": "Maelezo ya Hisa",
+      "ADD_STOCK": "Ongeza Maelezo ya Hisa",
+      "STOCK_ISSUANCE_LIST": "Orodha ya Utoaji wa Hisa",
+      "STOCK_ISSUANCE": "Maelezo ya Utoaji wa Hisa",
+      "ADD_STOCK_ISSUANCE": "Rekodi ya Utoaji wa Hisa",
       "PATIENTS": "Wagonjwa",
-      "STOCK_REQUEST": "Ombi la hisa",
+      "STOCK_REQUEST": "Ombi la Hisa",
       "REPORTS": "Ripoti ya Viashiria vya OFCAD",
-      "PATIENT_DETAILS": "Maelezo ya mgonjwa"
+      "PATIENT_DETAILS": "Maelezo ya Mgonjwa"
     },
     "STOCK": {
       "LIST_PAGE": {
-        "TITLE": "Orodha ya hisa",
-        "ADD": "Ongeza hisa",
+        "TITLE": "Orodha ya Hisa",
+        "ADD": "Ongeza Hisa",
         "SEARCH": "Tafuta...",
-        "DATE": "Tarehe iliyorekodiwa",
+        "DATE": "Tarehe Iliyorekodiwa",
         "NO_DATA": "Hakuna data ya hisa inayopatikana",
-        "FACILITY": "Kituo cha afya",
+        "FACILITY": "Kituo cha Afya",
         "REGIMEN": "Dawa ya ARV",
         "BOTTLES": "Hisa ya Awali",
-        "ISSUED": "Kiasi kimetolewa",
+        "ISSUED": "Kiasi Imetolewa",
         "BALANCE": "Mizani",
         "BATCH_NO": "Kundi Na",
         "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
-        "BATCH_ISSUANCE_ID": "Kitambulisho cha Utoaji wa Bechi"
+        "BATCH_ISSUANCE_ID": "Kitambulisho cha Utoaji wa Bechi",
+        "SEARCH_HINT": "Tafuta kwa regimen, nambari ya kundi au nambari ya serial"
       },
       "DETAIL_PAGE": {
         "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
         "EXPIRATION_DATE_MIN": "Tarehe ya mwisho wa matumizi ni kiwango cha chini zaidi cha leo",
         "MANUFACTURE_DATE": "Tarehe ya utengenezaji",
-        "MANUFACTURE_DATE_MAX": "Tarehe ya juu zaidi ya ManUFacture ni leo",
+        "MANUFACTURE_DATE_MAX": "Tarehe ya juu zaidi ya utengenezaji ni leo",
         "REGIMEN_REQUIRED": "Dawa ya ARV inahitajika",
         "BOTTLES_REQUIRED": "Idadi ya chupa inahitajika",
         "BOTTLES_MIN": "Idadi ya chini ya chupa ni 1",
@@ -59,25 +60,27 @@
     },
     "STOCK_ISSUANCE": {
       "LIST_PAGE": {
-        "TITLE": "Orodha ya utoaji wa hisa",
-        "ADD": "Suala hisa",
+        "TITLE": "Orodha ya Utoaji wa Hisa",
+        "ADD": "Hisa ya Suala",
         "SEARCH": "Tafuta...",
         "DATE": "Tarehe iliyotolewa",
         "NO_DATA": "Hakuna data ya suala la hisa inayopatikana",
-        "FACILITY": "Kituo cha afya",
+        "FACILITY": "Kituo cha Afya",
         "SITE": "Tovuti ya OFCAD",
         "REGIMEN": "Dawa ya ARV",
-        "ISSUED": "Chupa zilizotolewa",
+        "ISSUED": "Chupa Imetolewa",
         "BATCH_NO": "Kundi Na",
         "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
-        "ACKNOWLEDGED": "Imekubaliwa"
+        "ACKNOWLEDGED": "Imekubaliwa",
+        "SEARCH_HINT": "Tafuta kwa regimen, nambari ya kundi au nambari ya serial",
+        "BALANCE": "Salio la Hisa"
       },
       "DETAIL_PAGE": {
         "BARCODE": "Msimbo pau",
         "EXPIRATION_DATE": "Tarehe ya kumalizika muda wake",
         "EXPIRATION_DATE_MIN": "Tarehe ya mwisho wa matumizi ni kiwango cha chini zaidi cha leo",
-        "MANUFACTURE_DATE": "Tarehe ya tukio ManUFacture",
-        "MANUFACTURE_DATE_MAX": "Tarehe ya juu zaidi ya ManUFacture ni leo",
+        "MANUFACTURE_DATE": "Tarehe ya utengenezaji",
+        "MANUFACTURE_DATE_MAX": "Tarehe ya juu zaidi ya utengenezaji ni leo",
         "ISSUED": "Chupa zilizotolewa",
         "ISSUED_REQUIRED": "Idadi ya chupa inahitajika",
         "ISSUED_MIN": "Idadi ya chini ya chupa ni 1",
@@ -86,7 +89,7 @@
         "SITE_REQUIRED": "Tovuti ya OFCAD inahitajika",
         "STOCK": "Kuingia kwa hisa",
         "STOCK_REQUIRED": "Ingizo la hisa linahitajika",
-        "BALANCE": "Salio la hisa",
+        "BALANCE": "Salio la Hisa",
         "EDIT": "Hariri"
       }
     },
@@ -95,21 +98,23 @@
       "FAMILY_NAME": "Jina la ukoo",
       "ASSIGNED_REGIMEN": "Dawa ya ARV Iliyokabidhiwa",
       "SEX": "Ngono",
-      "HOSPITAL_NUMBER": "Nambari ya hospitali",
+      "HOSPITAL_NUMBER": "Nambari ya Hospitali",
       "UNIQUE_ID": "Kitambulisho cha kipekee",
       "SITE": "Tovuti ya OFCAD",
       "DEVOLVED": "Iliyogatuliwa",
-      "NOT_DEVOLVED": "Si kugatuliwa",
+      "NOT_DEVOLVED": "Sio Kugatuliwa",
       "ALL": "Wagonjwa wote",
       "SEARCH": "Tafuta...",
       "NO_DATA": "Hakuna data ya mgonjwa inayopatikana",
       "TITLE": "Wagonjwa",
       "FACILITY": "Kituo",
-      "ACTIONS": ""
+      "ACTIONS": "",
+      "SEARCH_HINT": "Tafuta kwa majina au nambari ya hospitali",
+      "FILTER_HINT": "Chuja mgonjwa juu ya hali ya kusambaza"
     },
     "STOCK_REQUEST": {
       "LIST_PAGE": {
-        "TITLE": "Orodha ya ombi la hisa",
+        "TITLE": "Orodha ya Ombi la Hisa",
         "DATE": "Tarehe iliyoombwa",
         "NO_DATA": "Hakuna data ya ombi la hisa inayopatikana",
         "SITE": "Tovuti ya OFCAD",
@@ -165,10 +170,10 @@
       }
     },
     "PATIENT": {
-      "REFILL_HISTORY": "Jaza upya historia",
-      "NEXT_REFILL": "Tarehe inayofuata ya kujaza tena",
-      "LAST_REFILL": "Tarehe ya mwisho ya kujaza tena",
-      "REFILL_DURATION": "Muda wa kujaza tena",
+      "REFILL_HISTORY": "Jaza Upya Historia",
+      "NEXT_REFILL": "Tarehe Inayofuata ya Kujaza tena",
+      "LAST_REFILL": "Tarehe ya Mwisho ya Kujazwa tena",
+      "REFILL_DURATION": "Muda wa Kujaza tena",
       "REFILL_DAYS": "Siku {{days}}",
       "DEVOLVE": "Toa mgonjwa"
     },

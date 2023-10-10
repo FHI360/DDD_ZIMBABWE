@@ -39,10 +39,24 @@ class Refill {
       'missedDoses': missedDoses,
       'adverseIssues': adverseIssues,
       'regimen': regimen,
-      'batchIssuanceId': 'batchIssuanceId',
+      'batchIssuanceId': batchIssuanceId,
       'qtyPrescribed': quantityPrescribed,
       'qtyDispensed': quantityDispensed,
       'organisation': {'id': FFAppState().code}
     };
   }
+
+  factory Refill.fromJson(Map<String, dynamic> row) => Refill(
+      null,
+      DateTime.parse(row['date']),
+      row['regimen'],
+      row['patient']['id'],
+      row['qtyPrescribed'],
+      row['qtyDispensed'],
+      DateTime.parse(row['dateNextRefill']),
+      row['missedDoses'],
+      row['adverseIssues'],
+      row['barcode'],
+      row['batchIssuanceId'],
+      true);
 }

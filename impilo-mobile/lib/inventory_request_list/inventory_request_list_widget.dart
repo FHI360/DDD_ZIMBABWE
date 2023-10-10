@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:impilo/backend/floor/entities/inventory.dart';
 import 'package:impilo/backend/floor/entities/inventory_request.dart';
 import 'package:impilo/backend/http/Inventory_service.dart';
 import 'package:impilo/main.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 import '/components/inventory_request_widget.dart';
 import '/custom_code/actions/index.dart' as actions;
@@ -65,12 +65,13 @@ class _InventoryRequestListWidgetState
               inventory[i]['reference'],
               inventory[i]['regimen'],
               inventory[i]['bottles'],
-              false,
+              inventory[i]['balance'],
+              inventory[i]['acknowledged'] ?? false,
               inventory[i]['batchNo'],
               inventory[i]['barcode'],
               FFAppState().code,
               DateTime.parse(inventory[i]['expirationDate']),
-              inventory[i]['batchIssueId']);
+              inventory[i]['batchIssueId'] ?? '');
           await _database.inventoryDao.insertRecord(_inventory);
           await _database.inventoryRequestDao
               .fulfilled(inventory[i]['bottles'], inventory[i]['requestReference']);
@@ -159,7 +160,13 @@ class _InventoryRequestListWidgetState
         ),
         title: Text(
           'Inventory Request',
-          style: FlutterFlowTheme.of(context).title3,
+          style: FlutterFlowTheme.of(context).title2.override(
+            fontFamily: FlutterFlowTheme.of(context).title2Family,
+            color: Colors.white,
+            fontSize: 22,
+            useGoogleFonts: GoogleFonts.asMap()
+                .containsKey(FlutterFlowTheme.of(context).title2Family),
+          ),
         ),
         actions: [],
         centerTitle: true,
@@ -176,35 +183,6 @@ class _InventoryRequestListWidgetState
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () async {},
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
-                    children: [
-                      FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30,
-                        borderWidth: 1,
-                        buttonSize: 60,
-                        icon: Icon(
-                          Icons.refresh_rounded,
-                          color:
-                          FlutterFlowTheme.of(context)
-                              .primaryText,
-                          size: 30,
-                        ),
-                        onPressed: () async {
-                          await synchronize();
-                          setState(() {
-                            _model.fullList = true;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
                 if (_model.fullList)
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),

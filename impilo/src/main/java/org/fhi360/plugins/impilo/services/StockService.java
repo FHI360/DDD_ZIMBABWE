@@ -135,7 +135,8 @@ public class StockService {
             }
         }
 
-        cb.orderByAsc("regimen")
+        cb.orderByDesc("date")
+            .orderByAsc("regimen")
             .orderByAsc("batchNo")
             .orderByAsc("id");
 

@@ -11,6 +11,8 @@ class ReportListModel extends FlutterFlowModel {
   DateTime? datePicked4;
   DateTime? datePicked5;
   DateTime? datePicked6;
+  DateTime? datePicked7;
+  DateTime? datePicked8;
 
   /// Initialization and disposal methods.
 

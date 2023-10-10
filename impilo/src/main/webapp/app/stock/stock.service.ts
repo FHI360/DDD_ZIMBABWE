@@ -78,7 +78,7 @@ export class StockService {
 
     convertFromClient(stock: Stock) {
         return Object.assign({}, stock, {
-            date: !!stock.date ? stock.date.toISODate() : null,
+            date: !!stock.date ? stock.date.toISO({includeOffset: false}) : null,
             manufactureDate: !!stock.manufactureDate ? stock.manufactureDate.toISODate() : null,
             expirationDate: !!stock.expirationDate ? stock.expirationDate.toISODate() : null
         });

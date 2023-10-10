@@ -1,10 +1,9 @@
 package org.fhi360.plugins.impilo.domain.entities;
 
-import com.blazebit.persistence.view.*;
 import com.blazebit.persistence.view.PrePersist;
+import com.blazebit.persistence.view.*;
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.id.UUIDV7;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -12,6 +11,7 @@ import lombok.Setter;
 import org.fhi360.plugins.impilo.domain.providers.StockIssuedSubqueryProvider;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -27,7 +27,7 @@ public class Stock {
     @UUIDV7
     private UUID id;
 
-    private LocalDate date;
+    private LocalDateTime date;
 
     private String regimen;
 
@@ -66,9 +66,9 @@ public class Stock {
 
         void setId(UUID id);
 
-        LocalDate getDate();
+        LocalDateTime getDate();
 
-        void setDate(LocalDate date);
+        void setDate(LocalDateTime date);
 
         String getBatchNo();
 
@@ -120,11 +120,12 @@ public class Stock {
     public record View(
         @IdMapping
         UUID id,
-        LocalDate date,
+        LocalDateTime date,
         String batchNo,
         String serialNo,
         LocalDate manufactureDate,
         LocalDate expirationDate,
+        String batchIssuanceId,
         String regimen,
         Long bottles,
         @MappingSubquery(StockIssuedSubqueryProvider.class)

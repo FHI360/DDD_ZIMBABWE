@@ -6,9 +6,7 @@ import com.mattae.snl.plugins.security.extensions.AuthenticationServiceExtension
 import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.services.ConfigurationService;
 import io.github.jbella.snl.core.api.services.ExtensionService;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
 import org.fhi360.plugins.impilo.domain.entities.Prescription;
@@ -36,7 +34,6 @@ import java.util.*;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class EHRService {
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;
@@ -99,7 +96,8 @@ public class EHRService {
                                 prescription.setFrequencyId(String.valueOf(pres.get("frequencyId")));
                                 prescription.setTime((LocalDateTime) pres.get("time"));
 
-                                var _prescription = prescriptionRepository.findByPrescriptionId(prescription.getPrescriptionId())
+                                var _prescription = prescriptionRepository
+                                    .findByPrescriptionIdAndPatient(prescription.getPrescriptionId(),result)
                                     .orElse(prescription);
                                 BeanUtils.copyProperties(prescription, _prescription);
                                 prescriptionRepository.save(_prescription);
@@ -126,7 +124,7 @@ public class EHRService {
         List<Map<String, Object>> dispenseDtoList = new ArrayList<>();
         List<Map<String, Object>> vitals = new ArrayList<>();
 
-        refillRepository.findBySyncedIsFalse().forEach(refill -> {
+        refillRepository.findForSync(false).forEach(refill -> {
             //batchIssueId
             Map<String, Object> dispenseDto = new HashMap<>();
             dispenseDto.put("dateCreated", refill.getDate());
@@ -134,7 +132,7 @@ public class EHRService {
             dispenseDto.put("personId", refill.getPatient().getPersonId());
             dispenseDto.put("quantity", refill.getQtyDispensed() * 30);
             dispenseDto.put("batchIssueId", refill.getBatchIssuanceId());
-            prescriptionRepository.findLastByPatient(refill.getPatient()).ifPresent(prescription -> {
+            prescriptionRepository.findFirstByPatientOrderByTimeDesc(refill.getPatient()).ifPresent(prescription -> {
                 dispenseDto.put("frequencyId", prescription.getFrequencyId());
                 dispenseDto.put("medicineId", prescription.getMedicineId());
                 dispenseDto.put("prescriptionId", prescription.getPrescriptionId());
@@ -142,7 +140,7 @@ public class EHRService {
             dispenseDtoList.add(dispenseDto);
         });
 
-        clinicDataRepository.findBySyncedIsFalse().forEach(clinicData -> {
+        clinicDataRepository.findForSync(false).forEach(clinicData -> {
             //visitId
             //value
             //vitalName

@@ -1,18 +1,18 @@
 import 'package:floor/floor.dart';
 import 'package:impilo/backend/floor/entities/inventory.dart';
 
-@DatabaseView('''select quantity, siteCode, regimen from Inventory''',
+@DatabaseView('''select balance, siteCode, regimen from Inventory''',
     viewName: 'InventoryQuantity')
 class InventoryQuantity {
-  final int quantity;
+  final int balance;
   final String siteCode;
   final String regimen;
 
-  InventoryQuantity(this.quantity, this.siteCode, this.regimen);
+  InventoryQuantity(this.balance, this.siteCode, this.regimen);
 }
 
 @DatabaseView(
-    '''SELECT COUNT(quantity) > 0 AS isAvailable, siteCode FROM Inventory 
+    '''SELECT COUNT(balance) > 0 AS isAvailable, siteCode FROM Inventory 
     GROUP BY siteCode''',
     viewName: 'InventoryAvailability')
 class InventoryAvailability {
@@ -23,7 +23,7 @@ class InventoryAvailability {
 }
 
 @DatabaseView(
-    '''SELECT SUM(quantity) AS quantity, regimen, barcode, siteCode FROM Inventory
+    '''SELECT SUM(balance) AS quantity, regimen, barcode, siteCode FROM Inventory
       GROUP BY regimen, barcode, siteCode''',
     viewName: 'BarcodeQuantity')
 class BarcodeQuantity {
@@ -56,8 +56,8 @@ abstract class InventoryDao {
   Future<List<Inventory>> findByUniqueIdAndRegimen(
       String uniqueId, String regimen);
 
-  @Query('Update Inventory set quantity = :quantity WHERE id = :id')
-  Future<void> updateQuantity(int id, int quantity);
+  @Query('Update Inventory set balance = :balance, synced = 0 WHERE id = :id')
+  Future<void> updateBalance(int id, int balance);
 
   @Query('SELECT * FROM InventoryAvailability WHERE siteCode = :siteCode')
   Future<InventoryAvailability?> checkAvailability(String siteCode);
@@ -69,13 +69,13 @@ abstract class InventoryDao {
   Future<BarcodeQuantity?> barcodeQuantity(String siteCode, String regimen, String barcode);
 
   @Query('''
-  SELECT SUM(quantity) FROM Inventory WHERE siteCode = :siteCode AND uniqueId = :uniqueId
+  SELECT SUM(balance) FROM Inventory WHERE siteCode = :siteCode AND uniqueId = :uniqueId
   ''')
   Future<int?> issuedQuantity(String siteCode, String uniqueId);
 
   @Query(
       '''SELECT * FROM Inventory WHERE siteCode = :siteCode and regimen = :regimen 
-          and quantity > 0 order by expiryDate limit 1''')
+          and balance > 0 order by expiryDate limit 1''')
   Future<Inventory?> getNonZeroInventory(String siteCode, String regimen);
 
   @Query(
@@ -83,13 +83,19 @@ abstract class InventoryDao {
   Future<List<InventoryQuantity>> selectInventoryQuantity(
       String siteCode, String regimen);
 
+  @Query('''
+    SELECT COALESCE(SUM(balance), 0) FROM Inventory WHERE regimen = :regimen AND 
+      siteCode = :siteCode
+  ''')
+  Future<int?> balanceForRegimen(String regimen, String siteCode);
+
   @insert
   Future<int> insertRecord(Inventory inventory);
 
   @update
   Future<void> updateRecord(Inventory inventory);
 
-  @Query('UPDATE Inventory SET acknowledged = 1 WHERE reference = :reference')
+  @Query('UPDATE Inventory SET acknowledged = 1, synced = 0 WHERE reference = :reference')
   Future<void> acknowledge(String reference);
 
   @Query('SELECT COUNT(*) > 0 FROM Inventory WHERE synced = 0')
@@ -98,6 +104,9 @@ abstract class InventoryDao {
   @Query('SELECT * FROM Inventory WHERE synced = 0')
   Future<List<Inventory>> findUnSynced();
 
-  @Query("UPDATE Inventory SET synced = 1 WHERE acknowledged = 1")
+  @Query("UPDATE Inventory SET synced = 1")
   Future<void> updateAllSynced();
+
+  @Query("delete from Inventory")
+  Future<void> deleteAll();
 }

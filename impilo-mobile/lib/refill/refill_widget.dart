@@ -49,7 +49,6 @@ class _RefillWidgetState extends State<RefillWidget> {
     _model.systolicController ??= TextEditingController();
     _model.diastolicController ??= TextEditingController();
     _model.temperatureController ??= TextEditingController();
-    _model.qtyPrescribedController ??= TextEditingController();
     _model.qtyDispensedController ??= TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -57,6 +56,8 @@ class _RefillWidgetState extends State<RefillWidget> {
       var patient = await _database.patientDao.findById(widget.patientId!);
       setState(() {
         _model.patient = patient;
+        _model.qtyPrescribedController ??= TextEditingController(
+            text: _model.patient!.prescribedQty.toString());
       });
       setState(() {});
     });
@@ -114,17 +115,7 @@ class _RefillWidgetState extends State<RefillWidget> {
           child: Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  FlutterFlowTheme.of(context).primaryColor,
-                  Color(0xFFF5F5F5)
-                ],
-                stops: [0, 1],
-                begin: AlignmentDirectional(0, -1),
-                end: AlignmentDirectional(0, 1),
-              ),
-            ),
+            color: Color(0xFFF5F5F5),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -388,7 +379,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         TextInputType
                                                                             .number,
                                                                     autofocus:
-                                                                        true,
+                                                                        false,
                                                                     obscureText:
                                                                         false,
                                                                     decoration:
@@ -565,7 +556,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         TextInputType
                                                                             .number,
                                                                     autofocus:
-                                                                        true,
+                                                                        false,
                                                                     obscureText:
                                                                         false,
                                                                     decoration:
@@ -742,7 +733,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         TextInputType
                                                                             .number,
                                                                     autofocus:
-                                                                        true,
+                                                                        false,
                                                                     obscureText:
                                                                         false,
                                                                     decoration:
@@ -919,7 +910,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         TextInputType
                                                                             .number,
                                                                     autofocus:
-                                                                        true,
+                                                                        false,
                                                                     obscureText:
                                                                         false,
                                                                     decoration:
@@ -1136,7 +1127,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                          _model.coughingValue,
+                                                                              _model.coughingValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1271,7 +1262,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                          _model.feverValue,
+                                                                              _model.feverValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1406,7 +1397,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                          _model.weightLossValue,
+                                                                              _model.weightLossValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1541,7 +1532,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                          _model.nightSweatValue,
+                                                                              _model.nightSweatValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1676,7 +1667,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                          _model.swellingsValue,
+                                                                              _model.swellingsValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -1811,7 +1802,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                          _model.tbReferValue,
+                                                                              _model.tbReferValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -2010,153 +2001,302 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                   ),
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        12.0, 12.0, 12.0, 0.0),
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  height: 60.0,
-                                                  decoration: BoxDecoration(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryBackground,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Expanded(
-                                                        child: Container(
-                                                          width: 100.0,
-                                                          height: 100.0,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8.0),
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              Expanded(
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          5.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      child:
-                                                                          Text(
-                                                                        'Quantity Prescribed',
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText1
-                                                                            .override(
-                                                                              fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
-                                                                              fontSize: 12.0,
-                                                                              useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      child:
-                                                                          Padding(
+                                              if (_model
+                                                  .patient != null && _model
+                                                      .patient!.prescribedQty ==
+                                                  0)
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(12.0, 12.0,
+                                                          12.0, 0.0),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    height: 60.0,
+                                                    decoration: BoxDecoration(
+                                                      color: FlutterFlowTheme
+                                                              .of(context)
+                                                          .secondaryBackground,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Container(
+                                                            width: 100.0,
+                                                            height: 100.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondaryBackground,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8.0),
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Padding(
                                                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            10.0,
+                                                                            5.0,
                                                                             0.0,
-                                                                            10.0,
+                                                                            0.0,
                                                                             0.0),
-                                                                        child: FlutterFlowDropDown<
-                                                                            int>(
-                                                                          initialOption:
-                                                                          int.tryParse(_model.qtyPrescribedController!.text),
-                                                                          options: [
-                                                                            1,
-                                                                            2,
-                                                                            3,
-                                                                            4,
-                                                                            5,
-                                                                            6
-                                                                          ],
-                                                                          optionLabels: [
-                                                                            '30 days',
-                                                                            '60 days',
-                                                                            '90 days',
-                                                                            '120 days',
-                                                                            '150 days',
-                                                                            '180 days',
-                                                                          ],
-                                                                          onChanged: (val) =>
-                                                                              setState(() {
-                                                                            _model.qtyPrescribedController.text = val != null
-                                                                                ? val.toString()
-                                                                                : '';
-                                                                          }),
-                                                                          width:
-                                                                              double.infinity,
-                                                                          height:
-                                                                              50.0,
-                                                                          textStyle: FlutterFlowTheme.of(context)
+                                                                        child:
+                                                                            Text(
+                                                                          'Quantity Prescribed',
+                                                                          style: FlutterFlowTheme.of(context)
                                                                               .bodyText1
                                                                               .override(
                                                                                 fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
-                                                                                color: FlutterFlowTheme.of(context).primaryText,
+                                                                                fontSize: 12.0,
                                                                                 useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
                                                                               ),
-                                                                          fillColor:
-                                                                              FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          elevation:
-                                                                              2.0,
-                                                                          borderColor:
-                                                                              Colors.transparent,
-                                                                          borderWidth:
-                                                                              0.0,
-                                                                          borderRadius:
-                                                                              0.0,
-                                                                          margin: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              0.0,
-                                                                              0.0,
-                                                                              0.0),
-                                                                          hidesUnderline:
-                                                                              true,
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                  ],
+                                                                      Expanded(
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              10.0,
+                                                                              0.0,
+                                                                              10.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              FlutterFlowDropDown<int>(
+                                                                            initialOption:
+                                                                                int.tryParse(_model.qtyPrescribedController!.text),
+                                                                            options: [
+                                                                              1,
+                                                                              2,
+                                                                              3,
+                                                                              4,
+                                                                              5,
+                                                                              6
+                                                                            ],
+                                                                            optionLabels: [
+                                                                              '30 days',
+                                                                              '60 days',
+                                                                              '90 days',
+                                                                              '120 days',
+                                                                              '150 days',
+                                                                              '180 days',
+                                                                            ],
+                                                                            onChanged: (val) =>
+                                                                                setState(() {
+                                                                              _model.qtyPrescribedController.text = val != null ? val.toString() : '';
+                                                                            }),
+                                                                            width:
+                                                                                double.infinity,
+                                                                            height:
+                                                                                50.0,
+                                                                            textStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                  fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
+                                                                                  color: FlutterFlowTheme.of(context).primaryText,
+                                                                                  useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
+                                                                                ),
+                                                                            fillColor:
+                                                                                FlutterFlowTheme.of(context).secondaryBackground,
+                                                                            elevation:
+                                                                                2.0,
+                                                                            borderColor:
+                                                                                Colors.transparent,
+                                                                            borderWidth:
+                                                                                0.0,
+                                                                            borderRadius:
+                                                                                0.0,
+                                                                            margin: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            hidesUnderline:
+                                                                                true,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                              if (_model
+                                                  .patient != null && _model
+                                                      .patient!.prescribedQty !=
+                                                  0)
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(12.0, 12.0,
+                                                          12.0, 0.0),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    height: 60.0,
+                                                    decoration: BoxDecoration(
+                                                      color: FlutterFlowTheme
+                                                              .of(context)
+                                                          .secondaryBackground,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Container(
+                                                            width: 100.0,
+                                                            height: 100.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondaryBackground,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8.0),
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            5.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            Text(
+                                                                          'Quantity Prescribed',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyText1
+                                                                              .override(
+                                                                                fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
+                                                                                fontSize: 12.0,
+                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
+                                                                              ),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              10.0,
+                                                                              0.0,
+                                                                              10.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              FlutterFlowDropDown<int>(
+                                                                            initialOption:
+                                                                                int.tryParse(_model.qtyPrescribedController!.text),
+                                                                            options: [
+                                                                              1,
+                                                                              2,
+                                                                              3,
+                                                                              4,
+                                                                              5,
+                                                                              6
+                                                                            ],
+                                                                            disabled:
+                                                                                true,
+                                                                            optionLabels: [
+                                                                              '30 days',
+                                                                              '60 days',
+                                                                              '90 days',
+                                                                              '120 days',
+                                                                              '150 days',
+                                                                              '180 days',
+                                                                            ],
+                                                                            onChanged: (val) =>
+                                                                                setState(() {
+                                                                              _model.qtyPrescribedController.text = val != null ? val.toString() : '';
+                                                                            }),
+                                                                            width:
+                                                                                double.infinity,
+                                                                            height:
+                                                                                50.0,
+                                                                            textStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                  fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
+                                                                                  color: FlutterFlowTheme.of(context).primaryText,
+                                                                                  useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
+                                                                                ),
+                                                                            fillColor:
+                                                                                FlutterFlowTheme.of(context).secondaryBackground,
+                                                                            elevation:
+                                                                                2.0,
+                                                                            borderColor:
+                                                                                Colors.transparent,
+                                                                            borderWidth:
+                                                                                0.0,
+                                                                            borderRadius:
+                                                                                0.0,
+                                                                            margin: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            hidesUnderline:
+                                                                                true,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
                                               Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(
@@ -2238,8 +2378,9 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                             0.0),
                                                                         child: FlutterFlowDropDown<
                                                                             int>(
-                                                                          initialOption:
-                                                                          int.tryParse(_model.qtyDispensedController!.text),
+                                                                          initialOption: int.tryParse(_model
+                                                                              .qtyDispensedController!
+                                                                              .text),
                                                                           options: [
                                                                             1,
                                                                             2,
@@ -2507,7 +2648,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                          _model.missedDosesValue,
+                                                                              _model.missedDosesValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -2642,7 +2783,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                         child: FlutterFlowDropDown<
                                                                             String>(
                                                                           initialOption:
-                                                                          _model.adverseIssuesValue,
+                                                                              _model.adverseIssuesValue,
                                                                           options: [
                                                                             'No',
                                                                             'Yes'
@@ -3003,7 +3144,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                             quantity;
                                                                     database.then((value) => value
                                                                         .inventoryDao
-                                                                        .updateQuantity(
+                                                                        .updateBalance(
                                                                             inventory!.id!,
                                                                             balance.toInt()));
                                                                     quantity =
@@ -3011,7 +3152,7 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                   } else {
                                                                     database.then((value) => value
                                                                         .inventoryDao
-                                                                        .updateQuantity(
+                                                                        .updateBalance(
                                                                             inventory!.id!,
                                                                             0));
                                                                     quantity -=
@@ -3020,6 +3161,9 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                   }
                                                                 }
                                                               }
+                                                              final batchIssueId =
+                                                                  inventory!
+                                                                      .batchIssuanceId;
                                                               var refill = Refill(
                                                                   null,
                                                                   _model
@@ -3049,15 +3193,47 @@ class _RefillWidgetState extends State<RefillWidget> {
                                                                               .adverseIssuesValue),
                                                                   _model
                                                                       .barcode,
-                                                                  inventory!
-                                                                      .batchIssuanceId,
+                                                                  batchIssueId,
                                                                   false);
                                                               database.then(
                                                                   (value) => value
                                                                       .refillDao
                                                                       .insertRecord(
                                                                           refill));
-                                                              context.pop();
+
+                                                              if (_model
+                                                                      .patient!
+                                                                      .prescribedQty ==
+                                                                  0) {
+                                                                _model.patient!
+                                                                        .prescribedQty =
+                                                                    int.tryParse(_model
+                                                                            .qtyPrescribedController
+                                                                            .text) ??
+                                                                        0;
+                                                                database.then(
+                                                                    (value) async {
+                                                                  await value
+                                                                      .patientDao
+                                                                      .updateRecord(
+                                                                          _model
+                                                                              .patient!);
+                                                                });
+                                                              }
+
+                                                              context.pushNamed(
+                                                                'patientProfile',
+                                                                queryParams: {
+                                                                  'patientId':
+                                                                      serializeParam(
+                                                                    _model
+                                                                        .patient!
+                                                                        .id,
+                                                                    ParamType
+                                                                        .int,
+                                                                  ),
+                                                                }.withoutNulls,
+                                                              );
                                                             },
                                                       text: 'Save',
                                                       options: FFButtonOptions(

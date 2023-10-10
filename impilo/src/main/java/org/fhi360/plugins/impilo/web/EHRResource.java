@@ -1,9 +1,11 @@
 package org.fhi360.plugins.impilo.web;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.fhi360.plugins.impilo.services.EHRSyncService;
 import org.fhi360.plugins.impilo.services.models.EHRData;
 import org.fhi360.plugins.impilo.services.models.EHRSyncData;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -15,13 +17,13 @@ public class EHRResource {
     private final EHRSyncService syncService;
 
     @PostMapping
-    public void saveData(@RequestBody EHRSyncData syncData) {
-        syncService.syncData(syncData);
+    public boolean saveData(@RequestBody @Validated @Valid EHRSyncData syncData) {
+        return syncService.syncData(syncData);
     }
 
     @GetMapping
-    public EHRData getData() {
-        return syncService.getData();
+    public EHRData getData(@RequestParam(required = false, defaultValue = "false") boolean all) {
+        return syncService.getData(all);
     }
 
     @GetMapping("/acknowledge/{reference}")

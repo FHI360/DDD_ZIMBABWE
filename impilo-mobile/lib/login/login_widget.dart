@@ -92,25 +92,32 @@ class _LoginWidgetState extends State<LoginWidget> {
                               children: [
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 0, 20, 30),
+                                  child: Image.asset(
+                                    'assets/images/moh.png',
+                                    width: 72,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 8, 20, 0),
                                   child: Image.asset(
                                     'assets/images/impilo.png',
                                     width: 72,
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 8, 20, 0),
-                                  child: Image.asset(
-                                    'assets/images/moh.png',
-                                    width: 92,
-                                  ),
-                                ),
                               ],
                             ),
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
-                                  24.0, 40.0, 24.0, 0.0),
+                                  24.0, 30.0, 24.0, 0.0),
                               child: SingleChildScrollView(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,

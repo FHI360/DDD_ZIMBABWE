@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 
-import '/components/activation_widget.dart';
+import '/components/synchronization_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -374,7 +374,7 @@ class _SiteHomeWidgetState extends State<SiteHomeWidget> {
                                                                                 ),
                                                                                 Text(
                                                                                   formatNumber(
-                                                                                    listViewInventoryRow.quantity,
+                                                                                    listViewInventoryRow.balance,
                                                                                     formatType: FormatType.custom,
                                                                                     format: '#,###',
                                                                                     locale: '',
@@ -978,7 +978,7 @@ class _SiteHomeWidgetState extends State<SiteHomeWidget> {
                                         .SmoothPageIndicator(
                                       controller: _model.pageViewController ??=
                                           PageController(initialPage: 0),
-                                      count: 4,
+                                      count: 5,
                                       axisDirection: Axis.horizontal,
                                       onDotClicked: (i) {
                                         _model.pageViewController!

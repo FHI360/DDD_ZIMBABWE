@@ -15,7 +15,7 @@ import { MatInputModule } from "@angular/material/input";
 import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import {Patient, PatientService} from "../patient.service";
+import { Patient, PatientService } from "../patient.service";
 
 @Component({
     selector: 'site-assignment',
@@ -179,7 +179,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     listPatients() {
-        this._devolveService.list(this.keyword, this.category, this.paginator.pageIndex, this.pageSize).subscribe(
+        this._devolveService.list(this.keyword, this.category, this.paginator.pageIndex, this.paginator.pageSize).subscribe(
             res => {
                 this.dataSource.data = res.data;
                 this.paginator.length = res.totalSize;
@@ -211,6 +211,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     page(event: PageEvent) {
+        this.pageSize = event.pageSize;
         this.listPatients();
     }
 

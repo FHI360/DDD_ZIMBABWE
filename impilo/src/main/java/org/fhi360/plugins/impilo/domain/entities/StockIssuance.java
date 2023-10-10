@@ -7,11 +7,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -30,9 +32,15 @@ public class StockIssuance {
     @ManyToOne
     private Stock stock;
 
-    private Long bottles;
+    @NotNull
+    @Min(1)
+    private Integer bottles;
 
-    private LocalDate date;
+    @NotNull
+    @Min(0)
+    private Integer balance;
+
+    private LocalDateTime date;
 
     private Boolean acknowledged;
 
@@ -58,13 +66,18 @@ public class StockIssuance {
         void setId(UUID id);
 
         @NotNull
-        Long getBottles();
+        Integer getBottles();
 
-        void setBottles(Long bottles);
+        void setBottles(Integer bottles);
 
-        LocalDate getDate();
+        @NotNull
+        Integer getBalance();
 
-        void setDate(LocalDate date);
+        void setBalance(Integer balance);
+
+        LocalDateTime getDate();
+
+        void setDate(LocalDateTime date);
 
         UUID getReference();
 
@@ -93,6 +106,10 @@ public class StockIssuance {
 
         void setRequest(StockRequest.IdView request);
 
+        Boolean getAcknowledged();
+
+        void setAcknowledged(Boolean acknowledged);
+
         @PrePersist
         default void prePersist() {
             setSynced(false);
@@ -103,8 +120,10 @@ public class StockIssuance {
     public record View(
         @IdMapping
         UUID id,
-        Long bottles,
-        LocalDate date,
+        Integer bottles,
+
+        Integer balance,
+        LocalDateTime date,
         Boolean acknowledged,
         Stock.View stock,
         @Mapping("request.reference")

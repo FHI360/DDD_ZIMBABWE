@@ -72,7 +72,13 @@ class _InventoryListWidgetState extends State<InventoryListWidget> {
         ),
         title: Text(
           'Available Inventory',
-          style: FlutterFlowTheme.of(context).title3,
+          style: FlutterFlowTheme.of(context).title2.override(
+            fontFamily: FlutterFlowTheme.of(context).title2Family,
+            color: Colors.white,
+            fontSize: 22,
+            useGoogleFonts: GoogleFonts.asMap()
+                .containsKey(FlutterFlowTheme.of(context).title2Family),
+          ),
         ),
         actions: [],
         centerTitle: true,
@@ -83,17 +89,7 @@ class _InventoryListWidgetState extends State<InventoryListWidget> {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                FlutterFlowTheme.of(context).primaryColor,
-                Color(0xFFF5F5F5)
-              ],
-              stops: [0.0, 1.0],
-              begin: AlignmentDirectional(0.0, -1.0),
-              end: AlignmentDirectional(0, 1.0),
-            ),
-          ),
+          color: Colors.white38,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -136,7 +132,7 @@ class _InventoryListWidgetState extends State<InventoryListWidget> {
                                   16.0, 4.0, 16.0, 8.0),
                               child: Container(
                                 width: double.infinity,
-                                height: 100.0,
+                                height: 130.0,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
@@ -266,7 +262,7 @@ class _InventoryListWidgetState extends State<InventoryListWidget> {
                                                   Text(
                                                     formatNumber(
                                                       listViewInventoryRow
-                                                          .quantity,
+                                                          .balance,
                                                       formatType:
                                                           FormatType.custom,
                                                       format: '#,###',
@@ -282,7 +278,7 @@ class _InventoryListWidgetState extends State<InventoryListWidget> {
                                                   .acknowledged)
                                                 Padding(
                                                   padding: EdgeInsetsDirectional
-                                                      .fromSTEB(50, 0, 0, 0),
+                                                      .fromSTEB(50, 10, 0, 10),
                                                   child: FFButtonWidget(
                                                     onPressed: listViewInventoryRow
                                                                 .acknowledged ==

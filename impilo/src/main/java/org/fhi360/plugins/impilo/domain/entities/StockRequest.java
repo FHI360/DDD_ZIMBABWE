@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.fhi360.plugins.impilo.domain.providers.StockFulfilledSubqueryProvider;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -29,7 +29,7 @@ public class StockRequest {
     private UUID id;
 
     @NotNull
-    private LocalDate date;
+    private LocalDateTime date;
 
     @NotNull
     private String arvDrug;
@@ -58,9 +58,9 @@ public class StockRequest {
     @EntityView(StockRequest.class)
     @CreatableEntityView
     public interface CreateView extends IdView {
-        LocalDate getDate();
+        LocalDateTime getDate();
 
-        void setDate(LocalDate date);
+        void setDate(LocalDateTime date);
 
         String getArvDrug();
 
@@ -102,5 +102,10 @@ public class StockRequest {
     public interface ListView extends CreateView {
         @MappingSubquery(StockFulfilledSubqueryProvider.class)
         Long getFulfilled();
+    }
+
+    @EntityView(StockRequest.class)
+    public record SyncView(String requestId, @Mapping("arvDrug") String regimen, Integer bottles,
+                           @Mapping("site.id") UUID siteCode, LocalDateTime date) {
     }
 }

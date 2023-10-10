@@ -18,7 +18,7 @@ class SyncService {
     List<Devolve> devolves = await _database.devolveDao.findUnSynced();
     List<InventoryRequest> requests =
         await _database.inventoryRequestDao.findUnSynced();
-    List<Inventory> acknowledgements =
+    List<Inventory> inventories =
         await _database.inventoryDao.findUnSynced();
 
     final Map<String, dynamic> payload = new Map<String, dynamic>();
@@ -26,7 +26,8 @@ class SyncService {
     payload['clinicData'] = clinic.map((c) => c.toJson()).toList();
     payload['devolves'] = devolves.map((e) => e.toJson()).toList();
     payload['requests'] = requests.map((e) => e.toJson()).toList();
-    payload['acknowledgements'] = acknowledgements
+    payload['inventories'] = inventories.map((e) => e.toJson()).toList();
+    payload['acknowledgements'] = inventories
         .where((e) => e.acknowledged)
         .map((e) => e.reference)
         .toList();

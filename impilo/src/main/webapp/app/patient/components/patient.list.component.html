@@ -46,6 +46,7 @@
                                         <mat-option [value]="category.state">{{category.name}}</mat-option>
                                     </ng-container>
                                 </mat-select>
+                                <mat-hint>{{'IMPILO.PATIENT_LIST.FILTER_HINT' | transloco}}</mat-hint>
                             </mat-form-field>
                             <mat-form-field
                                 class="w-full sm:w-72 mt-4 sm:mt-0 sm:ml-4"
@@ -53,12 +54,13 @@
                                 <mat-icon
                                     matPrefix
                                     class="icon-size-5"
-                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                    [svgIcon]="'feather:search'"></mat-icon>
                                 <input
                                     matInput
                                     [formControl]="searchInputControl"
                                     [autocomplete]="'off'"
                                     [placeholder]="'IMPILO.PATIENT_LIST.SEARCH' | transloco">
+                                <mat-hint>{{'IMPILO.PATIENT_LIST.SEARCH_HINT' | transloco}}</mat-hint>
                             </mat-form-field>
                         </div>
 
@@ -140,6 +142,7 @@
                             </ng-template>
                             <mat-paginator (page)="page($event)" [pageSizeOptions]="pageSizeOptions"
                                            [pageSize]="pageSize"
+                                           [showFirstLastButtons]="true"
                                            class="sticky left-0 mt-10">
                             </mat-paginator>
                         </div>

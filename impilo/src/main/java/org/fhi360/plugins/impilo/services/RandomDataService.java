@@ -39,7 +39,7 @@ public class RandomDataService {
     Random rand = new Random();
     Faker faker = new Faker();
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         if (((long) em.createQuery("select count(o) from Organisation o where o.type = 'FACILITY'").getSingleResult()) == 0) {
             transactionHandler.runInTransaction(() -> {
@@ -106,6 +106,7 @@ public class RandomDataService {
             patient.setPhoneNumber(faker.phoneNumber().cellPhone());
             patient.setAddress(faker.address().fullAddress());
             patient.setFacilityId(facilities.get(0).getId().toString());
+            patient.setPersonId(UUID.randomUUID().toString());
             patient.setFacilityName(facilities.get(0).getName());
             patient.setRegimen(regimens.get(rand.nextInt(regimens.size())));
             patient.setNextAppointmentDate(faker.date().future(180, TimeUnit.DAYS).toLocalDateTime().toLocalDate());

@@ -80,8 +80,11 @@ webRemotes:
         authorities:
           - Facility tasks
 roles:
-  - name: Facility admininstrator
+  - name: Facility administrator
     description: IMPILO.ROLES.FACILITY_ADMIN
     authority: ROLE_FACILITY_ADMIN
     permissions:
       - name: Facility tasks
+  - name: EHR Sync
+    permissions:
+      - name: EHR Sync

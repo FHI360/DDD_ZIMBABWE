@@ -124,7 +124,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'pdf-preview',
               requireAuth: true,
               builder: (context, params) => PdfPreviewPage(
-                data: params.getParam<String>('data', ParamType.String),
+                path: params.getParam<String>('path', ParamType.String),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

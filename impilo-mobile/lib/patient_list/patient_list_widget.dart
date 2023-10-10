@@ -79,7 +79,13 @@ class _PatientListWidgetState extends State<PatientListWidget> {
         ),
         title: Text(
           'Patients',
-          style: FlutterFlowTheme.of(context).title3,
+          style: FlutterFlowTheme.of(context).title2.override(
+            fontFamily: FlutterFlowTheme.of(context).title2Family,
+            color: Colors.white,
+            fontSize: 22,
+            useGoogleFonts: GoogleFonts.asMap()
+                .containsKey(FlutterFlowTheme.of(context).title2Family),
+          ),
         ),
         actions: [],
         centerTitle: true,
@@ -90,17 +96,7 @@ class _PatientListWidgetState extends State<PatientListWidget> {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                FlutterFlowTheme.of(context).primaryColor,
-                Color(0xFFF5F5F5)
-              ],
-              stops: [0.0, 1.0],
-              begin: AlignmentDirectional(0.0, -1.0),
-              end: AlignmentDirectional(0, 1.0),
-            ),
-          ),
+          color: Colors.white38,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -154,7 +150,6 @@ class _PatientListWidgetState extends State<PatientListWidget> {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             filled: true,
-                            fillColor: Color(0xFF747550),
                           ),
                           style: FlutterFlowTheme.of(context).bodyText1,
                           maxLines: null,

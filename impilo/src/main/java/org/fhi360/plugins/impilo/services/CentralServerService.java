@@ -15,7 +15,6 @@ import io.github.jbella.snl.core.api.domain.Organisation;
 import io.github.jbella.snl.core.api.domain.Party;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.fhi360.plugins.impilo.domain.entities.*;
 import org.fhi360.plugins.impilo.domain.repositories.*;
 import org.fhi360.plugins.impilo.services.models.FacilityData;
@@ -34,15 +33,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ROLE_USER')")
-@Slf4j
 public class CentralServerService {
     private final EntityManager em;
     private final CriteriaBuilderFactory cbf;
     private final EntityViewManager evm;
     private final ObjectMapper objectMapper;
     private final PatientRepository patientRepository;
-    private final StockIssuanceRepository stockIssuanceRepository;
     private final DevolveRepository devolveRepository;
+    private final RefillRepository refillRepository;
+    private final ClinicDataRepository clinicDataRepository;
     private final IdMappingRepository mappingRepository;
     private final StockRepository stockRepository;
     private final StockRequestRepository stockRequestRepository;
@@ -53,8 +52,8 @@ public class CentralServerService {
      * stocks, stock requests, and stock issuances.
      *
      * @param data The `data` parameter is an object of type `ServerData`. It contains various lists of objects such as
-     * facilities, outlets, patients, devolves, stocks, stock requests, and stock issuance. The method performs various
-     * operations on these objects, such as saving or updating them in the corresponding repositories.
+     *             facilities, outlets, patients, devolves, stocks, stock requests, and stock issuance. The method performs various
+     *             operations on these objects, such as saving or updating them in the corresponding repositories.
      * @return The method is returning a boolean value of `true`.
      */
     @Transactional
@@ -117,15 +116,6 @@ public class CentralServerService {
             }
         });
 
-        data.getStockRequests().forEach(c -> {
-            if (mappingRepository.findByRemote(c.getId()).isEmpty()) {
-                IdMappings mapping = new IdMappings();
-                mapping.setRemote(c.getId());
-                stockRequestRepository.findByReference(c.getReference()).ifPresent(req -> mapping.setLocal(req.getId()));
-                mappingRepository.save(mapping);
-            }
-        });
-
         data.getStockIssuance().forEach(c -> {
             StockIssuance.CreateView issuance = evm.create(StockIssuance.CreateView.class);
             var settings = EntityViewSetting.create(StockIssuance.CreateView.class);
@@ -137,9 +127,6 @@ public class CentralServerService {
             }
 
             StockIssuance.CreateView finalIssuance = issuance;
-            mappingRepository.findByRemote(c.getRequest().getId()).ifPresent(mapping -> {
-                finalIssuance.setRequest(getStockRequestIdView(mapping.getLocal()));
-            });
             mappingRepository.findByRemote(c.getSite().getId()).ifPresent(mapping -> {
                 finalIssuance.setSite(getOrganisationIdView(mapping.getLocal()));
             });
@@ -147,12 +134,35 @@ public class CentralServerService {
                 finalIssuance.setStock(getStockIdView(mapping.getLocal()));
             });
 
-            BeanUtils.copyProperties(c, finalIssuance, "id", "request", "site", "stock");
+            BeanUtils.copyProperties(c, finalIssuance, "id", "site", "stock");
             finalIssuance.setSynced(true);
 
-            evm.save(em, issuance);
+            evm.save(em, finalIssuance);
         });
 
+        data.getPrescriptions().forEach(p -> {
+            Prescription.CreateView prescription = evm.create(Prescription.CreateView.class);
+            var ref = new Object() {
+                UUID patientId = null;
+            };
+            mappingRepository.findByRemote(p.getPatient().getId()).ifPresent(mapping -> {
+                ref.patientId = mapping.getLocal();
+            });
+            var settings = EntityViewSetting.create(Prescription.CreateView.class);
+            var cb = cbf.create(em, Prescription.class)
+                .where("prescriptionId").eq(p.getPrescriptionId())
+                .where("patient.id").eq(ref.patientId);
+            try {
+                prescription = evm.applySetting(settings, cb).getSingleResult();
+            } catch (Exception ignored) {
+            }
+            Prescription.CreateView finalPrescription = prescription;
+            mappingRepository.findByRemote(p.getPatient().getId()).ifPresent(mapping -> {
+                finalPrescription.setPatient(getPatientIdView(mapping.getLocal()));
+            });
+            BeanUtils.copyProperties(p, finalPrescription, "id", "patient");
+            evm.save(em, finalPrescription);
+        });
         return true;
     }
 
@@ -161,8 +171,8 @@ public class CentralServerService {
      * FacilityData object.
      *
      * @param facilityId The facilityId parameter is a UUID (Universally Unique Identifier) that represents the ID of a
-     * facility.
-     * @param outletIds The "outletIds" parameter is a list of UUIDs representing the IDs of outletIds associated with the facility.
+     *                   facility.
+     * @param outletIds  The "outletIds" parameter is a list of UUIDs representing the IDs of outletIds associated with the facility.
      * @return The method is returning an object of type FacilityData.
      */
     @Transactional
@@ -243,6 +253,12 @@ public class CentralServerService {
                 })
                 .toList();
             facilityData.setStockRequest(requests);
+
+            var settings5 = EntityViewSetting.create(StockIssuance.CreateView.class);
+            var cb5 = cbf.create(em, StockIssuance.class)
+                .where("site.id").in(_outletIds);
+            List<StockIssuance.CreateView> issuance = evm.applySetting(settings5, cb5).getResultList();
+            facilityData.setStockIssuance(issuance);
         }
 
         UUID reference = UUID.randomUUID();
@@ -257,30 +273,38 @@ public class CentralServerService {
      * acknowledgment map.
      *
      * @param reference The "reference" parameter is a UUID (Universally Unique Identifier) that is used to identify a
-     * specific acknowledgment.
+     *                  specific acknowledgment.
      */
     @Transactional
     public void acknowledge(UUID reference) {
         var data = acknowledgment.get(reference);
         if (data != null) {
             data.getRefills().forEach(o -> {
-                o.setSynced(true);
-                evm.save(em, o);
+                refillRepository.findByReference(o.getReference()).ifPresent(refill -> {
+                    refill.setSynced(true);
+                    refillRepository.save(refill);
+                });
             });
 
             data.getClinics().forEach(o -> {
-                o.setSynced(true);
-                evm.save(em, o);
+                clinicDataRepository.findByReference(o.getReference()).ifPresent(clinic -> {
+                    clinic.setSynced(true);
+                    clinicDataRepository.save(clinic);
+                });
             });
 
             data.getDevolves().forEach(o -> {
-                o.setSynced(true);
-                evm.save(em, o);
+                devolveRepository.findByReference(o.getReference()).ifPresent(devolve -> {
+                    devolve.setSynced(true);
+                    devolveRepository.save(devolve);
+                });
             });
 
             data.getStockRequest().forEach(o -> {
-                o.setSynced(true);
-                evm.save(em, o);
+                stockRequestRepository.findByReference(o.getReference()).ifPresent(stockRequest -> {
+                    stockRequest.setSynced(true);
+                    stockRequestRepository.save(stockRequest);
+                });
             });
 
             acknowledgment.remove(reference);
@@ -344,12 +368,5 @@ public class CentralServerService {
         view.setId(id);
 
         return evm.convert(view, Stock.IdView.class);
-    }
-
-    private StockRequest.IdView getStockRequestIdView(UUID id) {
-        StockRequest.UpdateView view = evm.create(StockRequest.UpdateView.class);
-        view.setId(id);
-
-        return evm.convert(view, StockRequest.IdView.class);
     }
 }

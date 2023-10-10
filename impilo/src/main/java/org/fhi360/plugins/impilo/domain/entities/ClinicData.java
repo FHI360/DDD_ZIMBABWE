@@ -32,6 +32,7 @@ public class ClinicData {
     @Id
     @UUIDV7
     private UUID id;
+
     private Float weight;
 
     private Integer diastolic;

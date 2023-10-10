@@ -12,5 +12,5 @@ public class EHRData {
     private UUID reference = UUID.randomUUID();
     private List<Dispense> dispenses;
     private List<Vitals> vitals;
-
+    private List<Clinic> clinicData;
 }

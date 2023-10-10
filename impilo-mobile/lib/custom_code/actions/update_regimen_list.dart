@@ -3,11 +3,6 @@ import 'dart:collection';
 
 import 'package:impilo/app_state.dart';
 import 'package:impilo/main.dart';
-import 'package:logging/logging.dart';
-
-// Begin custom action code
-// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
-final log = Logger('Regimens');
 
 Future updateRegimenList() async {
   // Add your function code here!

@@ -9,7 +9,6 @@ import io.github.jbella.snl.core.api.services.errors.BadRequestException;
 import io.github.jbella.snl.core.api.services.util.PagedResult;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fhi360.plugins.impilo.domain.entities.Devolve;
 import org.fhi360.plugins.impilo.domain.entities.Patient;
@@ -27,7 +26,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ROLE_USER')")
-@Slf4j
 public class DevolveService {
     private final EntityViewManager evm;
     private final EntityManager em;

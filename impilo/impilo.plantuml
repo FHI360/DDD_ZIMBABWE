@@ -1,0 +1,174 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class clinic_data {
+   date: date
+   weight: numeric
+   temperature: numeric
+   systolic: integer
+   diastolic: integer
+   coughing: boolean
+   sweating: boolean
+   swelling: boolean
+   fever: boolean
+   weight_loss: boolean
+   tb_referred: boolean
+   synced: boolean
+   reference: uuid
+   patient_id: uuid
+   organisation_id: uuid
+   id: uuid
+}
+class devolve {
+   date: timestamp
+   reason_discontinued: varchar(256)
+   synced: boolean
+   reference: uuid
+   organisation_id: uuid
+   patient_id: uuid
+   id: uuid
+}
+class id_mappings {
+   local: uuid
+   remote: uuid
+   id: uuid
+}
+class organisation {
+   name: varchar(128)
+   email: varchar(64)
+   phone: varchar(32)
+   type: varchar(32)
+   establishment_date: date
+   parent_id: uuid
+   party_id: uuid
+   archived: boolean
+   active: boolean
+   created_date: timestamp
+   last_modified_date: timestamp
+   validity_date: date
+   id: uuid
+}
+class patient {
+   given_name: varchar(32)
+   family_name: varchar(32)
+   date_of_birth: date
+   sex: varchar(8)
+   phone_number: varchar(32)
+   patient_id: varchar(64)
+   person_id: varchar(64)
+   hospital_number: varchar(32)
+   address: varchar(256)
+   regimen: varchar(128)
+   next_appointment_date: date
+   reference: uuid
+   facility_id: varchar(64)
+   facility_name: varchar(128)
+   organisation_id: uuid
+   id: uuid
+}
+class person {
+   title: varchar(32)
+   initials: varchar(8)
+   given_name: varchar(64)
+   preferred_given_name: varchar(64)
+   middle_name: varchar(64)
+   family_name: varchar(64)
+   preferred_family_name: varchar(64)
+   preferred_name: varchar(64)
+   honorific: varchar(32)
+   salutation: varchar(32)
+   sex: varchar(32)
+   email: varchar(64)
+   phone: varchar(32)
+   photo_url: text
+   date_of_birth: date
+   place_of_birth: varchar(64)
+   country_of_birth: varchar(64)
+   date_of_death: date
+   place_of_death: varchar(64)
+   country_of_death: varchar(64)
+   party_id: uuid
+   organisation_id: uuid
+   archived: boolean
+   created_date: timestamp
+   last_modified_date: timestamp
+   id: uuid
+}
+class prescription {
+   prescription_id: varchar(64)
+   medicine_id: varchar(64)
+   frequency_id: varchar(64)
+   time: timestamp
+   patient_id: uuid
+   id: uuid
+}
+class refill {
+   date: date
+   date_next_refill: date
+   regimen: varchar(256)
+   qty_prescribed: integer
+   qty_dispensed: integer
+   missed_dose: boolean
+   adverse_issues: boolean
+   synced: boolean
+   reference: uuid
+   patient_id: uuid
+   organisation_id: uuid
+   id: uuid
+}
+class stock {
+   date: date
+   regimen: varchar(512)
+   bottles: bigint
+   batch_no: varchar(256)
+   serial_no: varchar(256)
+   expiration_date: date
+   manufacture_date: date
+   facility_id: uuid
+   synced: boolean
+   reference: uuid
+   id: uuid
+}
+class stock_issuance {
+   date: date
+   bottles: bigint
+   synced: boolean
+   reference: uuid
+   site_id: uuid
+   stock_id: uuid
+   acknowledged: boolean
+   batch_issuance_id: varchar(64)
+   request_id: uuid
+   id: uuid
+}
+class stock_request {
+   date: date
+   bottles: bigint
+   arv_drug: varchar(128)
+   request_id: varchar(128)
+   reference: uuid
+   site_id: uuid
+   synced: boolean
+   id: uuid
+}
+
+clinic_data     -[#595959,plain]-^  organisation   : "organisation_id:id"
+clinic_data     -[#595959,plain]-^  patient        : "patient_id:id"
+devolve         -[#595959,plain]-^  organisation   : "organisation_id:id"
+devolve         -[#595959,plain]-^  patient        : "patient_id:id"
+organisation    -[#595959,plain]-^  organisation   : "parent_id:id"
+patient         -[#595959,plain]-^  organisation   : "organisation_id:id"
+patient         -[#595959,plain]-^  patient        : "patient_id:id"
+patient         -[#595959,plain]-^  person         : "person_id:id"
+person          -[#595959,plain]-^  organisation   : "organisation_id:id"
+prescription    -[#595959,plain]-^  patient        : "patient_id:id"
+prescription    -[#595959,plain]-^  prescription   : "prescription_id:id"
+refill          -[#595959,plain]-^  organisation   : "organisation_id:id"
+refill          -[#595959,plain]-^  patient        : "patient_id:id"
+stock           -[#595959,plain]-^  organisation   : "facility_id:id"
+stock_issuance  -[#595959,plain]-^  stock          : "stock_id:id"
+stock_issuance  -[#595959,plain]-^  stock_request  : "request_id:id"
+@enduml

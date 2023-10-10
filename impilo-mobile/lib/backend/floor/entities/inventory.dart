@@ -8,6 +8,7 @@ class Inventory {
   final String reference;
   final String regimen;
   final int quantity;
+  final int balance;
   final String batchNo;
   final String barcode;
   final String siteCode;
@@ -16,6 +17,24 @@ class Inventory {
   bool acknowledged = false;
   bool synced = false;
 
-  Inventory(this.id, this.uniqueId, this.reference, this.regimen, this.quantity, this.acknowledged,
-      this.batchNo, this.barcode, this.siteCode, this.expiryDate, this.batchIssuanceId);
+  Inventory(
+      this.id,
+      this.uniqueId,
+      this.reference,
+      this.regimen,
+      this.quantity,
+      this.balance,
+      this.acknowledged,
+      this.batchNo,
+      this.barcode,
+      this.siteCode,
+      this.expiryDate,
+      this.batchIssuanceId);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'reference': reference,
+      'balance': balance
+    };
+  }
 }

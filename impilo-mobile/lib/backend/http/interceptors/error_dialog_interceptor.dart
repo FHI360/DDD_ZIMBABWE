@@ -11,18 +11,20 @@ class ErrorDialogInterceptor extends Interceptor {
 
   @override
   onError(DioError err, ErrorInterceptorHandler handler) async {
-    final data = err.response?.data;
 
-    final refreshToken = FFAppState().refreshToken;
-
-    if (data == null ||
-        !(data is Map) ||
-        err.response?.statusCode == 401 &&
-            (refreshToken != '') &&
-            !err.requestOptions.headers
-                .containsKey(AuthTokenInterceptor.skipHeader)) {
+    if(err.response == null) {
+      showToast(
+        'A error occurred communicating with server; please check your connection',
+        duration: Duration(seconds: 2),
+        position: ToastPosition.bottom,
+        backgroundColor: Colors.redAccent,
+        radius: 1.0,
+        textStyle: TextStyle(fontSize: 15.0),
+      );
       return super.onError(err, handler);
     }
+    final data = err.response?.data;
+
     if (err.response?.statusCode == 403 &&
         data['path'] == '/api/authenticate') {
       showToast(

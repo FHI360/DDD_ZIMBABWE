@@ -25,4 +25,8 @@ class InventoryRequest {
       'uniqueId': uniqueId
     };
   }
+
+  factory InventoryRequest.fromJson(Map<String, dynamic> row) =>
+      InventoryRequest(null, row['requestId'], row['regimen'], row['bottles'],
+          row['siteCode'], DateTime.parse(row['date']), true, 0);
 }
