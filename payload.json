@@ -1,0 +1,594 @@
+{
+    "patients": [
+        {
+            "givenName": "Ngoni",
+            "familyName": "Moyo",
+            "dateOfBirth": "1968-11-22",
+            "sex": "female",
+            "phoneNumber": "(920) 283-5149",
+            "address": "Suite 854 4308 Thiel Spurs, New Rosaria, WY 95259-3383",
+            "hospitalNumber": "35061338630",
+            "regimen": "3TC/FTC(300/300mg)+EFV(600mg)",
+            "nextAppointmentDate": "2023-10-17",
+            "personId": "983632d0-9fc0-4de5-8439-7753e174f6d2",
+            "patientId": "23816b1b-fc32-4694-a1c0-292b12409be6",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "0c22b25f-c267-4b7d-b94a-8f5dffe543b5",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "bfd8241d-10bf-4d9f-a6ce-54141675114e",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-07-22 15:39"
+                },
+                {
+                    "prescriptionId": "de1d0b2b-b094-400a-af10-53bcd6c9dab7",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "da39a762-4d6e-4c33-a108-18f2c4418eda",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-04-13 08:21"
+                },
+                {
+                    "prescriptionId": "fc7919f4-af2e-42c8-943d-ddaf41515d6e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "d59b7da0-f08f-4192-844f-e7e155d5ee7c",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 120,
+                    "time": "2023-05-20 07:58"
+                },
+                {
+                    "prescriptionId": "2b3f7c38-0a0b-465c-8944-d10200090b51",
+                    "medicineId": "25f9bc7f-4e62-4f56-b7f5-4d36c87d86d0",
+                    "frequencyId": "a09ed61a-06b8-44d0-b9ed-827767314b52",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 30,
+                    "time": "2023-08-02 20:34"
+                },
+                {
+                    "prescriptionId": "974fcf61-34e8-4182-b03e-157fe9f0c43e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "588f3b2e-4ac4-4333-8d4e-5d3b0cfb4079",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-07-29 17:12"
+                }
+            ]
+        },
+        {
+            "givenName": "Mudiwa",
+            "familyName": "Mlambo",
+            "dateOfBirth": "2001-04-11",
+            "sex": "male",
+            "phoneNumber": "1-240-950-1090",
+            "address": "Suite 581 7038 Jacob Trafficway, Connfurt, FL 39722",
+            "hospitalNumber": "96092024918",
+            "regimen": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+            "nextAppointmentDate": "2024-02-04",
+            "personId": "e654f0a7-bfd1-4734-8f75-b791fc35e511",
+            "patientId": "48e7c0d8-360a-469f-be38-e8e8866aa937",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "222629a6-215c-4628-b285-583620ea3a10",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "00099d6d-0a82-45a3-8702-6857e71ef7c0",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-06-14 17:15"
+                },
+                {
+                    "prescriptionId": "b978c4d6-271f-48b4-a141-7a9d33e34571",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "31a86605-440b-4f50-8d6c-09f7632f0152",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-06-09 09:03"
+                },
+                {
+                    "prescriptionId": "11aa050b-0114-4e54-9936-5a3a18585786",
+                    "medicineId": "0d0972d2-ad90-40e6-b8bf-2b5e1a8f8f65",
+                    "frequencyId": "5d22e8fc-6373-497d-b571-95fb7d277bd5",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-08-07 11:59"
+                },
+                {
+                    "prescriptionId": "6c3500a1-cf79-4409-85c8-19a482a88ff3",
+                    "medicineId": "0d0972d2-ad90-40e6-b8bf-2b5e1a8f8f65",
+                    "frequencyId": "527bec62-8bb7-4407-84b8-ca75ff2ee5a0",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-05-27 00:56"
+                }
+            ]
+        },
+        {
+            "givenName": "Nyasha",
+            "familyName": "Chikumbu",
+            "dateOfBirth": "1997-10-04",
+            "sex": "female",
+            "phoneNumber": "072.120.2938",
+            "address": "Apt. 931 61652 Blanda Ford, Abbottshire, TN 67201",
+            "hospitalNumber": "21301126392",
+            "regimen": "AZT/3TC(300/150mg)+EFV(200mg)",
+            "nextAppointmentDate": "2024-03-29",
+            "personId": "b2d56768-c8bc-48ce-9f9b-1235d5ff16b9",
+            "patientId": "a274d20f-5599-4909-bdc9-dd4059f81eed",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "9ac78f13-c586-4581-a3d4-1110a6d01406",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "48a76b5a-9f0c-468d-9693-b92fc42ea43d",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-18 22:11"
+                }
+            ]
+        },
+        {
+            "givenName": "Vimbai",
+            "familyName": "Mukandi",
+            "dateOfBirth": "1965-06-07",
+            "sex": "female",
+            "phoneNumber": "194.825.1513",
+            "address": "Suite 447 4313 Tressie Hollow, Lake Arlamouth, CO 56003-8269",
+            "hospitalNumber": "51122789632",
+            "regimen": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+            "nextAppointmentDate": "2023-12-28",
+            "personId": "11347270-9fbb-40c7-9e6e-6392ec2a1ddd",
+            "patientId": "61f4e0f4-ce3c-498a-bfd5-3093d5997632",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "9ac78f13-c586-4581-a3d4-1110a6d01406",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "48a76b5a-9f0c-468d-9693-b92fc42ea43d",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-18 22:11"
+                },
+                {
+                    "prescriptionId": "6c3500a1-cf79-4409-85c8-19a482a88ff3",
+                    "medicineId": "0d0972d2-ad90-40e6-b8bf-2b5e1a8f8f65",
+                    "frequencyId": "527bec62-8bb7-4407-84b8-ca75ff2ee5a0",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-05-27 00:56"
+                }
+            ]
+        },
+        {
+            "givenName": "Tsitsi",
+            "familyName": "Zvobgo",
+            "dateOfBirth": "1985-11-21",
+            "sex": "female",
+            "phoneNumber": "724.242.1673",
+            "address": "Apt. 334 329 Brigida Forks, North Indirabury, ID 38486-7506",
+            "hospitalNumber": "28101020651",
+            "regimen": "AZT/3TC(300/150mg)+EFV(200mg)",
+            "nextAppointmentDate": "2023-10-28",
+            "personId": "f9e2a977-af81-4677-96a2-83bec5829e75",
+            "patientId": "9e634f58-44d1-4cd6-92f5-0ca1be2f63f4",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "de1d0b2b-b094-400a-af10-53bcd6c9dab7",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "da39a762-4d6e-4c33-a108-18f2c4418eda",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-04-13 08:21"
+                },
+                {
+                    "prescriptionId": "0c22b25f-c267-4b7d-b94a-8f5dffe543b5",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "bfd8241d-10bf-4d9f-a6ce-54141675114e",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-07-22 15:39"
+                },
+                {
+                    "prescriptionId": "222629a6-215c-4628-b285-583620ea3a10",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "00099d6d-0a82-45a3-8702-6857e71ef7c0",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-06-14 17:15"
+                },
+                {
+                    "prescriptionId": "b978c4d6-271f-48b4-a141-7a9d33e34571",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "31a86605-440b-4f50-8d6c-09f7632f0152",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-06-09 09:03"
+                },
+                {
+                    "prescriptionId": "fc7919f4-af2e-42c8-943d-ddaf41515d6e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "d59b7da0-f08f-4192-844f-e7e155d5ee7c",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 120,
+                    "time": "2023-05-20 07:58"
+                }
+            ]
+        },
+        {
+            "givenName": "Tendai",
+            "familyName": "Matamba",
+            "dateOfBirth": "1986-01-06",
+            "sex": "male",
+            "phoneNumber": "432.556.4762",
+            "address": "Suite 695 141 Sherice Unions, South Noble, MI 30894",
+            "hospitalNumber": "99032465549",
+            "regimen": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+            "nextAppointmentDate": "2023-10-18",
+            "personId": "2d1c7b9b-0eaf-4907-9534-49a9bd253ea5",
+            "patientId": "5ad1d84e-4553-43b1-bf79-d35b0f0fc8b6",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "6c3500a1-cf79-4409-85c8-19a482a88ff3",
+                    "medicineId": "0d0972d2-ad90-40e6-b8bf-2b5e1a8f8f65",
+                    "frequencyId": "527bec62-8bb7-4407-84b8-ca75ff2ee5a0",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-05-27 00:56"
+                },
+                {
+                    "prescriptionId": "2b3f7c38-0a0b-465c-8944-d10200090b51",
+                    "medicineId": "25f9bc7f-4e62-4f56-b7f5-4d36c87d86d0",
+                    "frequencyId": "a09ed61a-06b8-44d0-b9ed-827767314b52",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-08-02 20:34"
+                }
+            ]
+        },
+        {
+            "givenName": "Sibongile",
+            "familyName": "Mwale",
+            "dateOfBirth": "2000-10-19",
+            "sex": "female",
+            "phoneNumber": "1-141-949-4307",
+            "address": "17881 Cormier Junctions, Kamilahtown, MI 85863-1932",
+            "hospitalNumber": "71110772495",
+            "regimen": "3TC/FTC(300/300mg)+EFV(600mg)",
+            "nextAppointmentDate": "2023-10-19",
+            "personId": "52a5604b-a036-4fc7-a808-c1d1591aa72b",
+            "patientId": "b71d8d88-c291-43ef-8de2-5a3e491d9625",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "de1d0b2b-b094-400a-af10-53bcd6c9dab7",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "da39a762-4d6e-4c33-a108-18f2c4418eda",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-04-13 08:21"
+                },
+                {
+                    "prescriptionId": "9ac78f13-c586-4581-a3d4-1110a6d01406",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "48a76b5a-9f0c-468d-9693-b92fc42ea43d",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-18 22:11"
+                },
+                {
+                    "prescriptionId": "2b3f7c38-0a0b-465c-8944-d10200090b51",
+                    "medicineId": "25f9bc7f-4e62-4f56-b7f5-4d36c87d86d0",
+                    "frequencyId": "a09ed61a-06b8-44d0-b9ed-827767314b52",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-08-02 20:34"
+                },
+                {
+                    "prescriptionId": "974fcf61-34e8-4182-b03e-157fe9f0c43e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "588f3b2e-4ac4-4333-8d4e-5d3b0cfb4079",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-29 17:12"
+                },
+                {
+                    "prescriptionId": "9ac78f13-c586-4581-a3d4-1110a6d01406",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "48a76b5a-9f0c-468d-9693-b92fc42ea43d",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-18 22:11"
+                },
+                {
+                    "prescriptionId": "974fcf61-34e8-4182-b03e-157fe9f0c43e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "588f3b2e-4ac4-4333-8d4e-5d3b0cfb4079",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-07-29 17:12"
+                },
+                {
+                    "prescriptionId": "9ac78f13-c586-4581-a3d4-1110a6d01406",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "48a76b5a-9f0c-468d-9693-b92fc42ea43d",
+                    "medicineName": "3TC/FTC(300/300mg)+EFV(600mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-18 22:11"
+                }
+            ]
+        },
+        {
+            "givenName": "Simbarashe",
+            "familyName": "Sibanda",
+            "dateOfBirth": "1982-09-12",
+            "sex": "female",
+            "phoneNumber": "1-611-242-9149",
+            "address": "15327 Kovacek Park, Heaneyville, WY 09884-5639",
+            "hospitalNumber": "46041265695",
+            "regimen": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+            "nextAppointmentDate": "2024-03-21",
+            "personId": "fe1c7d52-cbfe-42b0-a068-be5e26a1b33e",
+            "patientId": "19ea3581-3934-490d-8b82-ce605d604e5b",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "6c3500a1-cf79-4409-85c8-19a482a88ff3",
+                    "medicineId": "0d0972d2-ad90-40e6-b8bf-2b5e1a8f8f65",
+                    "frequencyId": "527bec62-8bb7-4407-84b8-ca75ff2ee5a0",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-05-27 00:56"
+                },
+                {
+                    "prescriptionId": "9ac78f13-c586-4581-a3d4-1110a6d01406",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "48a76b5a-9f0c-468d-9693-b92fc42ea43d",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-18 22:11"
+                },
+                {
+                    "prescriptionId": "974fcf61-34e8-4182-b03e-157fe9f0c43e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "588f3b2e-4ac4-4333-8d4e-5d3b0cfb4079",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-29 17:12"
+                },
+                {
+                    "prescriptionId": "974fcf61-34e8-4182-b03e-157fe9f0c43e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "588f3b2e-4ac4-4333-8d4e-5d3b0cfb4079",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-29 17:12"
+                },
+                {
+                    "prescriptionId": "11aa050b-0114-4e54-9936-5a3a18585786",
+                    "medicineId": "0d0972d2-ad90-40e6-b8bf-2b5e1a8f8f65",
+                    "frequencyId": "5d22e8fc-6373-497d-b571-95fb7d277bd5",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 120,
+                    "time": "2023-08-07 11:59"
+                },
+                {
+                    "prescriptionId": "b978c4d6-271f-48b4-a141-7a9d33e34571",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "31a86605-440b-4f50-8d6c-09f7632f0152",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-06-09 09:03"
+                },
+                {
+                    "prescriptionId": "0c22b25f-c267-4b7d-b94a-8f5dffe543b5",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "bfd8241d-10bf-4d9f-a6ce-54141675114e",
+                    "medicineName": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-22 15:39"
+                }
+            ]
+        },
+        {
+            "givenName": "Nokuthula",
+            "familyName": "Nyamande",
+            "dateOfBirth": "1991-01-30",
+            "sex": "female",
+            "phoneNumber": "103.369.8440",
+            "address": "Apt. 409 40484 Kub Place, East Jenaeland, LA 42668-9695",
+            "hospitalNumber": "47032588546",
+            "regimen": "ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)",
+            "nextAppointmentDate": "2023-12-31",
+            "personId": "a08daedd-e49d-43bf-ba9b-cae51d8e7e84",
+            "patientId": "51f20cac-5949-4f60-b8ae-0028b21d0285",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "9ac78f13-c586-4581-a3d4-1110a6d01406",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "48a76b5a-9f0c-468d-9693-b92fc42ea43d",
+                    "medicineName": "ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-18 22:11"
+                },
+                {
+                    "prescriptionId": "fc7919f4-af2e-42c8-943d-ddaf41515d6e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "d59b7da0-f08f-4192-844f-e7e155d5ee7c",
+                    "medicineName": "ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)",
+                    "prescribedQty": 180,
+                    "time": "2023-05-20 07:58"
+                },
+                {
+                    "prescriptionId": "b978c4d6-271f-48b4-a141-7a9d33e34571",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "31a86605-440b-4f50-8d6c-09f7632f0152",
+                    "medicineName": "ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-06-09 09:03"
+                },
+                {
+                    "prescriptionId": "fc7919f4-af2e-42c8-943d-ddaf41515d6e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "d59b7da0-f08f-4192-844f-e7e155d5ee7c",
+                    "medicineName": "ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-05-20 07:58"
+                }
+            ]
+        },
+        {
+            "givenName": "Tariro",
+            "familyName": "Chinhoyi",
+            "dateOfBirth": "1991-08-14",
+            "sex": "female",
+            "phoneNumber": "(637) 424-2648",
+            "address": "Suite 635 21210 David Cliff, Tonitaborough, IL 88638",
+            "hospitalNumber": "58090506506",
+            "regimen": "AZT/3TC(300/150mg)+EFV(200mg)",
+            "nextAppointmentDate": "2023-11-03",
+            "personId": "7c12c04e-89a4-4000-a0a5-9b2f98f2d55c",
+            "patientId": "c0776ef9-b773-47d9-88f5-98b2e8d3cd17",
+            "facilityId": "528b768d-9831-4b95-81d6-d5932c9b3d8e",
+            "facilityName": "Harare Central Hospital",
+            "prescriptions": [
+                {
+                    "prescriptionId": "974fcf61-34e8-4182-b03e-157fe9f0c43e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "588f3b2e-4ac4-4333-8d4e-5d3b0cfb4079",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-07-29 17:12"
+                },
+                {
+                    "prescriptionId": "de1d0b2b-b094-400a-af10-53bcd6c9dab7",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "da39a762-4d6e-4c33-a108-18f2c4418eda",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-04-13 08:21"
+                },
+                {
+                    "prescriptionId": "9ac78f13-c586-4581-a3d4-1110a6d01406",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "48a76b5a-9f0c-468d-9693-b92fc42ea43d",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-07-18 22:11"
+                },
+                {
+                    "prescriptionId": "fc7919f4-af2e-42c8-943d-ddaf41515d6e",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "d59b7da0-f08f-4192-844f-e7e155d5ee7c",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-05-20 07:58"
+                },
+                {
+                    "prescriptionId": "0c22b25f-c267-4b7d-b94a-8f5dffe543b5",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "bfd8241d-10bf-4d9f-a6ce-54141675114e",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-07-22 15:39"
+                },
+                {
+                    "prescriptionId": "0c22b25f-c267-4b7d-b94a-8f5dffe543b5",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "bfd8241d-10bf-4d9f-a6ce-54141675114e",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 90,
+                    "time": "2023-07-22 15:39"
+                },
+                {
+                    "prescriptionId": "222629a6-215c-4628-b285-583620ea3a10",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "00099d6d-0a82-45a3-8702-6857e71ef7c0",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-06-14 17:15"
+                },
+                {
+                    "prescriptionId": "222629a6-215c-4628-b285-583620ea3a10",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "00099d6d-0a82-45a3-8702-6857e71ef7c0",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-06-14 17:15"
+                },
+                {
+                    "prescriptionId": "b978c4d6-271f-48b4-a141-7a9d33e34571",
+                    "medicineId": "ebd236d1-f459-48f8-a71b-9f1aea9402f9",
+                    "frequencyId": "31a86605-440b-4f50-8d6c-09f7632f0152",
+                    "medicineName": "AZT/3TC(300/150mg)+EFV(200mg)",
+                    "prescribedQty": 150,
+                    "time": "2023-06-09 09:03"
+                }
+            ]
+        }
+    ],
+    "stocks": [
+        {
+            "date": "2023-08-04T00:02",
+            "regimen": "ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)",
+            "bottles": 50,
+            "batchNo": "7780094845185",
+            "serialNo": "902241684",
+            "expirationDate": "2024-06-05",
+            "manufactureDate": "2023-09-06",
+            "batchIssuanceId": "43e51d2c-ff96-470e-83ae-02acd818f8b9"
+        },
+        {
+            "date": "2023-07-17T18:31",
+            "regimen": "AZT(300mg)+3TC(150mg)+LPV/r(200/50mg)",
+            "bottles": 50,
+            "batchNo": "4288759505175",
+            "serialNo": "210403800",
+            "expirationDate": "2024-02-23",
+            "manufactureDate": "2023-08-16",
+            "batchIssuanceId": "27696562-c987-4235-be56-dcac6cd028e8"
+        },
+        {
+            "date": "2023-10-02T23:41",
+            "regimen": "AZT/3TC(300/150mg)+EFV(200mg)",
+            "bottles": 50,
+            "batchNo": "5005242846398",
+            "serialNo": "244557855",
+            "expirationDate": "2024-04-03",
+            "manufactureDate": "2023-05-19",
+            "batchIssuanceId": "0d0111c7-09fe-44f4-91ee-b5441fed30c2"
+        },
+        {
+            "date": "2023-09-01T12:34",
+            "regimen": "ABC(20mg/ml)+DDI(10mg/ml)+3TC(30mg)",
+            "bottles": 100,
+            "batchNo": "5645723991539",
+            "serialNo": "332832758",
+            "expirationDate": "2023-11-09",
+            "manufactureDate": "2023-08-08",
+            "batchIssuanceId": "778f4237-878d-4d00-93d1-b890ba4b644a"
+        },
+        {
+            "date": "2023-09-03T10:20",
+            "regimen": "3TC/FTC(300/300mg)+EFV(600mg)",
+            "bottles": 200,
+            "batchNo": "8040000457666",
+            "serialNo": "605649230",
+            "expirationDate": "2024-02-07",
+            "manufactureDate": "2023-05-05",
+            "batchIssuanceId": "f84ccea9-77e3-45e7-bab9-92f26ebf9c45"
+        }
+    ]
+}
